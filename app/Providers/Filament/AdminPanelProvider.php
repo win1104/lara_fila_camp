@@ -6,7 +6,10 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use App\Filament\Pages\Auth\Login;
+use Awcodes\Curator\CuratorPlugin;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -17,6 +20,8 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Datlechin\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
+use Datlechin\FilamentMenuBuilder\MenuPanel\StaticMenuPanel;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class AdminPanelProvider extends PanelProvider
@@ -61,7 +66,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                \Awcodes\Curator\CuratorPlugin::make()
+                CuratorPlugin::make()
                     ->label('Media')
                     ->pluralLabel('Media')
                     ->navigationIcon('heroicon-o-photo')
@@ -69,8 +74,31 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationSort(3)
                     ->navigationCountBadge()
                     // ->registerNavigation(true)
-                    ->defaultListView('grid' || 'list')
-                    // ->resource(\App\Filament\Resources\CustomMediaResource::class)
+                    ->defaultListView('grid' || 'list'),
+                FilamentMenuBuilderPlugin::make()
+                    ->addLocation('header', 'Header')
+                    ->addLocation('footer', 'Footer')
+                    ->addMenuPanels([
+                        StaticMenuPanel::make()
+                            ->addMany([
+                                'Home' => url('/'),
+                                'Blog' => url('/blog'),
+                            ])
+                            ->description('Lorem ipsum...')
+                            ->icon('heroicon-m-link')
+                            ->collapsed(true)
+                            ->collapsible(true)
+                            ->paginate(perPage: 5, condition: true)
+                    ])
+                    // ->showCustomLinkPanel(false)
+                    ->showCustomTextPanel()
+                    ->addMenuFields([
+                        Toggle::make('is_logged_in'),
+                    ])
+                    ->addMenuItemFields([
+                        TextInput::make('Visibility'),
+                    ])
+                    ,
             ])
             ;
     }

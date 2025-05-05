@@ -10,6 +10,7 @@ use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\ActionGroup;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
+use SolutionForest\FilamentTree\Actions\LinkAction;
 use SolutionForest\FilamentTree\Actions\ViewAction;
 use SolutionForest\FilamentTree\Widgets\Tree as BaseWidget;
 use Filament\Tables\Actions\IconButton;
@@ -54,6 +55,7 @@ class ProductCategoryWidget extends BaseWidget
                     Notification::make()->success()->title('Hello World')->send();
                 })
                 ->icon('heroicon-o-cog'),
+            // LinkAction::make(),
             ViewAction::make(),
             EditAction::make(),
             // ActionGroup::make([

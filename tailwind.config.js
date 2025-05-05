@@ -10,6 +10,7 @@ export default {
         './resources/views/**/*.blade.php',
         './vendor/awcodes/filament-curator/resources/**/*.blade.php',
         './node_modules/mary-ui/**/*.{js,jsx,vue}', // 添加 Mary UI 組件路徑
+        './vendor/solution-forest/filament-tree/resources/**/*.blade.php',
     ],
 
     theme: {

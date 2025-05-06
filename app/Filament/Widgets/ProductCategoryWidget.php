@@ -51,9 +51,12 @@ class ProductCategoryWidget extends BaseWidget
     {
         return [
             Action::make('helloWorld')
-                ->action(function () {
-                    Notification::make()->success()->title('Hello World')->send();
-                })
+                // ->action(function () {
+                //     // $this->getRecordTitle();
+                //     Notification::make()->success()->title('Hello World')->send();
+                // })
+                ->url(fn () => route('filament.admin.resources.articles.index'))
+                ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-cog'),
             // LinkAction::make(),
             ViewAction::make(),

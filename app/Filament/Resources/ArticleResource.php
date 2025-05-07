@@ -36,6 +36,21 @@ class ArticleResource extends Resource
                     ->required(),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
+                    // ->toolbarButtons([
+                    //     'blockquote',
+                    //     'bold',
+                    //     'bulletList',
+                    //     'codeBlock',
+                    //     'h2',
+                    //     'h3',
+                    //     'italic',
+                    //     'link',
+                    //     'orderedList',
+                    //     'redo',
+                    //     'strike',
+                    //     'undo',
+                    //     'html', // 啟用 HTML 編輯按鈕
+                    // ])
                     ->required(),
                 CuratorPicker::make('media_id')
                     ->label('Media'),

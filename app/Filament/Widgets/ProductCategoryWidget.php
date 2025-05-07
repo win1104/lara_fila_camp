@@ -50,7 +50,7 @@ class ProductCategoryWidget extends BaseWidget
     protected function getTreeActions(): array
     {
         return [
-            Action::make('helloWorld')
+            Action::make('編輯內容')
                 // ->url(fn () => route('filament.admin.resources.articles.index'),false)
                 ->url(fn () => route('filament.admin.resources.articles.edit', ['record' => 1]), false)
                 // ->action(function () {
@@ -58,7 +58,7 @@ class ProductCategoryWidget extends BaseWidget
                 //     Notification::make()->success()->title('Hello World')->send();
                 // })
                 ->defaultView(Action::LINK_VIEW)
-                ->icon('heroicon-o-cog'),
+                ->icon('heroicon-o-bars-4'),
             // LinkAction::make(),
             ViewAction::make(),
             EditAction::make(),
@@ -93,6 +93,6 @@ class ProductCategoryWidget extends BaseWidget
         }
         $id = $record->getKey();
         $title = $record->{(method_exists($record, 'determineTitleColumnName') ? $record->determineTitleColumnName() : 'title')};
-        return "[{$id}] {$title}";
+        return "[{$id} 上下架] {$title}";
     }
 }

@@ -84,6 +84,11 @@ class PatientResource extends Resource
                     'rabbit' => 'Rabbit',
                 ]),
             ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

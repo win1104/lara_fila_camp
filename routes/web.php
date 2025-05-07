@@ -17,11 +17,24 @@ Route::get("/", Home::class)->name('home');
 
 
 // Route::view('/home', 'home');
+Route::middleware([
+        'post',
+        // 其他中間件...
+    ])
+    ->prefix('admin')
+    ->group(function () {
+        // 自定義路由...
+        Route::get('/articles/2/edit', [ProfileController::class, 'edit'])->name('post.edit');
+    });
+
+
 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {

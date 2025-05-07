@@ -13,17 +13,12 @@ class ProductCategory extends Model
     use ModelTree;
 
     protected $fillable = [
-        'order',
-        'parent_id',
         'title',
-    ];
-
-    protected $casts = [
-        'parent_id' => 'int'
+        'parent_id',
+        'order',
     ];
 
     protected $table = 'product_categories';
-
 
     public function products():HasMany
     {
@@ -32,29 +27,29 @@ class ProductCategory extends Model
 
 
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    protected static function boot()
+    {
+        parent::boot();
 
-    //     // 指定排序
-    //     static::addGlobalScope('sort', function (Builder $builder) {
-    //         $builder->orderBy('order', 'asc');
-    //     });
+        // 指定排序
+        static::addGlobalScope('sort', function (Builder $builder) {
+            $builder->orderBy('order', 'asc');
+        });
 
-    //     static::created(function ($model) {
-    //         // 呼叫自訂日誌方法
-    //         self::logChange('created', $model);
-    //     });
+        static::created(function ($model) {
+            // 呼叫自訂日誌方法
+            self::logChange('created', $model);
+        });
 
-    //     static::updated(function ($model) {
-    //         // 呼叫自訂日誌方法
-    //         self::logChange('updated', $model);
-    //     });
-    // }
+        static::updated(function ($model) {
+            // 呼叫自訂日誌方法
+            self::logChange('updated', $model);
+        });
+    }
 
-    // protected static function logChange($action, $model)
-    // {
-    //     // 寫入日誌，可以根據需要調整日誌格式
-    //     Log::info("ProductCategory : A record has been {$action}: ", $model->toArray());
-    // }
+    protected static function logChange($action, $model)
+    {
+        // 寫入日誌，可以根據需要調整日誌格式
+        Log::info("ProductCategory : A record has been {$action}: ", $model->toArray());
+    }
 }

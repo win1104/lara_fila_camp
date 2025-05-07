@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Article extends Model
 {
@@ -18,4 +19,25 @@ class Article extends Model
         'is_published',
         'published_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            // 呼叫自訂日誌方法
+            self::logChange('created', $model);
+        });
+
+        static::updated(function ($model) {
+            // 呼叫自訂日誌方法
+            self::logChange('updated', $model);
+        });
+    }
+
+    protected static function logChange($action, $model)
+    {
+        // 寫入日誌，可以根據需要調整日誌格式
+        Log::info("Article : A record has been {$action}: ", $model->toArray());
+    }
 }

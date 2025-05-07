@@ -86,6 +86,8 @@ class ArticleResource extends Resource
                 //     ->sortable(),
 
             ])
+            ->reorderable('title') // 啟用拖拉排序功能
+            ->defaultSort('title') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

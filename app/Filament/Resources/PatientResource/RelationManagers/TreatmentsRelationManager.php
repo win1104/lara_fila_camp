@@ -24,26 +24,59 @@ class TreatmentsRelationManager extends RelationManager
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('notes')
                     ->maxLength(65535)
-                    ->columnSpan('full'),
+                    ->columnSpan('full')
+                    ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit'),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->prefix('€')
-                    ->maxValue(42949672.95),
+                    ->maxValue(42949672.95)
+                    ->visible(fn () => in_array($this->getOwnerRecord()?->type, ['cat', 'dog'])),
+                Forms\Components\Select::make('treatment_type')
+                    ->options(function () {
+                        $patient = $this->getOwnerRecord();
+
+                        return match($patient->type) {
+                            'cat' => [
+                                'vaccination' => '疫苗接種',
+                                'checkup' => '健康檢查',
+                                'surgery' => '手術',
+                            ],
+                            'dog' => [
+                                'vaccination' => '疫苗接種',
+                                'checkup' => '健康檢查',
+                                'surgery' => '手術',
+                                'grooming' => '美容',
+                            ],
+                            'rabbit' => [
+                                'checkup' => '健康檢查',
+                                'dental' => '牙齒護理',
+                            ],
+                            default => [
+                                'checkup' => '健康檢查',
+                            ],
+                        };
+                    })
+                    ->required()
+                    ->visible(fn () => $this->getOwnerRecord() !== null),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
+            // ->heading('病患資料')
             ->recordTitleAttribute('description')
             ->columns([
-                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
             ])
+            ->reorderable('title') // 啟用拖拉排序功能
+            ->defaultSort('title') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

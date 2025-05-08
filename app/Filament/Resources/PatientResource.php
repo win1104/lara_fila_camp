@@ -19,43 +19,73 @@ class PatientResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected function getHeaderActions(): array
+    {
+        return [];
+    }
+
+    protected function getFormActions(): array
+    {
+        return [];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'cat' => 'Cat',
-                        'dog' => 'Dog',
-                        'rabbit' => 'Rabbit',
-                    ])
-                    ->required(),
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required()
-                    ->maxDate(now()),
-                Forms\Components\Select::make('owner_id')
-                    ->relationship('owner', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->createOptionForm([
+                Forms\Components\Card::make()
+                    ->key('patient-form-card')
+                    ->heading('病患資料')
+                    ->icon('heroicon-m-bars-4')
+                    ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email address')
-                            ->email()
+                        Forms\Components\Select::make('type')
+                            ->options([
+                                'cat' => 'Cat',
+                                'dog' => 'Dog',
+                                'rabbit' => 'Rabbit',
+                            ])
+                            ->required(),
+                        Forms\Components\DatePicker::make('date_of_birth')
                             ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('phone')
-                            ->label('Phone number')
-                            ->tel()
+                            ->maxDate(now()),
+                        Forms\Components\Select::make('owner_id')
+                            ->relationship('owner', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Email address')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('phone')
+                                    ->label('Phone number')
+                                    ->tel()
+                                    ->required(),
+                            ])
                             ->required(),
                     ])
-                    ->required(),
-            ]);
+                    ->collapsible()
+                    ->collapsed()
+                    ->footerActions([
+                        Forms\Components\Actions\Action::make('save')
+                            ->label('儲存')
+                            ->submit('patient-form-card')
+                            ->color('primary'),
+                        // Forms\Components\Actions\Action::make('cancel')
+                        //     ->label('取消')
+                        //     ->url(PatientResource::getUrl('index'))
+                        //     ->color('gray'),
+                    ])
+                    ,
+                ])->columns(12)
+                ->live();
     }
 
     public static function table(Table $table): Table

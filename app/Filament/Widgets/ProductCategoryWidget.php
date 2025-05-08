@@ -52,7 +52,9 @@ class ProductCategoryWidget extends BaseWidget
         return [
             Action::make('編輯內容')
                 // ->url(fn () => route('filament.admin.resources.articles.index'),false)
-                ->url(fn () => route('filament.admin.resources.articles.edit', ['record' => 1]), false)
+                // ->url(fn () => route('filament.admin.resources.articles.edit', ['record' => 1]), false)
+                ->url(fn () => route('filament.admin.resources.patients.edit', ['record' => 2]), false)
+
                 // ->action(function () {
                 //     // $this->getRecordTitle();
                 //     Notification::make()->success()->title('Hello World')->send();

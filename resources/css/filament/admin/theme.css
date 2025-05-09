@@ -3,3 +3,28 @@
 @import '/vendor/awcodes/filament-curator/resources/css/plugin.css';
 
 @config 'tailwind.config.js';
+
+
+/* resources/css/filament.css */
+:root {
+    --font-size-base: 1rem !important; /* 相當於 text-base */
+}
+
+input,
+select,
+textarea,
+button,
+span,
+.filament-tables-table,
+.filament-forms-field-wrapper {
+    font-size: var(--font-size-base) !important;
+}
+
+/* 如果還有特定元素需要覆蓋 */
+.filament-tables-table thead th {
+    font-size: var(--font-size-base) !important;
+}
+
+.filament-dropdown-list-item {
+    font-size: var(--font-size-base) !important;
+}

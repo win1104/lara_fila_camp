@@ -18,7 +18,8 @@
 
         <div class="min-h-screen bg-gray-100">
 
-            @include('layouts.navigation')
+            {{-- @include('layouts.navigation') --}}
+            <livewire:components.header />
 
             <!-- Page Heading -->
             @isset($header)

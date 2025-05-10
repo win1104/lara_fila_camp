@@ -1,19 +1,21 @@
 <?php
 
-use App\Http\Controllers\AiDrawController;
+use App\Livewire\Pages\Home;
+use App\Livewire\Pages\Article;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\AiDrawController;
 use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\Profile\AvatarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
-use App\Livewire\Pages\Home;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Profile\AvatarController;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 Route::get("/", Home::class)->name('home');
+Route::get("/articles/{articles:slug}", Article::class)->name('articles');
 
 
 // Route::view('/home', 'home');

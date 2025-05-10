@@ -47,6 +47,7 @@ export default {
     // plugins: [forms, typography],
     plugins: [
         require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
         require('daisyui'),
     ],
     // 如果您使用 daisyUI (Mary UI 有時依賴這個)

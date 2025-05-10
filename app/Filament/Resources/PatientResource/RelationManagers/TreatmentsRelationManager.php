@@ -75,8 +75,8 @@ class TreatmentsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
             ])
-            ->reorderable('title') // 啟用拖拉排序功能
-            ->defaultSort('title') // 預設按 sort_order 排序
+            ->reorderable('id') // 啟用拖拉排序功能
+            ->defaultSort('id') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

@@ -11,12 +11,11 @@ use App\Models\Article as ArticleModel;
 
 class Home extends Component
 {
-    public ?ArticleModel $articles = null;
-    public $slug;
+    public $articles;
 
-    public function mount(ArticleModel $articles)
+    public function mount()
     {
-        $this->articles = $articles;
+        $this->articles = ArticleModel::limit(8)->get();
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局

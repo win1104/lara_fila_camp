@@ -15,7 +15,7 @@ use App\Http\Controllers\Profile\AvatarController;
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 Route::get("/", Home::class)->name('home');
-Route::get("/articles/{articles:slug}", Article::class)->name('articles');
+Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
 
 
 // Route::view('/home', 'home');

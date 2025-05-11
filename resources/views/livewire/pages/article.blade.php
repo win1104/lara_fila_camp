@@ -5,6 +5,9 @@
                 <h1>
                     {{ $article?->title }}
                 </h1>
+
+                <img class="rounded-lg" src="/storage/{{ $article?->image->path }}" alt="{{ $article?->image->alt_text }}"/>
+                <small>{{ $article?->image->caption }}</small>
                 <div class="">
                     {!! $article?->content !!}
                 </div>

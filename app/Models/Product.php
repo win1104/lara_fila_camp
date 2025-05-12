@@ -46,7 +46,6 @@ class Product extends Model
 
     protected static function logChange($action, $model)
     {
-        dd(555);
         // 寫入日誌，可以根據需要調整日誌格式
         Log::info("Product : A record has been {$action}: ", $model->toArray());
     }

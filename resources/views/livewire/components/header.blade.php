@@ -1,25 +1,20 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-
+        <div class="h-18">
 
 
                 <!-- maryUI -->
-                <div class="navbar bg-base-100 shadow-sm">
+                <div class="navbar bg-base-100 ">
 
-
-                    <!-- Logo -->
-                    <div class="shrink-0 flex items-center">
-                        <a href="{{ route('home') }}">
-                            {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
-                            <img src="/storage/bright_future_logo.jpg" alt="logo" width="50" height="50"/>
-                        </a>
-                    </div>
-
-
-                    <div class="flex-1">
-
+                    <div class="navbar-start">
+                        <!-- Logo -->
+                        <div class="shrink-0 items-center">
+                            <a href="{{ route('home') }}">
+                                {{-- <x-application-logo class="block h-9 w-auto fill-current text-gray-800" /> --}}
+                                <img src="/storage/bright_future_logo.jpg" alt="logo" width="50" height="50"/>
+                            </a>
+                        </div>
                         <!-- Navigation Links -->
                         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -38,60 +33,79 @@
                                 {{ __('Chat GTP') }}
                             </x-nav-link>
                         </div>
-
                     </div>
 
 
+                    <div class="navbar-end">
+                        <div class="">
 
+                            <a class="btn btn-ghost text-xl">
+                                {{ config("app.name")}}
+                            </a>
 
+                            <x-mary-button>
+                                Inbox
+                                <x-mary-badge value="+99" class="badge-neutral badge-sm" />
+                            </x-mary-button>
 
-                    <div class="flex-none">
+                            <x-mary-button class="indicator">
+                                Inbox
+                                <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
+                            </x-mary-button>
 
-                        <a class="btn btn-ghost text-xl">
-                            {{ config("app.name")}}
-                        </a>
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                                <div class="indicator">
-                                    <x-mary-icon name="o-shopping-cart"/>
-                                    <span class="badge badge-sm indicator-item">8</span>
+                            <!-- theme switcher at home.blade.php -->
+                            <button onclick="toggleTheme()"
+                                class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <span class="dark:hidden">🌙</span>
+                                <span class="hidden dark:inline">☀️</span>
+                            </button>
+
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                                    <div class="indicator">
+                                        <x-mary-icon name="o-shopping-cart"/>
+                                        <span class="badge badge-sm indicator-item">8</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div
-                                tabindex="0"
-                                class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
-                                <div class="card-body">
-                                    <span class="text-lg font-bold">8 Items</span>
-                                    <span class="text-info">Subtotal: $999</span>
-                                    <div class="card-actions">
-                                        <button class="btn btn-primary btn-block">View cart</button>
+                                <div
+                                    tabindex="0"
+                                    class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+                                    <div class="card-body">
+                                        <span class="text-lg font-bold">8 Items</span>
+                                        <span class="text-info">Subtotal: $999</span>
+                                        <div class="card-actions">
+                                            <button class="btn btn-primary btn-block">View cart</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                                <div class="w-10 rounded-full">
-                                    <img
-                                        alt="Tailwind CSS Navbar component"
-                                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                    <div class="w-10 rounded-full">
+                                        <img
+                                            alt="Tailwind CSS Navbar component"
+                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                    </div>
                                 </div>
+                                <ul
+                                    tabindex="0"
+                                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                                    <li>
+                                        <a class="justify-between">
+                                            Profile
+                                            <span class="badge">New</span>
+                                        </a>
+                                    </li>
+                                    <li><a>Settings</a></li>
+                                    <li><a>Logout</a></li>
+                                </ul>
                             </div>
-                            <ul
-                                tabindex="0"
-                                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                                <li>
-                                    <a class="justify-between">
-                                        Profile
-                                        <span class="badge">New</span>
-                                    </a>
-                                </li>
-                                <li><a>Settings</a></li>
-                                <li><a>Logout</a></li>
-                            </ul>
                         </div>
                     </div>
+
                 </div>
+
 
 
 

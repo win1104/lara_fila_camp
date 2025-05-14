@@ -18,7 +18,7 @@ class MenuWidget extends BaseWidget
 
     protected static int $maxDepth = 2;
 
-    protected ?string $treeTitle = '樹狀模式';
+    protected ?string $treeTitle = '網站架構（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
 
@@ -58,12 +58,13 @@ class MenuWidget extends BaseWidget
                 ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-bars-4'),
             // LinkAction::make(),
-            ActionGroup::make([
-
-                ViewAction::make(),
-                EditAction::make(),
-            ]),
-            DeleteAction::make(),
+            // DeleteAction::make(),
+            // EditAction::make()->color('gray'),
+            // ActionGroup::make([
+            //     ViewAction::make(),
+            //     EditAction::make(),
+            //     DeleteAction::make(),
+            // ]),
         ];
     }
 

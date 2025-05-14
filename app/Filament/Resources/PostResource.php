@@ -19,8 +19,8 @@ class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
+    protected static ?string $navigationIcon = 'heroicon-o-x-mark';
+    protected static ?string $pluralLabel = 'Post'; // 這將用於標題和側邊欄
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
     protected static ?string $label = '文章'; // 這將用於單數形式
     protected static ?string $navigationGroup = 'Website';

@@ -17,7 +17,7 @@ class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-fire';
+    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
     protected static ?string $navigationLabel = '醫療規劃';
     // protected static ?string $navigationGroup = 'Website';
 

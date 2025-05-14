@@ -17,10 +17,10 @@ class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $pluralLabel = '選單管理'; // 這將用於標題和側邊欄
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
-    protected static ?string $label = '選單'; // 這將用於單數形式
+    protected static ?string $label = '文章'; // 這將用於單數形式
     protected static ?string $navigationGroup = 'Website';
 
     public static function form(Form $form): Form
@@ -71,6 +71,7 @@ class MenuResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('網站架構（表格模式）')
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),

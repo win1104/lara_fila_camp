@@ -34,18 +34,17 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-
-            SelectTree::make('category_id')
-                ->label('Category')
-                ->withCount()
-                ->searchable()
-                ->alwaysOpen()
-                // ->multiple() // 開啟多選
-                ->parentNullValue(-1)
-                ->placeholder('Select Category')
-                ->relationship('product_category', 'title', 'parent_id'),
-                // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
-                // ->relationship('category', 'name', 'parent_id'),
+                SelectTree::make('category_id')
+                    ->label('Category')
+                    ->withCount()
+                    ->searchable()
+                    ->alwaysOpen()
+                    // ->multiple() // 開啟多選
+                    ->parentNullValue(-1)
+                    ->placeholder('Select Category')
+                    ->relationship('product_category', 'title', 'parent_id'),
+                    // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
+                    // ->relationship('category', 'name', 'parent_id'),
             ]);
     }
 

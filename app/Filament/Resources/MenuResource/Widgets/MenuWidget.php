@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Filament\Widgets;
-// namespace App\Filament\Resources\ProductCategoryResources\Widgets;
+namespace App\Filament\Resources\MenuResource\Widgets;
 
-use App\Models\ProductCategory;
+use App\Models\Menu;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\TextInput;
-use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\ActionGroup;
 use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
-use SolutionForest\FilamentTree\Actions\LinkAction;
 use SolutionForest\FilamentTree\Actions\ViewAction;
 use SolutionForest\FilamentTree\Widgets\Tree as BaseWidget;
-use Filament\Tables\Actions\IconButton;
 
-class ProductCategoryWidget extends BaseWidget
+class MenuWidget extends BaseWidget
 {
-    protected static string $model = ProductCategory::class;
+    protected static string $model = Menu::class;
 
     protected static int $maxDepth = 2;
 
-    protected ?string $treeTitle = '產品類別';
+    protected ?string $treeTitle = '樹狀模式';
 
     protected bool $enableTreeTitle = true;
 
@@ -30,6 +26,7 @@ class ProductCategoryWidget extends BaseWidget
     {
         return [
             TextInput::make('title'),
+            TextInput::make('slug'),
         ];
     }
 
@@ -43,18 +40,16 @@ class ProductCategoryWidget extends BaseWidget
     // CUSTOMIZE ICON OF EACH RECORD, CAN DELETE
     // public function getTreeRecordIcon(?\Illuminate\Database\Eloquent\Model $record = null): ?string
     // {
-    //     // return null;
-    //     return 'heroicon-o-cake';
+    //     return null;
     // }
 
     // CUSTOMIZE ACTION OF EACH RECORD, CAN DELETE
     protected function getTreeActions(): array
     {
         return [
-            Action::make('編輯內容')
+            Action::make('編輯網頁內容')
                 // ->url(fn () => route('filament.admin.resources.articles.index'),false)
-                // ->url(fn () => route('filament.admin.resources.articles.edit', ['record' => 1]), false)
-                ->url(fn () => route('filament.admin.resources.patients.edit', ['record' => 2]), false)
+                ->url(fn (?Menu $record) => route('filament.admin.resources.menus.edit', ['record' => $record ? $record->id : null]), shouldOpenInNewTab: false)
 
                 // ->action(function () {
                 //     // $this->getRecordTitle();
@@ -63,13 +58,11 @@ class ProductCategoryWidget extends BaseWidget
                 ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-bars-4'),
             // LinkAction::make(),
-            ViewAction::make(),
-            EditAction::make(),
-            // ActionGroup::make([
+            ActionGroup::make([
 
-            //     ViewAction::make(),
-            //     EditAction::make(),
-            // ]),
+                ViewAction::make(),
+                EditAction::make(),
+            ]),
             DeleteAction::make(),
         ];
     }

@@ -75,30 +75,30 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationCountBadge()
                     // ->registerNavigation(true)
                     ->defaultListView('grid' || 'list'),
-                FilamentMenuBuilderPlugin::make()
-                    ->addLocation('header', 'Header')
-                    ->addLocation('footer', 'Footer')
-                    ->addMenuPanels([
-                        StaticMenuPanel::make()
-                            ->addMany([
-                                'Home' => url('/'),
-                                'Blog' => url('/blog'),
-                            ])
-                            ->description('Lorem ipsum...')
-                            ->icon('heroicon-m-link')
-                            ->collapsed(true)
-                            ->collapsible(true)
-                            ->paginate(perPage: 5, condition: true)
-                    ])
-                    // ->showCustomLinkPanel(false)
-                    ->showCustomTextPanel()
-                    ->addMenuFields([
-                        Toggle::make('is_logged_in'),
-                    ])
-                    ->addMenuItemFields([
-                        TextInput::make('Visibility'),
-                    ])
-                    ,
+                // FilamentMenuBuilderPlugin::make()
+                //     ->addLocation('header', 'Header')
+                //     ->addLocation('footer', 'Footer')
+                //     ->addMenuPanels([
+                //         StaticMenuPanel::make()
+                //             ->addMany([
+                //                 'Home' => url('/'),
+                //                 'Blog' => url('/blog'),
+                //             ])
+                //             ->description('Lorem ipsum...')
+                //             ->icon('heroicon-m-link')
+                //             ->collapsed(true)
+                //             ->collapsible(true)
+                //             ->paginate(perPage: 5, condition: true)
+                //     ])
+                //     // ->showCustomLinkPanel(false)
+                //     ->showCustomTextPanel()
+                //     ->addMenuFields([
+                //         Toggle::make('is_logged_in'),
+                //     ])
+                //     ->addMenuItemFields([
+                //         TextInput::make('Visibility'),
+                //     ])
+                //     ,
             ])
             ;
     }

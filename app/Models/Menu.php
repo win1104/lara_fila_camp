@@ -2,32 +2,43 @@
 
 namespace App\Models;
 
-use App\Models\Product;
+use App\Models\Post;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use SolutionForest\FilamentTree\Concern\ModelTree;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ProductCategory extends Model
+class Menu extends Model
 {
     use ModelTree;
 
     protected $fillable = [
+        'locale',
+        'slug',
+        'type',
         'title',
         'parent_id',
         'order',
+        'display',
+        'note',
+        'fixuser',
     ];
 
-    protected $casts = [
-        'parent_id' => 'int'
-    ];
+    // protected $casts = [
+    //     'parent_id' => 'int'
+    // ];
 
-    protected $table = 'product_categories';
+    protected $table = 'menus';
 
-    public function products():HasMany
+    // public function Menus():HasMany
+    // {
+    //     return $this->hasMany(Menu::class);
+    // }
+
+    public function posts(): HasMany
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Post::class);
     }
 
 
@@ -37,7 +48,7 @@ class ProductCategory extends Model
         parent::boot();
 
         // 指定排序
-        static::addGlobalScope('sort', function (Builder $builder) {
+        static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('order', 'asc');
         });
 
@@ -55,6 +66,6 @@ class ProductCategory extends Model
     protected static function logChange($action, $model)
     {
         // 寫入日誌，可以根據需要調整日誌格式
-        Log::info("ProductCategory : A record has been {$action}: ", $model->toArray());
+        Log::info("Menu : A record has been {$action}: ", $model->toArray());
     }
 }

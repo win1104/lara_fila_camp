@@ -34,10 +34,10 @@ class MenuResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('parent_id')
-                            ->required()
-                            ->numeric()
-                            ->default(-1),
+                        // Forms\Components\TextInput::make('parent_id')
+                        //     ->required()
+                        //     ->numeric()
+                        //     ->default(-1),
                         Forms\Components\TextInput::make('slug')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('parent_slug')
@@ -79,9 +79,9 @@ class MenuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('parent_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')

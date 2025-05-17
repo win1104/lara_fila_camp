@@ -50,7 +50,8 @@ class PostsRelationManager extends RelationManager
                     ->label('Published'),
                 Forms\Components\DatePicker::make('date')
                     ->label('Published At'),
-                Forms\Components\Textarea::make('notes')
+                Forms\Components\Textarea::make('intro')
+                    ->label('Intro')
                     ->columnSpan('full')
                     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
                     ->maxLength(65535),
@@ -74,8 +75,8 @@ class PostsRelationManager extends RelationManager
                     ->label('Published')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sort')
-                    ->label('Sort')
+                Tables\Columns\TextColumn::make('order')
+                    ->label('Order')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')
@@ -86,8 +87,8 @@ class PostsRelationManager extends RelationManager
                     ->date()
                     ->sortable(),
             ])
-            ->reorderable('sort') // 啟用拖拉排序功能
-            ->defaultSort('sort') // 預設按 sort_order 排序
+            ->reorderable('order') // 啟用拖拉排序功能
+            ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

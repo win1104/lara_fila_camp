@@ -61,6 +61,11 @@ class PostResource extends Resource
                     ->label('Published'),
                 Forms\Components\DatePicker::make('date')
                     ->label('Published At'),
+                Forms\Components\Textarea::make('intro')
+                    ->label('Intro')
+                    ->columnSpan('full')
+                    ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                    ->maxLength(65535),
             ]);
     }
 

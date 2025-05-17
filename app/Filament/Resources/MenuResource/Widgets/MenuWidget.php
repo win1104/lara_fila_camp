@@ -51,16 +51,31 @@ class MenuWidget extends BaseWidget
     {
         return [
             Action::make('編輯網頁內容')
-                ->url(fn (?Menu $record) => route('filament.admin.resources.menus.edit', ['record' => $record ? $record->slug : null]), shouldOpenInNewTab: false)
+
+                            // ->url(fn () => route('filament.admin.resources.articles.index'),false)
+                ->url(fn (?Menu $record) => route('filament.admin.resources.menus.edit', ['record' => $record ? $record->id : null]), shouldOpenInNewTab: false)
+                // ->action(function () {
+                //     // $this->getRecordTitle();
+                //     Notification::make()->success()->title('Hello World')->send();
+                // })
                 ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-bars-4'),
+            // LinkAction::make(),
+            // DeleteAction::make(),
+            // EditAction::make()->color('gray'),
+            // ActionGroup::make([
+            //     ViewAction::make(),
+            //     EditAction::make(),
+            //     DeleteAction::make(),
+            // ]),
+
         ];
     }
 
-    protected function getTreeActions(): array
-    {
-        return $this->getActions();
-    }
+    // protected function getTreeActions(): array
+    // {
+    //     return $this->getActions();
+    // }
 
     public function getTreeRecordTitle(?\Illuminate\Database\Eloquent\Model $record = null): string
     {
@@ -70,20 +85,20 @@ class MenuWidget extends BaseWidget
         return "[{$record->slug}] {$record->title}";
     }
 
-    protected function getParentField(): string
-    {
-        return 'parent_slug';
-    }
+    // protected function getParentField(): string
+    // {
+    //     return 'parent_slug';
+    // }
 
-    protected function getOrderField(): string
-    {
-        return 'order';
-    }
+    // protected function getChildrenRelationship(): string
+    // {
+    //     return 'children';
+    // }
 
-    protected function getChildrenRelationship(): string
-    {
-        return 'children';
-    }
+    // protected function getOrderField(): string
+    // {
+    //     return 'order';
+    // }
 
     public function getParentKey(?Model $record = null): ?string
     {
@@ -105,7 +120,7 @@ class MenuWidget extends BaseWidget
     {
         return static::getModel()::query()
             ->where('locale', app()->getLocale())
-            ->orderBy($this->getOrderField());
+            ->orderBy('order');
     }
 
     public function updateTree(?array $list = null): array
@@ -179,48 +194,49 @@ class MenuWidget extends BaseWidget
         ]);
     }
 
-    protected function getRecordId($record): string
-    {
-        return $record->slug;
-    }
+    // protected function getRecordId($record): string
+    // {
+    //     return $record->slug;
+    // }
 
-    protected function getRecordParentId($record): string
-    {
-        return $record->parent_slug;
-    }
+    // protected function getRecordParentId($record): string
+    // {
+    //     return $record->parent_slug;
+    // }
 
-    protected function handleRecordUpdate(Model $record, array $data): Model
-    {
-        Log::info('Record Update:', [
-            'record' => $record->toArray(),
-            'data' => $data
-        ]);
+    // protected function handleRecordUpdate(Model $record, array $data): Model
+    // {
+    //     Log::info('Record Update:', [
+    //         'record' => $record->toArray(),
+    //         'data' => $data
+    //     ]);
 
-        if (isset($data['parent_id'])) {
-            $data['parent_slug'] = $data['parent_id'] === -1
-                ? Menu::defaultParentKey()
-                : $data['parent_id'];
-            unset($data['parent_id']);
-        }
+    //     if (isset($data['parent_id'])) {
+    //         $data['parent_slug'] = $data['parent_id'] === -1
+    //             ? Menu::defaultParentKey()
+    //             : $data['parent_id'];
+    //         unset($data['parent_id']);
+    //     }
 
-        $record->forceFill($data)->save();
-        return $record;
-    }
+    //     $record->forceFill($data)->save();
+    //     return $record;
+    // }
 
-    protected function handleRecordCreation(array $data): Model
-    {
-        Log::info('Record Creation:', ['data' => $data]);
+    // protected function handleRecordCreation(array $data): Model
+    // {
+    //     Log::info('Record Creation:', ['data' => $data]);
 
-        if (isset($data['parent_id'])) {
-            $data['parent_slug'] = $data['parent_id'] === -1
-                ? Menu::defaultParentKey()
-                : $data['parent_id'];
-            unset($data['parent_id']);
-        }
+    //     if (isset($data['parent_id'])) {
+    //         $data['parent_slug'] = $data['parent_id'] === -1
+    //             ? Menu::defaultParentKey()
+    //             : $data['parent_id'];
+    //         unset($data['parent_id']);
+    //     }
 
-        return static::getModel()::create($data);
-    }
+    //     return static::getModel()::create($data);
+    // }
 
+    //排序儲存後重新抓資料
     protected function getTreeData(): array
     {
         $items = $this->getRootLayerRecords();
@@ -242,140 +258,140 @@ class MenuWidget extends BaseWidget
         return $result;
     }
 
-    public function onSortOrderChanged($data): void
-    {
-        Log::info('Sort Order Changed:', ['data' => $data]);
+    // public function onSortOrderChanged($data): void
+    // {
+    //     Log::info('Order Changed:', ['data' => $data]);
 
-        try {
-            DB::beginTransaction();
+    //     try {
+    //         DB::beginTransaction();
 
-            $record = static::getModel()::where('slug', $data['id'])->first();
+    //         $record = static::getModel()::where('slug', $data['id'])->first();
 
-            if ($record) {
-                // 更新當前記錄的順序
-                $record->forceFill([
-                    'order' => $data['order'],
-                    'updated_at' => now(),
-                ])->save();
+    //         if ($record) {
+    //             // 更新當前記錄的順序
+    //             $record->forceFill([
+    //                 'order' => $data['order'],
+    //                 'updated_at' => now(),
+    //             ])->save();
 
-                // 更新同層級的其他記錄順序
-                $siblings = static::getModel()::query()
-                    ->where('parent_slug', $record->parent_slug)
-                    ->where('slug', '!=', $record->slug)
-                    ->orderBy('order')
-                    ->get();
+    //             // 更新同層級的其他記錄順序
+    //             $siblings = static::getModel()::query()
+    //                 ->where('parent_slug', $record->parent_slug)
+    //                 ->where('slug', '!=', $record->slug)
+    //                 ->orderBy('order')
+    //                 ->get();
 
-                $order = 1;
-                foreach ($siblings as $sibling) {
-                    if ($order == $data['order']) {
-                        $order++;
-                    }
-                    if ($sibling->order != $order) {
-                        $sibling->forceFill([
-                            'order' => $order,
-                            'updated_at' => now(),
-                        ])->save();
-                    }
-                    $order++;
-                }
+    //             $order = 1;
+    //             foreach ($siblings as $sibling) {
+    //                 if ($order == $data['order']) {
+    //                     $order++;
+    //                 }
+    //                 if ($sibling->order != $order) {
+    //                     $sibling->forceFill([
+    //                         'order' => $order,
+    //                         'updated_at' => now(),
+    //                     ])->save();
+    //                 }
+    //                 $order++;
+    //             }
 
-                Log::info('Updated orders:', [
-                    'current' => [
-                        'slug' => $record->slug,
-                        'order' => $record->order
-                    ],
-                    'siblings' => $siblings->pluck('order', 'slug')
-                ]);
-            }
+    //             Log::info('Updated orders:', [
+    //                 'current' => [
+    //                     'slug' => $record->slug,
+    //                     'order' => $record->order
+    //                 ],
+    //                 'siblings' => $siblings->pluck('order', 'slug')
+    //             ]);
+    //         }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Sort Order Update Failed:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            throw $e;
-        }
-    }
+    //         DB::commit();
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Order Update Failed:', [
+    //             'error' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString()
+    //         ]);
+    //         throw $e;
+    //     }
+    // }
 
-    public function onMoved($data): void
-    {
-        Log::info('Node Moved:', ['data' => $data]);
+    // public function onMoved($data): void
+    // {
+    //     Log::info('Node Moved:', ['data' => $data]);
 
-        try {
-            DB::beginTransaction();
+    //     try {
+    //         DB::beginTransaction();
 
-            $record = static::getModel()::where('slug', $data['id'])->first();
+    //         $record = static::getModel()::where('slug', $data['id'])->first();
 
-            if ($record) {
-                $parentSlug = ($data['parent'] ?? -1) === -1
-                    ? Menu::defaultParentKey()
-                    : $data['parent'];
+    //         if ($record) {
+    //             $parentSlug = ($data['parent'] ?? -1) === -1
+    //                 ? Menu::defaultParentKey()
+    //                 : $data['parent'];
 
-                // 更新當前記錄
-                $record->forceFill([
-                    'parent_slug' => $parentSlug,
-                    'order' => $data['order'] ?? 1,
-                    'updated_at' => now(),
-                ])->save();
+    //             // 更新當前記錄
+    //             $record->forceFill([
+    //                 'parent_slug' => $parentSlug,
+    //                 'order' => $data['order'] ?? 1,
+    //                 'updated_at' => now(),
+    //             ])->save();
 
-                // 更新舊位置的同層級記錄順序
-                $oldSiblings = static::getModel()::query()
-                    ->where('parent_slug', $record->getOriginal('parent_slug'))
-                    ->where('slug', '!=', $record->slug)
-                    ->orderBy('order')
-                    ->get();
+    //             // 更新舊位置的同層級記錄順序
+    //             $oldSiblings = static::getModel()::query()
+    //                 ->where('parent_slug', $record->getOriginal('parent_slug'))
+    //                 ->where('slug', '!=', $record->slug)
+    //                 ->orderBy('order')
+    //                 ->get();
 
-                $order = 1;
-                foreach ($oldSiblings as $sibling) {
-                    $sibling->forceFill([
-                        'order' => $order,
-                        'updated_at' => now(),
-                    ])->save();
-                    $order++;
-                }
+    //             $order = 1;
+    //             foreach ($oldSiblings as $sibling) {
+    //                 $sibling->forceFill([
+    //                     'order' => $order,
+    //                     'updated_at' => now(),
+    //                 ])->save();
+    //                 $order++;
+    //             }
 
-                // 更新新位置的同層級記錄順序
-                if ($record->getOriginal('parent_slug') !== $parentSlug) {
-                    $newSiblings = static::getModel()::query()
-                        ->where('parent_slug', $parentSlug)
-                        ->where('slug', '!=', $record->slug)
-                        ->orderBy('order')
-                        ->get();
+    //             // 更新新位置的同層級記錄順序
+    //             if ($record->getOriginal('parent_slug') !== $parentSlug) {
+    //                 $newSiblings = static::getModel()::query()
+    //                     ->where('parent_slug', $parentSlug)
+    //                     ->where('slug', '!=', $record->slug)
+    //                     ->orderBy('order')
+    //                     ->get();
 
-                    $order = 1;
-                    foreach ($newSiblings as $sibling) {
-                        if ($order == $record->order) {
-                            $order++;
-                        }
-                        $sibling->forceFill([
-                            'order' => $order,
-                            'updated_at' => now(),
-                        ])->save();
-                        $order++;
-                    }
-                }
+    //                 $order = 1;
+    //                 foreach ($newSiblings as $sibling) {
+    //                     if ($order == $record->order) {
+    //                         $order++;
+    //                     }
+    //                     $sibling->forceFill([
+    //                         'order' => $order,
+    //                         'updated_at' => now(),
+    //                     ])->save();
+    //                     $order++;
+    //                 }
+    //             }
 
-                Log::info('Updated position:', [
-                    'record' => [
-                        'slug' => $record->slug,
-                        'parent_slug' => $record->parent_slug,
-                        'order' => $record->order
-                    ],
-                    'old_siblings' => $oldSiblings->pluck('order', 'slug'),
-                    'new_siblings' => isset($newSiblings) ? $newSiblings->pluck('order', 'slug') : null
-                ]);
-            }
+    //             Log::info('Updated position:', [
+    //                 'record' => [
+    //                     'slug' => $record->slug,
+    //                     'parent_slug' => $record->parent_slug,
+    //                     'order' => $record->order
+    //                 ],
+    //                 'old_siblings' => $oldSiblings->pluck('order', 'slug'),
+    //                 'new_siblings' => isset($newSiblings) ? $newSiblings->pluck('order', 'slug') : null
+    //             ]);
+    //         }
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Move Failed:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            throw $e;
-        }
-    }
+    //         DB::commit();
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Move Failed:', [
+    //             'error' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString()
+    //         ]);
+    //         throw $e;
+    //     }
+    // }
 }

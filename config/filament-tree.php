@@ -6,13 +6,17 @@ return [
      */
     'column_name' => [
         'order' => 'order',
-        'parent' => 'parent_id',
+        'parent' => 'parent_slug',
+        'id' => 'slug',
+        'slug' => 'slug',
+        'parent_slug' => 'parent_slug',
+        'type' => 'type',
         'title' => 'title',
     ],
     /**
      * Tree model default parent key
      */
-    'default_parent_id' => -1,
+    'default_parent_id' => 'home',
     /**
      * Tree model default children key name
      */

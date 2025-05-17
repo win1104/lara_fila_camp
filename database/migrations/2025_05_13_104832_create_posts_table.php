@@ -13,23 +13,27 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('menu_id')->constrained('menus')->cascadeOnDelete();
-            $table->string('menu_slug', 255)->default('about');
-            // $table->foreign('menu_slug')->references('menu_slug')->on('menus')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('slug', 255)->default('about');
-            $table->string('title', 255);
-            $table->string('tag', 255)->nullable();
-            $table->integer('sort')->default('1');
+            $table->string('locale')->default('tw');
+            $table->string('menu_slug')->default('home');
+            $table->foreign(['locale', 'menu_slug'])
+                ->references(['locale', 'slug'])
+                ->on('menus')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('slug')->default('home');
+            $table->string('title');
+            $table->string('tag')->nullable();
+            $table->integer('order')->default('1');
             $table->boolean('display')->default('0');
-            $table->string('date', 255)->nullable();
-            $table->string('url', 255)->nullable();
+            $table->string('date')->nullable();
+            $table->string('url')->nullable();
             $table->boolean('url_target')->nullable();
-            $table->string('image', 255)->nullable();
+            $table->string('image')->nullable();
             $table->longText('info')->nullable();
             $table->longText('intro')->nullable();
             $table->longText('content')->nullable();
             $table->boolean('check')->default('0')->nullable();
-            $table->string('fixuser', 255)->nullable();
+            $table->string('fixuser')->nullable();
             $table->timestamps();
         });
     }

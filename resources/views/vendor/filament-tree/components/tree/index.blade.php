@@ -12,7 +12,8 @@
     x-data="treeNestableComponent({
         containerKey: {{ $containerKey }},
         maxDepth: {{ $maxDepth }}
-    })">
+    })"
+>
     <x-filament::section :heading="($this->displayTreeTitle() ?? false) ? $this->getTreeTitle() : null">
         <menu class="flex gap-2 mb-4" id="nestable-menu">
             <div class="btn-group">
@@ -29,12 +30,16 @@
                     <span wire:loading.remove wire:target="updateTree">
                         {{ __('filament-tree::filament-tree.button.save') }}
                     </span>
-
                 </x-filament::button>
             </div>
         </menu>
-        <div class="filament-tree dd" id="{{ $containerKey }}">
-            <x-filament-tree::tree.list :records="$records" :containerKey="$containerKey" :tree="$tree"/>
+
+        <div class="dd filament-tree" id="{{ $containerKey }}" wire:ignore>
+            <x-filament-tree::tree.list
+                :records="$records"
+                :containerKey="$containerKey"
+                :tree="$this"
+            />
         </div>
     </x-filament::section>
 </div>
@@ -91,3 +96,26 @@
         @endif
     </x-filament::modal>
 </form>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('{{ $containerKey }}');
+    if (container) {
+        const nestable = new Nestable(container, {
+            maxDepth: {{ static::$maxDepth ?? 2 }},
+            group: 1,
+            animation: 150,
+            fallbackOnBody: true,
+            swapThreshold: 0.65,
+            dragClass: "dd-dragel",
+            handleClass: "dd-handle",
+            callback: function(l, e) {
+                const data = nestable.serialize();
+                @this.updateTree(data);
+            }
+        });
+    }
+});
+</script>
+@endpush

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('locale')->default('tw');
-            $table->string('slug')->default('about');
+            $table->string('slug')->default('home');
+            $table->string('parent_slug')->default('home');
             $table->string('type')->default('post');
             $table->treeColumns();
             // $table->string('title', 2048);
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->string('fixuser', 255)->nullable();
             $table->timestamps();
+
+            $table->unique(['locale', 'slug']);
         });
     }
 

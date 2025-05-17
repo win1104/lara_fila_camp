@@ -75,8 +75,8 @@ class PostResource extends Resource
                     ->label('Published')
                     ->boolean()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sort')
-                    ->label('Sort')
+                Tables\Columns\TextColumn::make('order')
+                    ->label('Order')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
@@ -91,8 +91,8 @@ class PostResource extends Resource
                     ->date()
                     ->sortable(),
             ])
-            ->reorderable('sort') // 啟用拖拉排序功能
-            ->defaultSort('sort') // 預設按 sort_order 排序
+            ->reorderable('order') // 啟用拖拉排序功能
+            ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

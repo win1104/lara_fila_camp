@@ -18,7 +18,7 @@ class Post extends Model
         'slug',
         'title',
         'tag',
-        'sort',
+        'order',
         'display',
         'date',
         'url',
@@ -45,6 +45,12 @@ class Post extends Model
     protected static function boot()
     {
         parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->locale)) {
+                $model->locale = config('app.locale');
+            }
+        });
 
         static::created(function ($model) {
             // 呼叫自訂日誌方法

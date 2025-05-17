@@ -51,13 +51,10 @@ class MenuWidget extends BaseWidget
     {
         return [
             Action::make('編輯網頁內容')
-
-                            // ->url(fn () => route('filament.admin.resources.articles.index'),false)
-                ->url(fn (?Menu $record) => route('filament.admin.resources.menus.edit', ['record' => $record ? $record->id : null]), shouldOpenInNewTab: false)
-                // ->action(function () {
-                //     // $this->getRecordTitle();
-                //     Notification::make()->success()->title('Hello World')->send();
-                // })
+                ->url(fn (?Menu $record) => $record
+                    ? route('filament.admin.resources.menus.edit', ['record' => $record->slug])
+                    : null,
+                    shouldOpenInNewTab: false)
                 ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-bars-4'),
             // LinkAction::make(),

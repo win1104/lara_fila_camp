@@ -34,10 +34,8 @@ class MenuResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->maxLength(255),
-                        // Forms\Components\TextInput::make('parent_id')
-                        //     ->required()
-                        //     ->numeric()
-                        //     ->default(-1),
+                        Forms\Components\TextInput::make('locale')
+                            ->required(),
                         Forms\Components\TextInput::make('slug')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('parent_slug')
@@ -79,9 +77,7 @@ class MenuResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('parent_id')
-                //     ->numeric()
-                //     ->sortable(),
+                Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
@@ -100,12 +96,10 @@ class MenuResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-                // php artisan make:filament-relation-manager MenuResource posts title
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->url(fn (Menu $record): string => route('filament.admin.resources.menus.edit', ['record' => $record->slug])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -128,5 +122,20 @@ class MenuResource extends Resource
             'create' => Pages\CreateMenu::route('/create'),
             'edit' => Pages\EditMenu::route('/{record}/edit'),
         ];
+    }
+
+    public static function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public static function getRecordRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

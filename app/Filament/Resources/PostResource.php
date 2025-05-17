@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
+use App\Models\Menu;
 
 class PostResource extends Resource
 {
@@ -30,6 +31,15 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('locale')
+                    ->required()
+                    ->default(fn () => app()->getLocale()),
+                Forms\Components\Select::make('menu_slug')
+                    ->label('Menu')
+                    ->options(fn () => Menu::where('locale', app()->getLocale())
+                        ->pluck('title', 'slug'))
+                    ->required()
+                    ->searchable(),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required(),
@@ -76,6 +86,8 @@ class PostResource extends Resource
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')
                 //     ->size('40'),
+
+                Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\IconColumn::make('display')
                     ->label('Published')
                     ->boolean()

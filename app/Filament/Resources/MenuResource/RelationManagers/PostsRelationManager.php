@@ -14,10 +14,30 @@ class PostsRelationManager extends RelationManager
 {
     protected static string $relationship = 'posts';
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $menu = $this->getOwnerRecord();
+        $data['menu_slug'] = $menu->slug;
+        $data['locale'] = $menu->locale;
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $menu = $this->getOwnerRecord();
+        $data['menu_slug'] = $menu->slug;
+        $data['locale'] = $menu->locale;
+        return $data;
+    }
+
     public function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('locale')
+                    ->default(fn () => $this->getOwnerRecord()->locale)
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required()
@@ -67,6 +87,8 @@ class PostsRelationManager extends RelationManager
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')
                 //     ->size('40'),
+
+                Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->searchable()

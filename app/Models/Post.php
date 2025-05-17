@@ -38,8 +38,8 @@ class Post extends Model
 
     public function menu():BelongsTo
     {
-        return $this->belongsTo(Menu::class);
-        // return $this->belongsTo(Menu::class, 'menus');
+        return $this->belongsTo(Menu::class, 'menu_slug', 'slug')
+            ->where('locale', $this->locale);
     }
 
     protected static function boot()

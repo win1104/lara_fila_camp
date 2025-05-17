@@ -24,9 +24,18 @@ class Menu extends Model
 
     protected $table = 'menus';
 
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class, 'menu_slug', 'slug');
+        return $this->hasMany(Post::class, 'menu_slug', 'slug')
+            ->where('locale', $this->locale);
     }
 
     public static function defaultParentKey()

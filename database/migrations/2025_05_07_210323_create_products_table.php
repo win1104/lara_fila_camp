@@ -13,7 +13,27 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('locale')->default('tw');
+            // $table->string('category_slug')->default('home');
+            // $table->foreign(['locale', 'category_slug'])
+            //     ->references(['locale', 'slug'])
+            //     ->on('product_categories')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
+            $table->string('slug')->default('product');
+            $table->string('title');
+            $table->string('tag')->nullable();
+            $table->integer('order')->default('1');
+            $table->boolean('display')->default('0');
+            $table->string('date')->nullable();
+            $table->string('url')->nullable();
+            $table->boolean('url_target')->nullable();
+            $table->string('image')->nullable();
+            $table->longText('info')->nullable();
+            $table->longText('intro')->nullable();
+            $table->longText('content')->nullable();
+            $table->boolean('check')->default('0')->nullable();
+            $table->string('fixuser')->nullable();
             $table->timestamps();
         });
     }

@@ -13,8 +13,20 @@ return new class extends Migration
     {
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('locale')->default('tw');
+            $table->string('slug')->default('category');
+            $table->string('parent_slug')->default('category');
+            $table->string('type')->default('post');
             $table->treeColumns();
+            // $table->string('title', 2048);
+            // $table->string('parent_id', 255)->nullable();
+            // $table->integer('order')->default('1');
+            $table->boolean('display')->default('0');
+            $table->text('note')->nullable();
+            $table->string('fixuser')->nullable();
             $table->timestamps();
+
+            $table->unique(['locale', 'slug']);
         });
     }
 

@@ -23,7 +23,7 @@ return new class extends Migration
             // $table->integer('order')->default('1');
             $table->boolean('display')->default('0');
             $table->text('note')->nullable();
-            $table->string('fixuser', 255)->nullable();
+            $table->string('fixuser')->nullable();
             $table->timestamps();
 
             $table->unique(['locale', 'slug']);

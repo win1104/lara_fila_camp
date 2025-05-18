@@ -31,9 +31,9 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('locale')
                     ->required()
-                    ->maxLength(255),
+                    ->default(fn () => app()->getLocale()),
                 SelectTree::make('category_id')
                     ->label('Category')
                     ->withCount()
@@ -42,9 +42,27 @@ class ProductResource extends Resource
                     // ->multiple() // 開啟多選
                     ->parentNullValue(-1)
                     ->placeholder('Select Category')
-                    ->relationship('product_category', 'title', 'parent_id'),
                     // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
                     // ->relationship('category', 'name', 'parent_id'),
+                    ->relationship('product_category', 'title', 'parent_id'),
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required(),
+                Forms\Components\RichEditor::make('content')
+                    ->label('Content')
+                    ->required(),
+                Forms\Components\Toggle::make('display')
+                    ->label('Published'),
+                Forms\Components\DatePicker::make('date')
+                    ->label('Published At'),
+                Forms\Components\Textarea::make('intro')
+                    ->label('Intro')
+                    ->columnSpan('full')
+                    ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                    ->maxLength(65535),
             ]);
     }
 
@@ -52,13 +70,31 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\IconColumn::make('display')
+                    ->label('Published')
+                    ->boolean()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('order')
+                    ->label('Order')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->label('Published At')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('category_id')
                     ->searchable(),
             ])
-            ->reorderable('name') // 啟用拖拉排序功能
-            ->defaultSort('name') // 預設按 sort_order 排序
+            ->reorderable('order') // 啟用拖拉排序功能
+            ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
                 //
             ])

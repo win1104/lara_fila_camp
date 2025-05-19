@@ -14,42 +14,22 @@ class ProductCategory extends Model
     use ModelTree;
 
     protected $fillable = [
-        'locale',
-        'slug',
-        'parent_slug',
-        'type',
         'title',
+        'parent_id',
         'order',
-        'display',
-        'note',
-        'fixuser',
     ];
 
-    // protected $casts = [
-    //     'parent_id' => 'int'
-    // ];
+    protected $casts = [
+        'parent_id' => 'int'
+    ];
 
     protected $table = 'product_categories';
 
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     public function products():HasMany
     {
-        return $this->hasMany(Product::class)
-            ->where('locale', $this->locale);
-        // return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class);
     }
 
-    public static function defaultParentKey()
-    {
-        return 'home';
-    }
 
 
     protected static function boot()
@@ -57,7 +37,7 @@ class ProductCategory extends Model
         parent::boot();
 
         // 指定排序
-        static::addGlobalScope('order', function (Builder $builder) {
+        static::addGlobalScope('sort', function (Builder $builder) {
             $builder->orderBy('order', 'asc');
         });
 

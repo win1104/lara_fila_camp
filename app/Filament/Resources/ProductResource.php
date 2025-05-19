@@ -34,17 +34,19 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('locale')
                     ->required()
                     ->default(fn () => app()->getLocale()),
-                SelectTree::make('category_id')
-                    ->label('Category')
+                SelectTree::make('product_categories')
+                    ->label('產品分類')
                     ->withCount()
                     ->searchable()
                     ->alwaysOpen()
                     // ->multiple() // 開啟多選
-                    ->parentNullValue(-1)
+                    ->parentNullValue('home')
                     ->placeholder('Select Category')
+                    // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_slug', modifyChildQueryUsing: fn($query) => $query),
                     // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
                     // ->relationship('category', 'name', 'parent_id'),
-                    ->relationship('product_category', 'title', 'parent_id'),
+                    ->relationship('product_category', 'title', 'parent_slug'),
+                    // ->relationship('product_category', 'title', 'parent_id'),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required(),
@@ -58,11 +60,11 @@ class ProductResource extends Resource
                     ->label('Published'),
                 Forms\Components\DatePicker::make('date')
                     ->label('Published At'),
-                Forms\Components\Textarea::make('intro')
-                    ->label('Intro')
-                    ->columnSpan('full')
-                    ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    ->maxLength(65535),
+                // Forms\Components\Textarea::make('intro')
+                //     ->label('Intro')
+                //     ->columnSpan('full')
+                //     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                //     ->maxLength(65535),
             ]);
     }
 

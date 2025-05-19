@@ -6,12 +6,12 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use SolutionForest\FilamentTree\Concern\ModelTree;
+// use SolutionForest\FilamentTree\Concern\ModelTree;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductCategory extends Model
 {
-    use ModelTree;
+    // use ModelTree;
 
     protected $fillable = [
         'locale',
@@ -51,6 +51,26 @@ class ProductCategory extends Model
         return 'home';
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(static::class, 'parent_slug', 'slug');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(static::class, 'parent_slug', 'slug')
+            ->orderBy('order');
+    }
+
+    public function allChildren()
+    {
+        return $this->children()->with('children');
+    }
+
+    public function isRoot(): bool
+    {
+        return $this->parent_slug === static::defaultParentKey();
+    }
 
     protected static function boot()
     {

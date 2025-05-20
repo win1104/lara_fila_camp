@@ -39,9 +39,10 @@ class ProductResource extends Resource
                     ->withCount()
                     ->searchable()
                     ->alwaysOpen()
-                    // ->multiple() // 開啟多選
+                    ->multiple() // 開啟多選
                     ->parentNullValue('home')
                     ->placeholder('Select Category')
+                    ->withKey('slug')
                     // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_slug', modifyChildQueryUsing: fn($query) => $query),
                     // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
                     // ->relationship('category', 'name', 'parent_id'),

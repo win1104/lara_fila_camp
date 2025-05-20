@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('product_slug');
             $table->string('product_category_slug');
-            $table->string('locale')->default('zh-TW');
+            $table->string('locale')->default('tw');
             $table->timestamps();
 
             // 建立複合索引

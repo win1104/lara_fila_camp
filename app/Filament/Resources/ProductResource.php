@@ -36,17 +36,22 @@ class ProductResource extends Resource
                     ->default(fn () => app()->getLocale()),
                 SelectTree::make('product_categories')
                     ->label('產品分類')
-                    ->withCount()
-                    ->searchable()
-                    ->alwaysOpen()
-                    // ->multiple() // 開啟多選
-                    ->parentNullValue('home')
                     ->placeholder('Select Category')
-                    // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_slug', modifyChildQueryUsing: fn($query) => $query),
-                    // ->relationship(relationship: 'product_category', titleAttribute: 'title', parentAttribute: 'parent_id', modifyChildQueryUsing: fn($query) => $query));
-                    // ->relationship('category', 'name', 'parent_id'),
-                    ->relationship('product_category', 'title', 'parent_slug'),
-                    // ->relationship('product_category', 'title', 'parent_id'),
+                    ->parentNullValue('home')
+                    ->withKey('slug')
+                    ->relationship('product_category', 'title', 'parent_slug')
+                    ->withCount()
+                    ->expandSelected(true)
+                    // ->alwaysOpen()
+                    ->multiple(true)
+                    ->searchable()
+                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                        $record->product_category()->sync(
+                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                return [$slug => ['product_slug' => $record->slug]];
+                            })
+                        );
+                    }),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required(),

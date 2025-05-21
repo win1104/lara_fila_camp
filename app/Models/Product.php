@@ -40,9 +40,8 @@ class Product extends Model
 
     public function product_category():BelongsToMany
     {
-        return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_id', 'product_category_id')
+        return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_slug', 'product_category_slug', 'slug', 'slug')
             ->withTimestamps();
-            // ->withPivot(['created_at', 'update_at']);
     }
 
     protected static function boot()

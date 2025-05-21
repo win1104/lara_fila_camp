@@ -11,11 +11,14 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Profile\AvatarController;
+use App\Livewire\DocBot;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 Route::get("/", Home::class)->name('home');
 Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+
+Route::get('/mobile',DocBot::class)->name('mobile');
 
 
 // Route::view('/home', 'home');

@@ -39,14 +39,24 @@
                     <div class="navbar-end">
                         <div class="">
 
-                            <a class="btn btn-ghost text-xl">
+                            {{-- <a class="btn btn-ghost text-xl">
                                 {{ config("app.name")}}
-                            </a>
+                            </a> --}}
 
-                            <x-mary-button>
-                                Inbox
-                                <x-mary-badge value="+99" class="badge-neutral badge-sm" />
-                            </x-mary-button>
+                            <!-- daisyui modal -->
+                            <button class="btn btn-ghost text-xl" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+                            <dialog id="my_modal_1" class="modal">
+                                <div class="modal-box">
+                                    <h3 class="text-lg font-bold">Hello!</h3>
+                                    <p class="py-4">Press ESC key or click the button below to close</p>
+                                    <div class="modal-action">
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+                                        <button class="btn">Close</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </dialog>
 
                             <x-mary-button class="indicator">
                                 Inbox
@@ -59,6 +69,7 @@
                                 <span class="dark:hidden">🌙</span>
                                 <span class="hidden dark:inline">☀️</span>
                             </button>
+
 
                             <div class="dropdown dropdown-end">
                                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -80,6 +91,8 @@
                                 </div>
                             </div>
 
+                            <!-- user dropdown -->
+                            <x-mary-button icon="o-user" class="btn-circle" link="{{ route('login') }}"/>
                             <div class="dropdown dropdown-end">
                                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                                     <div class="w-10 rounded-full">

@@ -32,9 +32,9 @@
                             <x-nav-link :href="route('gpt.index')" :active="request()->routeIs('gpt.index')">
                                 {{ __('Chat GTP') }}
                             </x-nav-link>
-                            <x-nav-link :href="route('mobile')" :active="request()->routeIs('mobile')">
+                            {{-- <x-nav-link :href="route('mobile')" :active="request()->routeIs('mobile')">
                                 {{ __('Mobile') }}
-                            </x-nav-link>
+                            </x-nav-link> --}}
                         </div>
                     </div>
 

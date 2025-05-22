@@ -13,6 +13,8 @@ class DocBot extends Component
     // public  $chats = [];
     public ?string $answer = null;
     public ?string $erro = null;
+    public bool $open = false;
+
 // #[Layout('layouts.assistant')]
     public function ask()
     {
@@ -62,6 +64,11 @@ class DocBot extends Component
         ]);
     }
 
+    public function toggle()
+    {
+        $this->open = !$this->open;
+    }
+
     public function render()
     {
         // $chats = Chat_assistant::latest()->get();
@@ -69,7 +76,7 @@ class DocBot extends Component
         //     'chats' => $this->chats,
         // ]);
         return view('assistant.index', [
-            'chats' => Chat_assistant::latest()->get(),
+            'chats' => Chat_assistant::with('user')->get(),
             // 'chats' => $this->chats,
         ]);
     }

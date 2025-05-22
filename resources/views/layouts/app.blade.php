@@ -35,5 +35,7 @@
                 {{ $slot }}
             </main>
         </div>
+        {{-- @livewire('chat-widget') --}}
+        @livewire('doc-bot')
     </body>
 </html>

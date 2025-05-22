@@ -59,12 +59,12 @@ class ChatController extends Controller
         ]);
 
         // gpt 回答
-        // $validated['message'] = $result->choices[0]->message->content;
-        // $request->user()->chats()->create($validated);
-        Chat::create([
-        'title' => $my_question,
-        'message' => $result->choices[0]->message->content,
-    ]);
+        $validated['message'] = $result->choices[0]->message->content;
+        $request->user()->chats()->create($validated);
+    //     Chat::create([
+    //     'title' => $my_question,
+    //     'message' => $result->choices[0]->message->content,
+    // ]);
 
         return redirect()->route('gpt.index');
     }

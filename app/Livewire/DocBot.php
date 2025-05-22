@@ -5,13 +5,15 @@ namespace App\Livewire;
 use Livewire\Component;
 use OpenAI\Laravel\Facades\OpenAI;
 use OpenAI\Responses\Threads\Runs\ThreadRunResponse;
+use App\Models\Chat_assistant;
 
 class DocBot extends Component
 {
     public string $question = '';
+    // public  $chats = [];
     public ?string $answer = null;
     public ?string $erro = null;
-
+// #[Layout('layouts.assistant')]
     public function ask()
     {
         $threadRun = $this->createAndRunThread();
@@ -51,11 +53,24 @@ class DocBot extends Component
             threadId: $threadRun->threadId,
         );
 
+
         $this->answer = $messageList->data[0]->content[0]->text->value;
+        Chat_assistant::create([
+            'user_id' => auth()->id(),
+            'title' => $this->question,
+            'message' => $this->answer,
+        ]);
     }
 
     public function render()
     {
-        return view('livewire.doc-bot');
+        // $chats = Chat_assistant::latest()->get();
+        // return view('livewire.doc-bot', [
+        //     'chats' => $this->chats,
+        // ]);
+        return view('assistant.index', [
+            'chats' => Chat_assistant::latest()->get(),
+            // 'chats' => $this->chats,
+        ]);
     }
 }

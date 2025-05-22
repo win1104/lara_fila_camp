@@ -18,8 +18,6 @@ use App\Livewire\DocBot;
 Route::get("/", Home::class)->name('home');
 Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
 
-Route::get('/mobile',DocBot::class)->name('mobile');
-
 
 // Route::view('/home', 'home');
 Route::middleware([
@@ -70,6 +68,10 @@ Route::resource('gpt', ChatController::class)
 //Chat GPT
 Route::resource('openai', AiDrawController::class)
     ->only(['index', 'store']);
+
+Route::get('/mobile',DocBot::class)
+    ->middleware(['auth'])
+    ->name('mobile');
 
 require __DIR__.'/auth.php';
 

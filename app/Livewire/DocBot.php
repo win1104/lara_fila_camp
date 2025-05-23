@@ -14,13 +14,19 @@ class DocBot extends Component
     public ?string $answer = null;
     public ?string $erro = null;
     public bool $open = false;
+    public int $formKey = 0;
 
-// #[Layout('layouts.assistant')]
+
+    // #[Layout('layouts.assistant')]
     public function ask()
     {
         $threadRun = $this->createAndRunThread();
 
         $this->loadAnswer($threadRun);
+        $this->dispatch('scrollToBottom');
+        $this->question = '';
+        $this->formKey++; // 讓 form 重新渲染
+
     }
 
     private function createAndRunThread(): ThreadRunResponse
@@ -67,6 +73,9 @@ class DocBot extends Component
     public function toggle()
     {
         $this->open = !$this->open;
+        if ($this->open) {
+            $this->dispatch('scrollToBottom');
+        }
     }
 
     public function render()

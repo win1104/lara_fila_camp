@@ -11,9 +11,9 @@
                         <span>{{ __('MP3 200 使用手冊助理') }}</span>
                         <button wire:click="toggle" class="text-white">✖</button>
                     </div>
-                    <div class="p-4 overflow-y-auto flex-1">
+                    <div class="flex-1">
 
-                        <div class="max-w-7xl mx-auto p-2">
+                        <div id="chatMessages" class="max-w-7xl mx-auto p-2 overflow-y-auto h-[300px] max-h-60">
         {{-- chatbot end --}}
 
         {{-- Chat bubble atart --}}
@@ -63,7 +63,7 @@
 
         </div>
         </div>
-                            <form wire:submit.prevent="ask">
+                            <form wire:submit.prevent="ask" wire:key="form-{{ $formKey }}">
                                 <div class="flex gap-4 mx-2 my-3 items-center">
                                     <textarea type="text"
                                             class="w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
@@ -71,9 +71,9 @@
                                             wire:model="question"
                                             placeholder="How to run a single test?">
                                     </textarea>
-                                        <x-primary-button type="submit" class="py-3">
+                                        <button type="submit" class="py-3 inline-flex items-center px-4 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'">
                                             <span wire:loading.class="invisible">Ask</span>
-                                        </x-primary-button>
+                                        </button>
                                 </div>
                             </form>
                 {{-- <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
@@ -105,3 +105,31 @@
         💬
     </button>
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('yoyoyoyo');
+            scrollToBottom();
+
+            if (window.Livewire) {
+                Livewire.on('scrollToBottom', () => {
+                    setTimeout(() => {
+                        scrollToBottom();
+                    }, 100);
+                });
+            }
+        });
+
+        function scrollToBottom() {
+            console.log('ohohohoh');
+            const container = document.getElementById('chatMessages');
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+
+        scrollToBottom();
+
+</script>

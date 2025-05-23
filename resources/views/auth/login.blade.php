@@ -37,7 +37,7 @@
         </div>
 
         <div class="flex mt-4">
-            <x-mary-button class="w-full btn-primary" type="submit">
+            <x-mary-button class="w-full btn-success" type="submit">
                 {{ __('Log in') }}
             </x-mary-button>
         </div>
@@ -55,10 +55,26 @@
         </div>
     </div>
 
-    <!-- Register -->
-    <div class="mt-4">
-        <a href="{{ route('register') }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            {{ __('Don\'t have an account? Register') }}
+    <!-- google login -->
+    <div class="flex mt-4">
+        <a class="w-1/2">
+            <x-mary-button label="Google" icon="o-user" class="w-full btn-ghost"/>
+        </a>
+        <a class="w-1/2">
+            <x-mary-button label="Facebook" icon="o-user" class="w-full btn-ghost"/>
         </a>
     </div>
+
+
+    <!-- Register -->
+    <div class="mt-8 text-center w-full" separator>
+        <a href="{{ route('register') }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            {{ __('Don\'t have an account? ') }} <span class="text-success text-md font-bold">{{ __('Sign up') }}</span>
+        </a>
+    </div>
+    {{-- <div class="flex mt-2">
+        <x-mary-button class="w-full btn-neutral" link="{{ route('register') }}">
+            {{ __('Sign up') }}
+        </x-mary-button>
+    </div> --}}
 </x-guest-layout>

@@ -16,6 +16,7 @@ class Article extends Component
     public function mount(ArticleModel $articles)
     {
         $this->article = $articles;
+        $this->slug = $articles->slug;
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局

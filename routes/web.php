@@ -14,8 +14,45 @@ use App\Http\Controllers\Profile\AvatarController;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
-Route::get("/", Home::class)->name('home');
-Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+// Route::get("/", Home::class)->name('home');
+Route::get('/', function ()
+{
+    return redirect('/'.config('app.fallback_locale'));
+});
+
+
+Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
+{
+    Route::get('/', Home::class)->name('home');
+
+    // Route::resource('note', NoteController::class);
+    Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+
+    // Route::get('/teams', [PostController::class, 'index'])->name('about.team');
+    // Route::get('/organization', [PostSwitchController::class, 'index'])->name('about.organization');
+    // Route::get('/events', [EventsController::class, 'index'])->name('about.events');
+    // Route::get('/news', [NewsController::class, 'index'])->name('news.latest');
+    // Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
+    // Route::get('/notes', [NotesController::class, 'index'])->name('sermon.notes');
+    // Route::get('/notes/{id}', [NotesController::class, 'show'])->name('notes.show');
+    // Route::get('/video', [videoController::class, 'index'])->name('sermon.video');
+    // Route::get('/video/{id}', [videoController::class, 'show'])->name('videos.show');
+    // Route::get('/media', [mediaController::class, 'index'])->name('life.media');
+    // Route::get('/media/{id}', [mediaController::class, 'show'])->name('media.show');
+
+
+    // backstage
+    // Route::middleware(['auth', 'verified'])->prefix('backstage')->name('admin.')->group(function () {
+    //     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    //     Route::get('/post', [Post::class, 'index'])->name('post');
+    // });
+});
+
+
+
+
+
+// Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
 
 
 // Route::view('/home', 'home');

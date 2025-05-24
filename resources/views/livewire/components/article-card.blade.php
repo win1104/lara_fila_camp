@@ -26,7 +26,7 @@
     </a>
 </x-mary-card> --}}
 
-<a href="{{ route('article.show', $article) }}">
+<a href="{{ route('article.show', ['locale' => app()->getLocale(), 'articles' => $article]) }}">
     <x-mary-card title="{!! $article->title !!}" class="container mx-auto h-108 flex flex-col">
 
         <div class="min-h-[72px] flex-grow">

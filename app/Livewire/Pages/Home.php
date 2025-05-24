@@ -15,7 +15,15 @@ class Home extends Component
 
     public function mount()
     {
-        $this->articles = ArticleModel::limit(8)->orderBy('sort', 'asc')->get();
+        $this->articles = ArticleModel::where('locale', app()->getLocale())->limit(8)->orderBy('sort', 'asc')->get();
+
+
+        // return static::where('slug', $value)
+        //     ->where('locale', app()->getLocale())
+        //     ->firstOrFail();
+
+
+
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局

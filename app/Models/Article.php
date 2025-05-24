@@ -13,6 +13,7 @@ class Article extends Model
     use HasFactory;
 
     protected $fillable = [
+        'locale',
         'title',
         'slug',
         'sort',
@@ -34,6 +35,12 @@ class Article extends Model
     {
         parent::boot();
 
+        static::creating(function ($model) {
+            if (empty($model->locale)) {
+                $model->locale = app()->getLocale();
+            }
+        });
+
         static::created(function ($model) {
             // 呼叫自訂日誌方法
             self::logChange('created', $model);
@@ -49,5 +56,12 @@ class Article extends Model
     {
         // 寫入日誌，可以根據需要調整日誌格式
         Log::info("Article : A record has been {$action}: ", $model->toArray());
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return static::where('slug', $value)
+            ->where('locale', app()->getLocale())
+            ->firstOrFail();
     }
 }

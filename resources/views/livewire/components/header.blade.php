@@ -17,34 +17,24 @@
 
 
                 <div class="navbar-start">
-                    <!-- Navigation Links -->
-                    {{-- <div aria-label="Mobile Menu Button"
-                    tabindex="0"
-                    @click="open = !open"
-                    role="button"
-                    class="btn btn-ghost btn-circle lg:hidden">
-                        <x-mary-icon name="o-bars-3" />
-                    </div> --}}
-                    {{-- <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate class="p-2 text-xl font-bold">
-                        {{ config("app.name") }}
-                    </a> --}}
-
-                    {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"> --}}
                     <div class="navbar-center hidden lg:flex">
-                        <ul class="menu menu-horizontal px-1">
-                            <li>
-                                <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate>
-                                    <x-mary-icon name="o-home" />
-                                    {{ __('Home') }}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('dashboard') }}">
-                                    <x-mary-icon name="o-newspaper" />
-                                    {{ __('Dashboard') }}
-                                </a>
-                            </li>
-                        </ul>
+
+                        @if ( $menus->count() > 0 )
+                        {{-- <ul class="menu menu-horizontal px-1"> --}}
+                            @foreach ($menus as $menu)
+                                {{-- <li>
+                                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate>
+                                        <x-mary-icon name="o-home" />
+                                        {!! $menu->title !!}
+                                    </a> --}}
+
+                                    <x-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
+                                        {!! $menu->title.' '.$menu->type !!}
+                                    </x-nav-link>
+                                {{-- </li> --}}
+                            @endforeach
+                        {{-- </ul> --}}
+                        @endif
 
 
 

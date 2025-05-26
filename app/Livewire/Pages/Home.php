@@ -13,7 +13,7 @@ use App\Models\Post as PostModel;
 class Home extends Component
 {
     public $articles;
-    public $posts;
+    // public $posts;
 
     public function mount()
     {

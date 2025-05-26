@@ -26,7 +26,8 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get('/', Home::class)->name('home');
 
     // Route::resource('note', NoteController::class);
-    Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+    Route::get("/articles/{article:slug}", Article::class)->name('article.show');
+    // Route::get("/posts/{posts:slug}", Post::class)->name('article.show');
 
     // Route::get('/teams', [PostController::class, 'index'])->name('about.team');
     // Route::get('/organization', [PostSwitchController::class, 'index'])->name('about.organization');

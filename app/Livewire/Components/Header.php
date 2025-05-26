@@ -4,10 +4,23 @@ namespace App\Livewire\Components;
 
 use Illuminate\View\View;
 use Livewire\Component;
+use App\Models\Menu as MenuModel;
 
 class Header extends Component
 {
     public bool $responsiveMenu = false;
+    // public ?MenuModel $menus = null;
+    public $menus;
+
+    public function mount()
+    {
+        $this->menus = MenuModel::where('locale', app()->getLocale())
+            ->where('parent_slug', 'home')
+            ->where('display', 1)
+            ->limit(8)
+            ->orderBy('order', 'asc')
+            ->get();
+    }
 
     public function toggleDrawer()
     {

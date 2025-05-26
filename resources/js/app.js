@@ -1,27 +1,9 @@
 import './bootstrap';
-
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
-
-
+import './alpine-plugins';
 
 // resources/js/app.js
 function toggleTheme()
 {
-    // 檢查當前主題
-    // if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
-    // {
-    //     document.documentElement.classList.remove('dark')
-    //     localStorage.theme = 'light'
-    // }
-    // else
-    // {
-    //     document.documentElement.classList.add('dark')
-    //     localStorage.theme = 'dark'
-    // }
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
     {
         // 切換到淺色主題
@@ -39,14 +21,6 @@ function toggleTheme()
 }
 
 // 頁面載入時設置主題
-// if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
-// {
-//     document.documentElement.classList.add('dark')
-// }
-// else
-// {
-//     document.documentElement.classList.remove('dark')
-// }
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
 {
     document.documentElement.classList.add('dark');

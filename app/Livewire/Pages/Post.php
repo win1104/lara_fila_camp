@@ -6,36 +6,27 @@ use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Post as PostModel;
+use Illuminate\Support\Str;
 
 class Post extends Component
 {
+    public $posts = null;
     public ?PostModel $post = null;
     public ?string $slug = null;
     public ?string $type = null;
-    public $posts = null;
 
     public function mount($type, $menu)
     {
-        \Illuminate\Support\Facades\Log::info('Post Component Mount:', [
-            'type' => $type,
-            'menu' => $menu,
-            'locale' => app()->getLocale(),
-            'route' => request()->route()->getName(),
-            'parameters' => request()->route()->parameters()
-        ]);
+        // \Illuminate\Support\Facades\Log::info('Post Component Mount:', [
+        //     'type' => $type,
+        //     'menu' => $menu,
+        //     'locale' => app()->getLocale(),
+        //     'route' => request()->route()->getName(),
+        //     'parameters' => request()->route()->parameters()
+        // ]);
 
-        if ($type === 'list') {
-            // 如果是列表模式，獲取該分類下的所有文章
-            $this->posts = PostModel::where('menu_slug', $menu)
-                ->where('locale', app()->getLocale())
-                ->where('display', 1)
-                ->orderBy('order', 'asc')
-                ->get();
-
-            if ($this->posts->isEmpty()) {
-                abort(404);
-            }
-        } else {
+        if ($type === 'post')
+        {
             // 如果是單一文章模式
             $this->post = PostModel::where('menu_slug', $menu)
                 ->where('locale', app()->getLocale())
@@ -46,6 +37,25 @@ class Post extends Component
                 abort(404);
             }
         }
+        else
+        {
+            // 如果是列表模式，獲取該分類下的所有文章
+            $this->posts = PostModel::where('menu_slug', $menu)
+                ->where('locale', app()->getLocale())
+                ->where('display', 1)
+                ->orderBy('order', 'asc')
+                ->get();
+
+            if ($this->posts->isEmpty()) {
+                abort(404);
+            }
+
+            // 處理每個文章的內容長度
+            $this->posts->transform(function ($post) {
+                $post->content = Str::limit(strip_tags($post->content), 100);
+                return $post;
+            });
+        }
 
         $this->slug = $menu;
         $this->type = $type;
@@ -55,7 +65,7 @@ class Post extends Component
     public function render():View
     {
         return view('livewire.pages.post', [
-            'isList' => $this->type === 'list'
+            'menuType' => $this->type
         ]);
     }
 }

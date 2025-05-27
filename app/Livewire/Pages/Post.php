@@ -11,31 +11,51 @@ class Post extends Component
 {
     public ?PostModel $post = null;
     public ?string $slug = null;
+    public ?string $type = null;
+    public $posts = null;
 
-    public function mount($menu)
+    public function mount($type, $menu)
     {
         \Illuminate\Support\Facades\Log::info('Post Component Mount:', [
+            'type' => $type,
             'menu' => $menu,
             'locale' => app()->getLocale(),
             'route' => request()->route()->getName(),
             'parameters' => request()->route()->parameters()
         ]);
 
-        $this->post = PostModel::where('menu_slug', $menu)
-            ->where('locale', app()->getLocale())
-            ->where('display', 1)
-            ->first();
+        if ($type === 'list') {
+            // 如果是列表模式，獲取該分類下的所有文章
+            $this->posts = PostModel::where('menu_slug', $menu)
+                ->where('locale', app()->getLocale())
+                ->where('display', 1)
+                ->orderBy('order', 'asc')
+                ->get();
 
-        if (!$this->post) {
-            abort(404);
+            if ($this->posts->isEmpty()) {
+                abort(404);
+            }
+        } else {
+            // 如果是單一文章模式
+            $this->post = PostModel::where('menu_slug', $menu)
+                ->where('locale', app()->getLocale())
+                ->where('display', 1)
+                ->first();
+
+            if (!$this->post) {
+                abort(404);
+            }
         }
 
-        $this->slug = $this->post->menu_slug;
+        $this->slug = $menu;
+        $this->type = $type;
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局
     public function render():View
     {
-        return view('livewire.pages.post');
+        return view('livewire.pages.post', [
+            'isList' => $this->type === 'list'
+        ]);
     }
 }

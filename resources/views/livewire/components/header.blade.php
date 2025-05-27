@@ -28,8 +28,8 @@
                                         {!! $menu->title !!}
                                     </a> --}}
 
-                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'menu' => $menu->slug])">
-                                        {!! $menu->title.' '.$menu->type !!}
+                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
+                                        {!! $menu->title !!}
                                     </x-nav-link>
                                 {{-- </li> --}}
                             @endforeach

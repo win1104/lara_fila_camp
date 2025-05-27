@@ -31,16 +31,46 @@ class Post extends Model
         'fixuser',
     ];
 
-    // public function category():BelongsTo
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'menu_slug';
+    }
+
 
     public function menu():BelongsTo
     {
         return $this->belongsTo(Menu::class, 'menu_slug', 'slug')
             ->where('locale', $this->locale);
     }
+
+    // public function resolveRouteBinding($value, $field = null)
+    // {
+    //     $locale = request()->route('locale') ?? app()->getLocale();
+
+    //     \Illuminate\Support\Facades\Log::info('Resolving Post:', [
+    //         'value' => $value,
+    //         'field' => $field,
+    //         'route' => request()->route()->getName(),
+    //         'parameters' => request()->route()->parameters()
+    //     ]);
+
+    //     $post = $this->whereHas('menu', function ($query) use ($value, $locale) {
+    //         $query->where('slug', $value)
+    //             ->where('locale', $locale);
+    //     })
+    //     ->where('display', 1)
+    //     ->first();
+
+    //     if (!$post) {
+    //         abort(404);
+    //     }
+
+    //     return $post;
+    // }
+
 
     protected static function boot()
     {

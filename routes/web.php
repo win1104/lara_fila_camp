@@ -2,6 +2,7 @@
 
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Article;
+use App\Livewire\Pages\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
@@ -24,11 +25,10 @@ Route::get('/', function ()
 Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 {
     Route::get('/', Home::class)->name('home');
+    Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+    Route::get("/posts/{menu:slug}", Post::class)->name('post.show');
 
     // Route::resource('note', NoteController::class);
-    Route::get("/articles/{article:slug}", Article::class)->name('article.show');
-    // Route::get("/posts/{posts:slug}", Post::class)->name('article.show');
-
     // Route::get('/teams', [PostController::class, 'index'])->name('about.team');
     // Route::get('/organization', [PostSwitchController::class, 'index'])->name('about.organization');
     // Route::get('/events', [EventsController::class, 'index'])->name('about.events');
@@ -57,15 +57,15 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 
 
 // Route::view('/home', 'home');
-Route::middleware([
-        'post',
-        // 其他中間件...
-    ])
-    ->prefix('admin')
-    ->group(function () {
-        // 自定義路由...
-        Route::get('/articles/2/edit', [ProfileController::class, 'edit'])->name('post.edit');
-    });
+// Route::middleware([
+//         'post',
+//         // 其他中間件...
+//     ])
+//     ->prefix('admin')
+//     ->group(function () {
+//         // 自定義路由...
+//         Route::get('/articles/2/edit', [ProfileController::class, 'edit'])->name('post.edit');
+//     });
 
 
 

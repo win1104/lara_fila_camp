@@ -28,7 +28,7 @@
                                         {!! $menu->title !!}
                                     </a> --}}
 
-                                    <x-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
+                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'menu' => $menu->slug])">
                                         {!! $menu->title.' '.$menu->type !!}
                                     </x-nav-link>
                                 {{-- </li> --}}

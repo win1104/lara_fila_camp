@@ -12,7 +12,7 @@ class SetLocale
     public function handle(Request $request, Closure $next): Response
     {
         $locale = $request->route('locale');
-        $allowedLocales = ['en', 'zh_TW'];
+        $allowedLocales = ['en', 'tw'];
 
         // 檢查是否有語系參數，如果沒有就使用預設語系
         if (empty($locale))
@@ -34,7 +34,7 @@ class SetLocale
         // 設定系統層級的語言環境
         $localeMap = [
             'en' => 'en_US.UTF-8',
-            'zh_TW' => 'zh_TW.UTF-8'
+            'tw' => 'zh_TW.UTF-8'
         ];
 
         $systemLocale = $localeMap[$locale] ?? 'en_US.UTF-8';

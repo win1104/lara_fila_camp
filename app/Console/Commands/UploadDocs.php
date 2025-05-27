@@ -28,7 +28,7 @@ class UploadDocs extends Command
     public function handle()
     {
         $uploadedFile = OpenAI::files()->upload([
-            'file' => Storage::disk('local')->readStream('MP3_200_User_Manual_V1.0_TW.pdf'),
+            'file' => Storage::disk('local')->readStream('BlastInjuriesManual.pdf'),
             'purpose' => 'assistants',
         ]);
 

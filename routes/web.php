@@ -3,6 +3,7 @@
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Article;
 use App\Livewire\Pages\Post;
+use App\Livewire\DocBot;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Profile\AvatarController;
-use App\Livewire\DocBot;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
@@ -28,6 +28,11 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get('/', Home::class)->name('home');
     Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
     Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
+
+
+    //mobile
+    Route::get('mobile', DocBot::class)->name('mobile.index');
+    Route::post('mobile', DocBot::class)->name('mobile.store');
 
     // Route::resource('note', NoteController::class);
     // Route::get('/teams', [PostController::class, 'index'])->name('about.team');
@@ -51,6 +56,9 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
     Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
 
+    // Route::get('/mobile',DocBot::class)
+    //     ->middleware(['auth'])
+    //     ->name('mobile');
 
     // backstage
     // Route::middleware(['auth', 'verified'])->prefix('backstage')->name('admin.')->group(function () {
@@ -109,9 +117,6 @@ Route::resource('chirps', ChirpController::class)
 
 
 
-Route::get('/mobile',DocBot::class)
-    ->middleware(['auth'])
-    ->name('mobile');
 
 require __DIR__.'/auth.php';
 

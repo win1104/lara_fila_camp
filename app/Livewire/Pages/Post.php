@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 
 class Post extends Component
 {
-    public $posts = null;
     public ?PostModel $post = null;
+    public $posts = null;
     public ?string $slug = null;
     public ?string $type = null;
 
@@ -31,6 +31,7 @@ class Post extends Component
             $this->post = PostModel::where('menu_slug', $menu)
                 ->where('locale', app()->getLocale())
                 ->where('display', 1)
+                ->limit(1)
                 ->first();
 
             if (!$this->post) {

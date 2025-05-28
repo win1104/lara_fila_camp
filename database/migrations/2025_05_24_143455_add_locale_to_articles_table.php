@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->string('locale')->default('zh_TW')->after('id');
+            $table->string('locale')->default('tw')->after('id');
         });
     }
 

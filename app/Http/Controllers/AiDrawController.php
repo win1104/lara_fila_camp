@@ -79,7 +79,7 @@ class AiDrawController extends Controller
         $validated['message'] = $publicUrl;
         $request->user()->ai_draws()->create($validated);
 
-        return redirect()->route('openai.index');
+        return redirect()->route('openai.index', ['locale' => app()->getLocale()]);
 
 
     }

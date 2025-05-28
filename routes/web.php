@@ -42,6 +42,15 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     // Route::get('/media/{id}', [mediaController::class, 'show'])->name('media.show');
 
 
+    //Chat GPT
+    Route::get('openai', [AiDrawController::class, 'index'])->name('openai.index');
+    Route::post('openai', [AiDrawController::class, 'store'])->name('openai.store');
+
+    //OpenAI
+    Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
+    Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
+
+
     // backstage
     // Route::middleware(['auth', 'verified'])->prefix('backstage')->name('admin.')->group(function () {
     //     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
@@ -98,13 +107,6 @@ Route::resource('chirps', ChirpController::class)
     ->middleware(['auth', 'verified']);
 
 
-//OpenAI
-Route::resource('gpt', ChatController::class)
-    ->only(['index', 'store']);
-
-//Chat GPT
-Route::resource('openai', AiDrawController::class)
-    ->only(['index', 'store']);
 
 require __DIR__.'/auth.php';
 

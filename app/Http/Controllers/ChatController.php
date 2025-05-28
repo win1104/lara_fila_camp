@@ -59,7 +59,7 @@ class ChatController extends Controller
         $validated['message'] = $result->choices[0]->message->content;
         $request->user()->chats()->create($validated);
 
-        return redirect()->route('gpt.index');
+        return redirect()->route('gpt.index', ['locale' => app()->getLocale()]);
     }
 
     /**

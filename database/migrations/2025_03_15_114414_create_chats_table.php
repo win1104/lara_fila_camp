@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
+            $table->string('locale')->default('tw');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->text('title');
             $table->longText('message')->nullable();

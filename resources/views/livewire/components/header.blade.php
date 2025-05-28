@@ -41,16 +41,16 @@
                         {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link> --}}
-                        <x-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
+                        <x-nav-link :href="route('chirps.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('chirps.index')">
                             {{ __('Chirps') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('note.index')" :active="request()->routeIs('note.index')">
+                        <x-nav-link :href="route('note.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('note.index')">
                             {{ __('Note') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('openai.index')" :active="request()->routeIs('openai.index')">
+                        <x-nav-link :href="route('openai.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('openai.index')">
                             {{ __('OPEN AI') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('gpt.index')" :active="request()->routeIs('gpt.index')">
+                        <x-nav-link :href="route('gpt.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('gpt.index')">
                             {{ __('Chat GTP') }}
                         </x-nav-link>
                     </div>

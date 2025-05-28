@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\FilamentLocale;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -31,7 +32,9 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            // ->path('admin')
+            // ->path('{locale}/backstage')
+            ->path('{locale}/admin')
             ->authGuard('admin') // 這裡指定使用 admin guard
             ->authMiddleware([
                 Authenticate::class,

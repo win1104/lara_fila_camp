@@ -11,7 +11,7 @@ use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\AiDrawController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WelcomeController;
+// use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Profile\AvatarController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;

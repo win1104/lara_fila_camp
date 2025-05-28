@@ -13,7 +13,7 @@ class FilamentLocale
     {
         $locale = $request->segment(1);
 
-        if (in_array($locale, ['en', 'zh_TW'])) {
+        if (in_array($locale, ['en', 'tw'])) {
             App::setLocale($locale);
             URL::defaults(['locale' => $locale]); // 加入這行，設定預設路由參數
         }

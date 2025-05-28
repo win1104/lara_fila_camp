@@ -79,6 +79,7 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get('/', Home::class)->name('home');
     Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
     Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
+    Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
 
     Route::get('mobile', DocBot::class)->name('mobile.index');
     Route::post('mobile', DocBot::class)->name('mobile.store');
@@ -98,10 +99,5 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     //OpenAI
     Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
     Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+});

@@ -25,6 +25,11 @@ class ProductCategoryWidget extends BaseWidget
     protected ?string $treeTitle = '產品類別（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
+    protected $localeMap = [
+        'zh_TW' => 'tw',
+        'en' => 'en',
+    ];
+
 
     protected function getFormSchema(): array
     {
@@ -152,7 +157,7 @@ class ProductCategoryWidget extends BaseWidget
     protected function getTreeQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return static::getModel()::query()
-            ->where('locale', app()->getLocale())
+            ->where('locale', $this->localeMap[app()->getLocale()])
             ->orderBy('order');
     }
 

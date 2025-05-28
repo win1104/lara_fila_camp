@@ -125,7 +125,7 @@
                                     <div class="w-10 rounded-full">
                                         <img
                                             alt="{{ auth()->user()->name }} profile picture"
-                                            src="{{ './storage/'.auth()->user()->avatar }}" />
+                                            src="{{ '/storage/'.auth()->user()->avatar }}" />
                                     </div>
                                 </div>
                                 <ul
@@ -172,7 +172,7 @@
                                 <div class="p-4">
                                     <x-mary-menu class="p-0 m-0">
                                         <x-mary-menu-item title="Home" icon="o-home" href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate/>
-                                        <x-mary-menu-item title="Dashboard" icon="o-newspaper" href="{{ route('dashboard') }}" wire:navigate/>
+                                        {{-- <x-mary-menu-item title="Dashboard" icon="o-newspaper" href="{{ route('dashboard', ['locale' => app()->getLocale()] ) }}" wire:navigate/> --}}
                                     </x-mary-menu>
                                 </div>
                             </div>

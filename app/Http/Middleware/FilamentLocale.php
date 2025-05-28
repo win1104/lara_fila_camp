@@ -6,17 +6,33 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
 
 class FilamentLocale
 {
+    protected $localeMap = [
+        // 'tw' => 'tw',
+        'tw' => 'zh_TW',
+        'en' => 'en',
+    ];
+
     public function handle(Request $request, Closure $next)
     {
-        $locale = $request->segment(1);
+        $urlLocale = $request->segment(1);
 
-        if (in_array($locale, ['en', 'tw'])) {
-            App::setLocale($locale);
-            URL::defaults(['locale' => $locale]); // 加入這行，設定預設路由參數
+        if (isset($this->localeMap[$urlLocale])) {
+            $systemLocale = $this->localeMap[$urlLocale];
+
+            // 設定 Laravel 的語系
+            App::setLocale($systemLocale);
+            URL::defaults(['locale' => $urlLocale]);
+
+            // 設定 Filament 的語系
+            Config::set('app.locale', $systemLocale);
+            Config::set('filament.locale', $systemLocale);
+            Config::set('app.fallback_locale', $systemLocale);
         }
+
 
         return $next($request);
     }

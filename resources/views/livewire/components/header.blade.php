@@ -158,22 +158,33 @@
 
                     <!-- Settings Dropdown -->
                     <div class="lg:hidden">
-                        <x-mary-drawer
-                            wire:model="responsiveMenu"
-                            class="w-11/12 lg:w-1/3">
-                            <x-mary-menu class="p-0 m-0">
-                                <x-mary-menu-item title="Home" icon="o-home" href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate/>
-                                <x-mary-menu-item title="Dashboard" icon="o-newspaper" href="{{ route('dashboard') }}" wire:navigate/>
-                            </x-mary-menu>
-                        </x-mary-drawer>
+                        <div x-data="{ open: false }" class="relative">
+                            <!-- Drawer -->
+                            <div x-show="open"
+                                x-transition:enter="transition ease-out duration-300"
+                                x-transition:enter-start="opacity-0 transform -translate-x-full"
+                                x-transition:enter-end="opacity-100 transform translate-x-0"
+                                x-transition:leave="transition ease-in duration-300"
+                                x-transition:leave-start="opacity-100 transform translate-x-0"
+                                x-transition:leave-end="opacity-0 transform -translate-x-full"
+                                class="fixed inset-y-0 left-0 w-9/12 lg:w-1/3 bg-white shadow-lg z-50"
+                                @click.away="open = false">
+                                <div class="p-4">
+                                    <x-mary-menu class="p-0 m-0">
+                                        <x-mary-menu-item title="Home" icon="o-home" href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate/>
+                                        <x-mary-menu-item title="Dashboard" icon="o-newspaper" href="{{ route('dashboard') }}" wire:navigate/>
+                                    </x-mary-menu>
+                                </div>
+                            </div>
 
-                        <!-- Mobile Menu Button -->
-                        <div aria-label="Mobile Menu Button"
-                            tabindex="0"
-                            wire:click="toggleDrawer"
-                            role="button"
-                            class="btn btn-ghost btn-circle">
-                            <x-mary-icon name="o-bars-3" />
+                            <!-- Mobile Menu Button -->
+                            <div aria-label="Mobile Menu Button"
+                                tabindex="0"
+                                @click="open = !open"
+                                role="button"
+                                class="btn btn-ghost btn-circle">
+                                <x-mary-icon name="o-bars-3" />
+                            </div>
                         </div>
                     </div>
 

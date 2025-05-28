@@ -8,7 +8,7 @@ use App\Models\Menu as MenuModel;
 
 class Header extends Component
 {
-    public bool $responsiveMenu = false;
+    // public bool $responsiveMenu = false;
     // public ?MenuModel $menus = null;
     public $menus;
 
@@ -22,10 +22,10 @@ class Header extends Component
             ->get();
     }
 
-    public function toggleDrawer()
-    {
-        $this->responsiveMenu = !$this->responsiveMenu;
-    }
+    // public function toggleDrawer()
+    // {
+    //     $this->responsiveMenu = !$this->responsiveMenu;
+    // }
 
     public function render()
     {

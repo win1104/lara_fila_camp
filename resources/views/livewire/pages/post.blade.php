@@ -45,7 +45,8 @@
                                     <x-mary-icon name="o-heart" class="cursor-pointer" />
                                 </x-slot:menu>
                                 <x-slot:actions separator>
-                                    <x-mary-button label="Ok" class="btn-primary" />
+                                    <x-mary-button label="詳細內容" class="btn-success" link="/tw/post/{{ $post->slug }}" />
+                                    {{-- <x-mary-button label="詳細內容" class="btn-success" link="{{ route('post.show', ['type' => 'post', 'menu' => $post->slug]) }}" /> --}}
                                 </x-slot:actions>
                             </x-mary-card>
                         @endforeach

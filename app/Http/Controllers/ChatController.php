@@ -17,8 +17,11 @@ class ChatController extends Controller
     public function index(): View
     {
         // return response('Chat index');
+        // return view('chat.index', [
+        //     'chats' => Chat::with('user')->latest()->get(),
+        // ]);
         return view('chat.index', [
-            'chats' => Chat::with('user')->latest()->get(),
+            'chats' => Chat::latest()->get(),
         ]);
     }
 
@@ -58,6 +61,10 @@ class ChatController extends Controller
         // gpt 回答
         $validated['message'] = $result->choices[0]->message->content;
         $request->user()->chats()->create($validated);
+    //     Chat::create([
+    //     'title' => $my_question,
+    //     'message' => $result->choices[0]->message->content,
+    // ]);
 
         return redirect()->route('gpt.index', ['locale' => app()->getLocale()]);
     }

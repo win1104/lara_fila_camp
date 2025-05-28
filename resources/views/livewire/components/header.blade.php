@@ -7,6 +7,7 @@
             <!-- maryUI -->
             <div class="navbar bg-base-100 ">
 
+<<<<<<< HEAD
                 <!-- Logo -->
                 <div class="shrink-0 items-center">
                     <a href="{{ route('home', ['locale' => app()->getLocale()]) }}">
@@ -53,6 +54,37 @@
                         <x-nav-link :href="route('gpt.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('gpt.index')">
                             {{ __('Chat GTP') }}
                         </x-nav-link>
+=======
+                    <div class="navbar-start">
+                        <!-- Logo -->
+                        <div class="shrink-0 items-center">
+                            <a href="{{ route('home') }}">
+                                <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                                {{-- <img src="/storage/bright_future_logo.jpg" alt="logo" width="50" height="50"/> --}}
+                            </a>
+                        </div>
+                        <!-- Navigation Links -->
+                        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
+                                {{ __('Chirps') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('note.index')" :active="request()->routeIs('note.index')">
+                                {{ __('Note') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('openai.index')" :active="request()->routeIs('openai.index')">
+                                {{ __('OPEN AI') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('gpt.index')" :active="request()->routeIs('gpt.index')">
+                                {{ __('Chat GTP') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('mobile')" :active="request()->routeIs('assistant.index')">
+                                {{ __('Mobile') }}
+                            </x-nav-link>
+                        </div>
+>>>>>>> 41d576570378bdc88950c627eecc98a0f41f0ff1
                     </div>
                 </div>
 

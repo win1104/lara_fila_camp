@@ -12,6 +12,7 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Profile\AvatarController;
+use App\Livewire\DocBot;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
@@ -107,6 +108,10 @@ Route::resource('chirps', ChirpController::class)
     ->middleware(['auth', 'verified']);
 
 
+
+Route::get('/mobile',DocBot::class)
+    ->middleware(['auth'])
+    ->name('mobile');
 
 require __DIR__.'/auth.php';
 

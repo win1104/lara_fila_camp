@@ -42,6 +42,24 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     // Route::get('/media/{id}', [mediaController::class, 'show'])->name('media.show');
 
 
+
+    Route::resource('chirps', ChirpController::class)
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
+        ->middleware(['auth', 'verified']);
+
+    //Note
+    // Route::get('/note', [NoteController::class, 'index'])->name('note.index');
+    // Route::get('/note/create', [NoteController::class, 'create'])->name('note.create');
+    // Route::post('/note', [NoteController::class, 'store'])->name('note.store');
+    // Route::get('/note/{id}', [NoteController::class, 'show'])->name('note.show');
+    // Route::get('/note/{id}/edit', [NoteController::class, 'edit'])->name('note.edit');
+    // Route::put('/note/{id}', [NoteController::class, 'update'])->name('note.update');
+    // Route::delete('/note/{id}', [NoteController::class, 'destory'])->name('note.destory');
+    Route::resource('note', NoteController::class);
+
+
+
+
     //Chat GPT
     Route::get('openai', [AiDrawController::class, 'index'])->name('openai.index');
     Route::post('openai', [AiDrawController::class, 'store'])->name('openai.store');
@@ -58,23 +76,6 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     // });
 });
 
-
-
-
-
-// Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
-
-
-// Route::view('/home', 'home');
-// Route::middleware([
-//         'post',
-//         // 其他中間件...
-//     ])
-//     ->prefix('admin')
-//     ->group(function () {
-//         // 自定義路由...
-//         Route::get('/articles/2/edit', [ProfileController::class, 'edit'])->name('post.edit');
-//     });
 
 
 
@@ -102,24 +103,4 @@ Route::post('/admin/logout', [LogoutController::class, 'admin_logout'])
     ->name('filament.admin.auth.logout');
 
 
-Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store', 'edit', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
-
-
-
 require __DIR__.'/auth.php';
-
-
-//Note
-// Route::get('/note', [NoteController::class, 'index'])->name('note.index');
-// Route::get('/note/create', [NoteController::class, 'create'])->name('note.create');
-// Route::post('/note', [NoteController::class, 'store'])->name('note.store');
-// Route::get('/note/{id}', [NoteController::class, 'show'])->name('note.show');
-// Route::get('/note/{id}/edit', [NoteController::class, 'edit'])->name('note.edit');
-// Route::put('/note/{id}', [NoteController::class, 'update'])->name('note.update');
-// Route::delete('/note/{id}', [NoteController::class, 'destory'])->name('note.destory');
-Route::resource('note', NoteController::class);
-
-
-

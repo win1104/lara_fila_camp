@@ -42,14 +42,24 @@
                     <div class="navbar-end">
                         <div class="">
 
-                            <a class="btn btn-ghost text-xl">
+                            {{-- <a class="btn btn-ghost text-xl">
                                 {{ config("app.name")}}
-                            </a>
+                            </a> --}}
 
-                            <x-mary-button>
-                                Inbox
-                                <x-mary-badge value="+99" class="badge-neutral badge-sm" />
-                            </x-mary-button>
+                            <!-- daisyui modal -->
+                            <button class="btn btn-ghost text-xl" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+                            <dialog id="my_modal_1" class="modal">
+                                <div class="modal-box">
+                                    <h3 class="text-lg font-bold">Hello!</h3>
+                                    <p class="py-4">Press ESC key or click the button below to close</p>
+                                    <div class="modal-action">
+                                    <form method="dialog">
+                                        <!-- if there is a button in form, it will close the modal -->
+                                        <button class="btn">Close</button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </dialog>
 
                             <x-mary-button class="indicator">
                                 Inbox
@@ -62,6 +72,7 @@
                                 <span class="dark:hidden">🌙</span>
                                 <span class="hidden dark:inline">☀️</span>
                             </button>
+
 
                             <div class="dropdown dropdown-end">
                                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -83,27 +94,44 @@
                                 </div>
                             </div>
 
-                            <div class="dropdown dropdown-end">
-                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                                    <div class="w-10 rounded-full">
-                                        <img
-                                            alt="Tailwind CSS Navbar component"
-                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                            <!-- user dropdown -->
+                            @guest
+                                <x-mary-button icon="o-user" class="btn-circle" link="{{ route('login') }}"/>
+                            @endguest
+                            @auth
+                                <div class="dropdown dropdown-end">
+                                    <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                        <div class="w-10 rounded-full">
+                                            <img
+                                                alt="{{ auth()->user()->name }} profile picture"
+                                                src="{{ './storage/'.auth()->user()->avatar }}" />
+                                        </div>
                                     </div>
+                                    <ul
+                                        tabindex="0"
+                                        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                                        <li>
+                                            <a wire:navigate href="{{ route('profile.edit') }}">
+                                                Profile
+                                                <span class="badge">New</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/admin">
+                                                Settings
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <form method="POST" action="{{ route('logout') }}">
+                                                    @csrf
+                                                    <button type="submit">Logout</button>
+                                                </form>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul
-                                    tabindex="0"
-                                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                                    <li>
-                                        <a class="justify-between">
-                                            Profile
-                                            <span class="badge">New</span>
-                                        </a>
-                                    </li>
-                                    <li><a>Settings</a></li>
-                                    <li><a>Logout</a></li>
-                                </ul>
-                            </div>
+                            @endauth
                         </div>
                     </div>
 

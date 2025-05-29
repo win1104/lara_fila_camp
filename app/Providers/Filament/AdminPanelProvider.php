@@ -2,15 +2,18 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\FilamentLocale;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Navigation\MenuItem;
 use App\Filament\Pages\Auth\Login;
 use Awcodes\Curator\CuratorPlugin;
 use Filament\Support\Colors\Color;
+use Illuminate\Support\Facades\URL;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -31,7 +34,12 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            // ->path('{locale}/backstage')
+            ->path('{locale}/admin')
+            ->bootUsing(function () {
+                $locale = app()->getLocale(); // for dashboard，確保所有 URL 生成時都包含當前 locale
+                URL::defaults(['locale' => $locale]);
+            })
             ->authGuard('admin') // 這裡指定使用 admin guard
             ->authMiddleware([
                 Authenticate::class,
@@ -53,8 +61,8 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-
             ->middleware([
+                FilamentLocale::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -64,6 +72,20 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('繁體中文')
+                    ->url('/tw/admin')
+                    ->color('success')
+                    ->icon('heroicon-o-language'),
+                MenuItem::make()
+                    ->label('English')
+                    ->color('info')
+                    ->url('/en/admin')
+                    ->icon('heroicon-o-language'),
+                'logout' => MenuItem::make()->url(fn () => route('filament.admin.auth.logout', ['locale' => app()->getLocale()])
+                ),
             ])
             ->plugins([
                 CuratorPlugin::make()

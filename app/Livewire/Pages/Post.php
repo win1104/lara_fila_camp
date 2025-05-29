@@ -16,7 +16,7 @@ class Post extends Component
     public ?string $type = null;
     public string $activeTab = 'tab-0';
 
-    public function mount($type, $menu)
+    public function mount($type, $menu, $post = null)
     {
         // \Illuminate\Support\Facades\Log::info('Post Component Mount:', [
         //     'type' => $type,
@@ -28,13 +28,20 @@ class Post extends Component
 
         if ($type === 'post')
         {
-            // 如果是單一文章模式
-            $this->post = PostModel::where('menu_slug', $menu)
-                ->where('locale', app()->getLocale())
-                ->where('display', 1)
-                ->limit(1)
-                ->first();
+            // 如果提供了 post 參數，直接使用它，for post detail
+            if ($post instanceof PostModel) {
+                $this->post = $post;
+            }
+            else
+            {
+                // 否則通過 menu_slug 查詢，for post by menu slug
+                $this->post = PostModel::where('menu_slug', $menu)
+                    ->where('locale', app()->getLocale())
+                    ->where('display', 1)
+                    ->first();
+            }
 
+            // 如果找不到文章，返回 404
             if (!$this->post) {
                 abort(404);
             }

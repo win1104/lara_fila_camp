@@ -50,12 +50,12 @@ class Post extends Model
     // {
     //     $locale = request()->route('locale') ?? app()->getLocale();
 
-    //     \Illuminate\Support\Facades\Log::info('Resolving Post:', [
-    //         'value' => $value,
-    //         'field' => $field,
-    //         'route' => request()->route()->getName(),
-    //         'parameters' => request()->route()->parameters()
-    //     ]);
+    // //     \Illuminate\Support\Facades\Log::info('Resolving Post:', [
+    // //         'value' => $value,
+    // //         'field' => $field,
+    // //         'route' => request()->route()->getName(),
+    // //         'parameters' => request()->route()->parameters()
+    // //     ]);
 
     //     $post = $this->whereHas('menu', function ($query) use ($value, $locale) {
     //         $query->where('slug', $value)
@@ -64,11 +64,11 @@ class Post extends Model
     //     ->where('display', 1)
     //     ->first();
 
-    //     if (!$post) {
-    //         abort(404);
-    //     }
+    // //     if (!$post) {
+    // //         abort(404);
+    // //     }
 
-    //     return $post;
+    // //     return $post;
     // }
 
 

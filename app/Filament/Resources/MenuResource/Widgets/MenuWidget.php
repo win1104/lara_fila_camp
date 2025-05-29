@@ -24,6 +24,10 @@ class MenuWidget extends BaseWidget
     protected ?string $treeTitle = '網站架構（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
+    protected $localeMap = [
+        'zh_TW' => 'tw',
+        'en' => 'en',
+    ];
 
     protected function getFormSchema(): array
     {
@@ -116,7 +120,7 @@ class MenuWidget extends BaseWidget
     protected function getTreeQuery(): \Illuminate\Database\Eloquent\Builder
     {
         return static::getModel()::query()
-            ->where('locale', app()->getLocale())
+            ->where('locale', $this->localeMap[app()->getLocale()])
             ->orderBy('order');
     }
 

@@ -11,8 +11,17 @@ use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\AiDrawController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WelcomeController;
+// use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Profile\AvatarController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\ConfirmablePasswordController;
+use App\Http\Controllers\Auth\PasswordController;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
@@ -22,68 +31,39 @@ Route::get('/', function ()
     return redirect('/'.config('app.fallback_locale'));
 });
 
-
-Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
-{
-    Route::get('/', Home::class)->name('home');
-    Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
-    Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
-
-    Route::get('mobile', DocBot::class)->name('mobile.index');
-    Route::post('mobile', DocBot::class)->name('mobile.store');
-
-
-
-    Route::resource('chirps', ChirpController::class)
-        ->only(['index', 'store', 'edit', 'update', 'destroy'])
-        ->middleware(['auth', 'verified']);
-
-
-//Note
-// Route::get('/note', [NoteController::class, 'index'])->name('note.index');
-// Route::get('/note/create', [NoteController::class, 'create'])->name('note.create');
-// Route::post('/note', [NoteController::class, 'store'])->name('note.store');
-// Route::get('/note/{id}', [NoteController::class, 'show'])->name('note.show');
-// Route::get('/note/{id}/edit', [NoteController::class, 'edit'])->name('note.edit');
-// Route::put('/note/{id}', [NoteController::class, 'update'])->name('note.update');
-// Route::delete('/note/{id}', [NoteController::class, 'destory'])->name('note.destory');
-Route::resource('note', NoteController::class)
-    ->only(['index', 'store', 'edit', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
-
-
-    //Chat GPT
-    Route::get('openai', [AiDrawController::class, 'index'])->name('openai.index');
-    Route::post('openai', [AiDrawController::class, 'store'])->name('openai.store');
-
-    //OpenAI
-    Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
-    Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
-
-
-    // backstage
-    // Route::middleware(['auth', 'verified'])->prefix('backstage')->name('admin.')->group(function () {
-    //     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
-    //     Route::get('/post', [Post::class, 'index'])->name('post');
-    // });
+// 認證相關路由
+Route::middleware('guest')->group(function () {
+    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('register', [RegisteredUserController::class, 'store']);
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 });
-
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/avatar', [AvatarController::class, 'update'])->name('profile.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
+    // 密碼更新相關路由
+    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+
+    // 郵件驗證相關路由
+    Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
+        ->name('verification.notice');
+    Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+});
 
 Route::post('/logout', [LogoutController::class, 'web_logout'])
     ->middleware(['web'])
@@ -93,4 +73,31 @@ Route::post('/admin/logout', [LogoutController::class, 'admin_logout'])
     ->name('filament.admin.auth.logout');
 
 
-require __DIR__.'/auth.php';
+// 需要語系的路由
+Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
+{
+    Route::get('/', Home::class)->name('home');
+    Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+    Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
+    Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
+
+    Route::get('mobile', DocBot::class)->name('mobile.index');
+    Route::post('mobile', DocBot::class)->name('mobile.store');
+
+    Route::resource('chirps', ChirpController::class)
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
+        ->middleware(['auth', 'verified']);
+
+    Route::resource('note', NoteController::class)
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
+        ->middleware(['auth', 'verified']);
+
+    //Chat GPT
+    Route::get('openai', [AiDrawController::class, 'index'])->name('openai.index');
+    Route::post('openai', [AiDrawController::class, 'store'])->name('openai.store');
+
+    //OpenAI
+    Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
+    Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
+
+});

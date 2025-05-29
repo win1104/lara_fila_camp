@@ -14,6 +14,7 @@ class Post extends Component
     public $posts = null;
     public ?string $slug = null;
     public ?string $type = null;
+    public string $activeTab = 'tab-0';
 
     public function mount($type, $menu)
     {

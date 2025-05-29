@@ -54,6 +54,46 @@
                 </section>
             </div>
         </div>
+    @elseif($menuType == 'tab')
+        <div class="container mx-auto px-4 py-8">
+            <div x-data="{ tabs: [] }">
+            <x-mary-tabs wire:model="activeTab">
+                @foreach($posts as $index => $tabb)
+                    <x-mary-tab :name="'tab-' . $index" :label="$tabb->title" icon="o-users">
+                        <div>{{ $tabb->content }}</div>
+                    </x-mary-tab>
+                    {{-- <x-mary-tab name="tricks-tab" label="Tricks" icon="o-sparkles">
+                        <div>Tricks</div>
+                    </x-mary-tab>
+                    <x-mary-tab name="musics-tab" label="Musics" icon="o-musical-note">
+                        <div>Musics</div>
+                    </x-mary-tab> --}}
+                @endforeach
+            </x-mary-tabs>
+            </div>
+
+            {{-- <div class="grid gap-6">
+                <section class="text-gray-600 body-font overflow-hidden">
+                    <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
+                        @foreach($posts as $post)
+                            <x-mary-card title="{{ $post->title }}">
+                                {!! $post->content !!}
+                                <x-slot:figure>
+                                    <img src="https://picsum.photos/500/200" />
+                                </x-slot:figure>
+                                <x-slot:menu>
+                                    <x-mary-button icon="o-share" class="btn-circle btn-sm" />
+                                    <x-mary-icon name="o-heart" class="cursor-pointer" />
+                                </x-slot:menu>
+                                <x-slot:actions separator>
+                                    <x-mary-button label="詳細內容" class="btn-success" link="/tw/post/{{ $post->slug }}" />
+                                </x-slot:actions>
+                            </x-mary-card>
+                        @endforeach
+                    </div>
+                </section>
+            </div> --}}
+        </div>
     @else
         <div class="container mx-auto px-4 py-8">
             <article class="bg-white rounded-lg shadow-md p-6">

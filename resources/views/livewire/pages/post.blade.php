@@ -1,7 +1,7 @@
 <div>
     @if($menuType == 'list')
         <div class="container mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h1>
+            <h2 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h2>
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
                     <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
@@ -56,20 +56,37 @@
         </div>
     @elseif($menuType == 'tab')
         <div class="container mx-auto px-4 py-8">
-            <div x-data="{ tabs: [] }">
+            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
+            {{-- <div x-data="{ tabs: [] }">
             <x-mary-tabs wire:model="activeTab">
                 @foreach($posts as $index => $tabb)
-                    <x-mary-tab :name="'tab-' . $index" :label="$tabb->title" icon="o-users">
-                        <div>{{ $tabb->content }}</div>
+                    <x-mary-tab :name="'tab-' . $index" :label="$tabb->title" icon="o-users" class="text-purple-500">
+                        <div class="text-yellow-600">{{ $tabb->content }}123</div>
                     </x-mary-tab>
-                    {{-- <x-mary-tab name="tricks-tab" label="Tricks" icon="o-sparkles">
-                        <div>Tricks</div>
-                    </x-mary-tab>
-                    <x-mary-tab name="musics-tab" label="Musics" icon="o-musical-note">
-                        <div>Musics</div>
-                    </x-mary-tab> --}}
                 @endforeach
             </x-mary-tabs>
+            </div> --}}
+
+
+            <div>
+                <div class="flex mb-12 justify-center gap-4">
+                    @foreach($posts as $index => $tab)
+                        <button wire:click="$set('activeTab', 'tab-{{ $index }}')"
+                            class="px-4 py-2 border rounded-3xl {{ $activeTab === 'tab-' . $index ? 'bg-blue-600 text-white' : 'bg-white' }}">
+                            {{ $tab->title }}
+                        </button>
+                    @endforeach
+                </div>
+
+                <div class="p-4">
+                    @foreach($posts as $index => $tab)
+                        @if($activeTab === 'tab-' . $index)
+                            <div>
+                                {!! $tab->content !!}
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
             </div>
 
             {{-- <div class="grid gap-6">

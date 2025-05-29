@@ -89,27 +89,54 @@
                 </div>
             </div>
 
-            {{-- <div class="grid gap-6">
-                <section class="text-gray-600 body-font overflow-hidden">
-                    <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
-                        @foreach($posts as $post)
-                            <x-mary-card title="{{ $post->title }}">
-                                {!! $post->content !!}
-                                <x-slot:figure>
-                                    <img src="https://picsum.photos/500/200" />
-                                </x-slot:figure>
-                                <x-slot:menu>
-                                    <x-mary-button icon="o-share" class="btn-circle btn-sm" />
-                                    <x-mary-icon name="o-heart" class="cursor-pointer" />
-                                </x-slot:menu>
-                                <x-slot:actions separator>
-                                    <x-mary-button label="詳細內容" class="btn-success" link="/tw/post/{{ $post->slug }}" />
-                                </x-slot:actions>
-                            </x-mary-card>
-                        @endforeach
+        </div>
+    @elseif($menuType == 'collapse')
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
+            {{-- <x-mary-collapse separator>
+                <x-mary-slot:heading>
+                    Hello
+                </x-mary-slot:heading>
+                <x-mary-slot:content>
+                    You!
+                </x-mary-slot:content>
+            </x-mary-collapse> --}}
+
+            {{-- <div class="border rounded shadow-sm">
+                <button type="button" aria-label="Open item" title="Open item"
+                    class="flex items-center justify-between w-full p-4 focus:outline-none">
+                    <p class="text-lg font-medium">The quick, brown fox jumps over a lazy dog?</p>
+                    <div class="flex items-center justify-center w-8 h-8 border rounded-full">
+                        <!-- Add "transform rotate-180" classes on svg, if is open" -->
+                        <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
+                            <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                        </svg>
                     </div>
-                </section>
-            </div> --}}
+                </button> --}}
+                <!-- Show content if is open
+                    <div class="p-4 pt-0"><p class="text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p></div>
+                    -->
+            {{-- </div> --}}
+
+            <div class="faq-item border rounded shadow-sm">
+                <button type="button" class="faq-toggle flex items-center justify-between w-full p-4 focus:outline-none">
+                    <p class="text-lg font-medium">The quick, brown fox jumps over a lazy dog?</p>
+                    <div class="icon-box flex items-center justify-center w-8 h-8 border rounded-full">
+                        <svg viewBox="0 0 24 24" class="faq-arrow w-3 text-gray-600 transition-transform duration-200">
+                            <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                        </svg>
+                    </div>
+                </button>
+
+                <div class="faq-content p-4 pt-0 hidden">
+                    <p class="text-gray-700">
+                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam.
+                    </p>
+                </div>
+            </div>
+
         </div>
     @else
         <div class="container mx-auto px-4 py-8">
@@ -146,3 +173,19 @@
         </div>
     @endif
 </div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".faq-toggle").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                const faqItem = btn.closest(".faq-item");
+                const content = faqItem.querySelector(".faq-content");
+                const arrow = faqItem.querySelector(".faq-arrow");
+
+                content.classList.toggle("hidden");
+                arrow.classList.toggle("rotate-180");
+            });
+        });
+    });
+</script>

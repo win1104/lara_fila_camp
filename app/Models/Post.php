@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Models\Menu;
+use Awcodes\Curator\Models\Media;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Post extends Model
 {
@@ -47,6 +49,16 @@ class Post extends Model
             ->where('locale', $this->locale);
     }
 
+    // 定義與 Curator Media 模型的多對多關聯
+    // 預設會使用 post_media 這樣的中間表
+    // 如果你的中間表名稱不同，需要指定第三和第四個參數
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(Media::class, 'post_media', 'post_id', 'media_id')
+                    ->withPivot('order') // 如果你需要排序，可以在中間表添加 'order' 欄位
+                    ->orderBy('pivot_order'); // 依據排序欄位排序
+    }
+
     // public function resolveRouteBinding($value, $field = null)
     // {
     //     $locale = request()->route('locale') ?? app()->getLocale();
@@ -78,9 +90,12 @@ class Post extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->locale)) {
-                $model->locale = config('app.locale');
-            }
+            // if (empty($model->locale)) {
+                // $model->locale = 'tw';
+                // $model->locale = app()->getLocale();
+                // $model->locale = config('app.locale');
+                // $data['locale'] = App::getLocale();
+            // }
         });
 
         static::created(function ($model) {

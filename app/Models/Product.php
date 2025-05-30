@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Log;
 // use App\Models\Category;
 use App\Models\ProductCategory;
+use Awcodes\Curator\Models\Media; // 引入 Curator 的 Media 模型
 
 class Product extends Model
 {
@@ -43,6 +43,16 @@ class Product extends Model
     {
         return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_slug', 'product_category_slug', 'slug', 'slug')
             ->withTimestamps();
+    }
+
+    // 定義與 Curator Media 模型的多對多關聯
+    // 預設會使用 product_media 這樣的中間表
+    // 如果你的中間表名稱不同，需要指定第三和第四個參數
+    public function images(): BelongsToMany
+    {
+        return $this->belongsToMany(Media::class, 'product_media', 'product_id', 'media_id')
+                    ->withPivot('order') // 如果你需要排序，可以在中間表添加 'order' 欄位
+                    ->orderBy('pivot_order'); // 依據排序欄位排序
     }
 
     protected static function boot()

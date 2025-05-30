@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 // use App\Filament\Resources\ProductResource\RelationManagers;
 
 
@@ -58,9 +59,18 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
-                CuratorPicker::make('media_id')
-                    ->label('Media')
-                    ->size('40'),
+                // CuratorPicker::make('media_id')
+                //     ->label('Media')
+                //     ->multiple()
+                //     ->relationship('product', 'image')
+                //     ->orderColumn('order'),
+                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                    ->label('產品圖片')
+                    ->multiple() // 啟用多選模式，這是關鍵！
+                    ->constrained(true) // 可選：限制圖片尺寸比例
+                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->required(),
@@ -88,6 +98,12 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('order')
                     ->label('Order')
                     ->sortable(),
+                CuratorColumn::make('images') // 這裡也是你的模型關聯名稱
+                    ->size(40) // 可選：圖片寬度
+                    ->circular() // 可選：顯示為圓形圖片
+                    ->stacked() // 可選：多張圖片疊加顯示
+                    ->limit(3) // 可選：限制只顯示前3張，然後顯示 +N
+                    ->limitedRemainingText(), // 可選：顯示剩餘圖片數量
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->searchable()

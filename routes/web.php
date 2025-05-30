@@ -1,27 +1,28 @@
 <?php
 
-use App\Livewire\Pages\Home;
-use App\Livewire\Pages\Article;
-use App\Livewire\Pages\Post;
 use App\Livewire\DocBot;
+use App\Livewire\Pages\Home;
+use App\Livewire\Pages\Post;
+use App\Livewire\Pages\Product;
+use App\Livewire\Pages\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\AiDrawController;
 use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\ProfileController;
 // use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Profile\AvatarController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\NewPasswordController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
-use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\PasswordController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
@@ -80,6 +81,14 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
     Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
     Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
+
+
+
+    Route::get("/products", Product::class)->name('product.show');
+    Route::get("/products/{product:slug}", Product::class)->name('product.detail');
+    // Route::get('/products', function () {
+    //     return view('products.index'); // 直接導向 Blade 視圖，其中嵌入了 Livewire 元件
+    // });
 
     Route::get('mobile', DocBot::class)->name('mobile.index');
     Route::post('mobile', DocBot::class)->name('mobile.store');

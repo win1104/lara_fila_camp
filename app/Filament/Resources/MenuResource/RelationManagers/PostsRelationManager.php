@@ -7,12 +7,14 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
 use FilamentTiptapEditor\Enums\TiptapOutput;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class PostsRelationManager extends RelationManager
@@ -62,7 +64,7 @@ class PostsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('locale')
                     ->default(fn () => $this->getOwnerRecord()->locale)
-                    ->disabled()
+                    // ->disabled()
                     ->dehydrated(false),
                 Forms\Components\TextInput::make('title')
                     ->label('Title')
@@ -73,7 +75,11 @@ class PostsRelationManager extends RelationManager
                     ->required(),
                 CuratorPicker::make('media_id')
                     ->label('Media')
-                    ->size('40'),
+                    ->multiple() // 啟用多選模式，這是關鍵！
+                    ->constrained(true) // 可選：限制圖片尺寸比例
+                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
                 Forms\Components\Toggle::make('display')
                     ->label('Published'),
                 Forms\Components\DatePicker::make('date')
@@ -116,16 +122,22 @@ class PostsRelationManager extends RelationManager
                 //     ->size('40'),
 
                 Tables\Columns\TextColumn::make('locale'),
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
-                    ->searchable()
-                    ->sortable(),
                 Tables\Columns\IconColumn::make('display')
                     ->label('Published')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
                     ->label('Order')
+                    ->sortable(),
+                CuratorColumn::make('images') // 這裡也是你的模型關聯名稱
+                    ->size(40) // 可選：圖片寬度
+                    ->circular() // 可選：顯示為圓形圖片
+                    ->stacked() // 可選：多張圖片疊加顯示
+                    ->limit(3) // 可選：限制只顯示前3張，然後顯示 +N
+                    ->limitedRemainingText(), // 可選：顯示剩餘圖片數量
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Slug')

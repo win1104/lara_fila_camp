@@ -11,6 +11,31 @@ class EditMenu extends EditRecord
 {
     protected static string $resource = MenuResource::class;
 
+    public function mount(int | string $record): void
+    {
+        $url = request()->query('code');
+        // $url = url()->current();
+
+        // Log::info('PostsRelationManager URL:', ['url' => $url]);
+
+        if (str_contains($url, 'widget')) {
+            $url_title = 'widget';
+        }
+
+        $url_title = 'table';
+
+
+
+
+        $this->record = $this->resolveRecord($record);
+
+        $this->authorizeAccess();
+
+        $this->fillForm();
+
+        $this->previousUrl = url()->previous();
+    }
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');

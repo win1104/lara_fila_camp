@@ -14,8 +14,8 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ProductResource\RelationManagers;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+// use App\Filament\Resources\ProductResource\RelationManagers;
 
 
 
@@ -58,6 +58,9 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
+                CuratorPicker::make('media_id')
+                    ->label('Media')
+                    ->size('40'),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->required(),

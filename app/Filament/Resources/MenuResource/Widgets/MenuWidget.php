@@ -56,7 +56,7 @@ class MenuWidget extends BaseWidget
         return [
             Action::make('編輯網頁內容')
                 ->url(fn (?Menu $record) => $record
-                    ? route('filament.admin.resources.menus.edit', ['record' => $record->slug])
+                    ? route('filament.admin.resources.menus.edit', ['record' => $record->slug, 'code'=>'widget'])
                     : null,
                     shouldOpenInNewTab: false)
                 ->defaultView(Action::LINK_VIEW)

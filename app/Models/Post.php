@@ -23,6 +23,7 @@ class Post extends Model
         'date',
         'url',
         'url_target',
+        'media_id',
         'image',
         'info',
         'intro',

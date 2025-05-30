@@ -3,16 +3,42 @@
 namespace App\Filament\Resources\MenuResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use FilamentTiptapEditor\Enums\TiptapOutput;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class PostsRelationManager extends RelationManager
 {
+
+
     protected static string $relationship = 'posts';
+
+    public function mount(): void
+    {
+        // dd($this->getSource());
+        // $this->loadDefaultActiveTab();
+    }
+
+    protected function getSource(): string
+    {
+        $url = url()->previous();
+
+        Log::info('PostsRelationManager URL:', ['url' => $url]);
+
+        if (str_contains($url, 'widget')) {
+            return 'widget';
+        }
+
+        return 'table';
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
@@ -45,8 +71,21 @@ class PostsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
-                Forms\Components\RichEditor::make('content')
+                CuratorPicker::make('media_id')
+                    ->label('Media')
+                    ->size('40'),
+                Forms\Components\Toggle::make('display')
+                    ->label('Published'),
+                Forms\Components\DatePicker::make('date')
+                    ->label('Published At'),
+                TiptapEditor::make('content')
                     ->label('Content')
+                    ->columnSpan('full'),
+                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                    // ->maxLength(65535),
+                Forms\Components\RichEditor::make('intro')
+                    ->label('intro')
+                    ->columnSpan('full'),
                     // ->toolbarButtons([
                     //     'blockquote',
                     //     'bold',
@@ -62,19 +101,7 @@ class PostsRelationManager extends RelationManager
                     //     'undo',
                     //     'html', // 啟用 HTML 編輯按鈕
                     // ])
-                    ->required(),
-                // CuratorPicker::make('media_id')
-                //     ->label('Media'),
                     // ->required(),
-                Forms\Components\Toggle::make('display')
-                    ->label('Published'),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
-                Forms\Components\Textarea::make('intro')
-                    ->label('Intro')
-                    ->columnSpan('full')
-                    ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    ->maxLength(65535),
             ]);
     }
 

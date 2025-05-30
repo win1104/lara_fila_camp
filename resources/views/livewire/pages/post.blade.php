@@ -35,8 +35,9 @@
                 <section class="text-gray-600 body-font overflow-hidden">
                     <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
                         @foreach($posts as $post)
-                            <x-mary-card title="{{ $post->title }}">
-                                {!! $post->content !!}
+                            <x-mary-card title="{{ $post->title }}" class="bg-white rounded-lg shadow-md">
+                                {{-- {!! $post->content !!} --}}
+                                {!! Str::limit($post->content, 100) !!}
                                 <x-slot:figure>
                                     <img src="https://picsum.photos/500/200" />
                                 </x-slot:figure>
@@ -70,19 +71,19 @@
 
             <div>
                 <div class="flex mb-12 justify-center gap-4">
-                    @foreach($posts as $index => $tab)
+                    @foreach($posts as $index => $post)
                         <button wire:click="$set('activeTab', 'tab-{{ $index }}')"
                             class="px-4 py-2 border rounded-3xl {{ $activeTab === 'tab-' . $index ? 'bg-blue-600 text-white' : 'bg-white' }}">
-                            {{ $tab->title }}
+                            {{ $post->title }}
                         </button>
                     @endforeach
                 </div>
 
                 <div class="p-4">
-                    @foreach($posts as $index => $tab)
+                    @foreach($posts as $index => $post)
                         @if($activeTab === 'tab-' . $index)
                             <div>
-                                {!! $tab->content !!}
+                                {!! $post->content !!}
                             </div>
                         @endif
                     @endforeach
@@ -93,15 +94,6 @@
     @elseif($menuType == 'collapse')
         <div class="container mx-auto px-4 py-8">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
-            {{-- <x-mary-collapse separator>
-                <x-mary-slot:heading>
-                    Hello
-                </x-mary-slot:heading>
-                <x-mary-slot:content>
-                    You!
-                </x-mary-slot:content>
-            </x-mary-collapse> --}}
-
             {{-- <div class="border rounded shadow-sm">
                 <button type="button" aria-label="Open item" title="Open item"
                     class="flex items-center justify-between w-full p-4 focus:outline-none">
@@ -119,7 +111,20 @@
                     -->
             {{-- </div> --}}
 
-            <div class="faq-item border rounded shadow-sm">
+
+            @foreach($posts as $post)
+            <x-mary-collapse separator class="bg-white rounded-lg shadow-md mb-4">
+                <x-slot:heading>
+                    {{ $post->title }}
+                </x-slot:heading>
+                <x-slot:content>
+                    {{-- {!! $post->content !!} --}}
+                    {!! tiptap_converter()->asHTML($post?->content ?? '', toc: true, maxDepth: 4) !!}
+                </x-slot:content>
+            </x-mary-collapse>
+            @endforeach
+
+            {{-- <div class="faq-item border rounded shadow-sm">
                 <button type="button" class="faq-toggle flex items-center justify-between w-full p-4 focus:outline-none">
                     <p class="text-lg font-medium">The quick, brown fox jumps over a lazy dog?</p>
                     <div class="icon-box flex items-center justify-center w-8 h-8 border rounded-full">
@@ -135,7 +140,7 @@
                         Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam.
                     </p>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     @else
@@ -146,10 +151,14 @@
                     <div class="text-gray-600 mb-6">{{ $post->intro }}</div>
                 @endif
                 <div class="prose max-w-none">
-                    {!! $post->content !!}
+                    {{-- {!! Str::limit($post->content, 100) !!} --}}
+                    {{-- {!! $post->content !!} --}}
+                    {{-- {!! tiptap_converter()->asHTML($post->content) !!} --}}
+                    {!! tiptap_converter()->asHTML($post?->content ?? '', toc: true, maxDepth: 4) !!}
                 </div>
             </article>
         </div>
+
 
         {{-- <div class="container mx-auto px-4 py-8">
             <x-mary-form wire:submit="save">
@@ -173,19 +182,3 @@
         </div>
     @endif
 </div>
-
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll(".faq-toggle").forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                const faqItem = btn.closest(".faq-item");
-                const content = faqItem.querySelector(".faq-content");
-                const arrow = faqItem.querySelector(".faq-arrow");
-
-                content.classList.toggle("hidden");
-                arrow.classList.toggle("rotate-180");
-            });
-        });
-    });
-</script>

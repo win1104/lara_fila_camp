@@ -95,7 +95,7 @@ class AdminPanelProvider extends PanelProvider
                     ->navigationGroup('Content')
                     ->navigationSort(3)
                     ->navigationCountBadge()
-                    // ->registerNavigation(true)
+                    ->registerNavigation(true)
                     ->defaultListView('grid' || 'list'),
                 // FilamentMenuBuilderPlugin::make()
                 //     ->addLocation('header', 'Header')

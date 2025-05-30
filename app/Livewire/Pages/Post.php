@@ -60,11 +60,11 @@ class Post extends Component
             }
 
             // 處理每個文章的內容長度
-            if ($type != 'tab')
-                $this->posts->transform(function ($post) {
-                    $post->content = Str::limit(strip_tags($post->content), 100);
-                    return $post;
-            });
+            // if ($type != 'tab')
+            //     $this->posts->transform(function ($post) {
+            //         $post->content = Str::limit(strip_tags($post->content), 100);
+            //         return $post;
+            // });
         }
 
         $this->slug = $menu;

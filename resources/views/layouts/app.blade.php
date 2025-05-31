@@ -11,6 +11,10 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- Mary UI -->
+        <link href="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.css" rel="stylesheet">
+
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
@@ -38,6 +42,11 @@
         </div>
         @livewire('chat-widget')
         {{-- @livewire('doc-bot') --}}
+
+        <!-- Livewire Scripts (必須在 Alpine 之前) -->
         @livewireScripts
+
+        <!-- Mary UI Scripts -->
+        {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}
     </body>
 </html>

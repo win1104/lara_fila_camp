@@ -79,19 +79,20 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 {
     Route::get('/', Home::class)->name('home');
     Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+
+    Route::get('mobile', DocBot::class)->name('mobile.index');
+    Route::post('mobile', DocBot::class)->name('mobile.store');
+
+    Route::get("/products", Product::class)->name('product.show');
+    Route::get("/products/{product:slug}", Product::class)->name('product.detail');
+
     Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
     Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
 
 
 
-    Route::get("/products", Product::class)->name('product.show');
-    Route::get("/products/{product:slug}", Product::class)->name('product.detail');
     // Route::get('/products', function () {
     //     return view('products.index'); // 直接導向 Blade 視圖，其中嵌入了 Livewire 元件
-    // });
-
-    Route::get('mobile', DocBot::class)->name('mobile.index');
-    Route::post('mobile', DocBot::class)->name('mobile.store');
 
     Route::resource('chirps', ChirpController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy'])

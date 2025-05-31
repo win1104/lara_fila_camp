@@ -14,6 +14,15 @@ class SetLocale
         $locale = $request->route('locale');
         $allowedLocales = ['en', 'tw'];
 
+        // \Illuminate\Support\Facades\Log::info('SetLocale Middleware:', [
+        //     'locale' => $locale,
+        //     // 'allowedLocales' => $allowedLocales,
+        //     // 'currentLocale' => app()->getLocale(),
+        //     // 'fallbackLocale' => config('app.fallback_locale'),
+        //     'route' => $request->route()->getName(),
+        //     'parameters' => $request->route()->parameters()
+        // ]);
+
         // 檢查是否有語系參數，如果沒有就使用預設語系
         if (empty($locale))
         {

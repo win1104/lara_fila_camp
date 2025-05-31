@@ -15,17 +15,27 @@ class Product extends Component
     public ?ProductModel $product = null;
     public $products = null;
     public $search = ''; // 用於搜尋功能 (稍後可擴展)
-    public $perPage = 10; // 每頁顯示數量
+    public $isDetail = false; // 每頁顯示數量
 
     public function mount($product = null)
     {
+        // 確保初始值設定
         if ($product)
         {
             // 單一產品詳情頁面
-            $this->product = ProductModel::where('slug', $product)
+
+            // 使用 with('images') 預先載入與 media 的圖片關聯，避免 N+1 問題
+            $this->product = ProductModel::with('images')
                 ->where('locale', app()->getLocale())
+                ->where('slug', $product->slug)
                 ->where('display', 1)
                 ->firstOrFail();
+
+            if (!$this->product) {
+                abort(404);
+            }
+
+            $this->isDetail = true;
         }
         else
         {
@@ -35,35 +45,25 @@ class Product extends Component
                 ->orderBy('order', 'asc')
                 ->get();
 
-            // $this->products = ProductModel::query()
-            //     ->where('display', true)
-            //     ->when($this->search, function ($query) {
-            //         $query->where(function($q) {
-            //             $q->where('title', 'like', '%' . $this->search . '%')
-            //               ->orWhere('content', 'like', '%' . $this->search . '%');
-            //         });
-            //     })
-            //     ->orderBy('order', 'asc')
-            //     ->paginate($this->perPage);
+            // if (!$this->products) {
+            //     abort(404);
+            // }
         }
-        // dd($this->products);
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局
     public function render():View
     {
-        // dd($this->products);
-        // return view('livewire.pages.product');
         return view('livewire.pages.product', [
-            'perPage' => $this->perPage,
+            'isDetail' => $this->isDetail
         ]);
     }
 
     /**
      * 重設分頁，以便搜尋時總是從第一頁開始
      */
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
+    // public function updatingSearch()
+    // {
+    //     $this->resetPage();
+    // }
 }

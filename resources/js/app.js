@@ -1,6 +1,7 @@
 import './bootstrap';
 import './alpine-plugins';
 
+
 // resources/js/app.js
 function toggleTheme()
 {

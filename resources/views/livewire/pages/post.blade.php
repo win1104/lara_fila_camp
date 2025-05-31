@@ -173,12 +173,12 @@
         </div> --}}
     @endif
 
-    @if(config('app.debug'))
+    {{-- @if(config('app.debug'))
         <div class="mt-4 p-4 bg-gray-100 rounded">
             <pre>
                 Post: {{ print_r($post, true) }}
                 Slug: {{ $slug }}
             </pre>
         </div>
-    @endif
+    @endif --}}
 </div>

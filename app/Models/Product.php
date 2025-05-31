@@ -34,6 +34,14 @@ class Product extends Model
         'fixuser',
     ];
 
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     // public function category():BelongsTo
     // {
     //     return $this->belongsTo(Category::class);

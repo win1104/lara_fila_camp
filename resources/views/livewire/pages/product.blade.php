@@ -5,6 +5,276 @@
             <div class="container px-5 py-24 mx-auto">
                 {{-- top --}}
                 <div class="lg:w-4/5 mx-auto flex flex-wrap">
+
+
+
+<div x-data="{
+    currentSlideIndex: 0,
+    jumpTo: 1,
+    showArrows: false,
+    slides: [
+        {
+            id: 'item1',
+            image: 'https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp',
+            title: '圖片 1'
+        },
+        {
+            id: 'item2',
+            image: 'https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp',
+            title: '圖片 2'
+        },
+        {
+            id: 'item3',
+            image: 'https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp',
+            title: '圖片 3'
+        },
+        {
+            id: 'item4',
+            image: 'https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp',
+            title: '圖片 4'
+        }
+    ],
+    goToSlide(index) {
+        this.currentSlideIndex = index;
+        this.jumpTo = index + 1;
+        // 滾動到指定的圖片
+        const targetElement = document.getElementById(this.slides[index].id);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start'
+            });
+        }
+    },
+    nextSlide() {
+        const nextIndex = (this.currentSlideIndex + 1) % this.slides.length;
+        this.goToSlide(nextIndex);
+    },
+    previousSlide() {
+        const prevIndex = this.currentSlideIndex > 0
+            ? this.currentSlideIndex - 1
+            : this.slides.length - 1;
+        this.goToSlide(prevIndex);
+    },
+    init() {
+        // 監聽滾動事件來更新當前索引
+        const carousel = this.$refs.carousel;
+        if (carousel) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const index = this.slides.findIndex(slide =>
+                            slide.id === entry.target.id
+                        );
+                        if (index !== -1) {
+                            this.currentSlideIndex = index;
+                            this.jumpTo = index + 1;
+                        }
+                    }
+                });
+            }, {
+                root: carousel,
+                threshold: 0.5
+            });
+
+            // 觀察所有 carousel item
+            this.slides.forEach(slide => {
+                const element = document.getElementById(slide.id);
+                if (element) observer.observe(element);
+            });
+        }
+    }
+}">
+    <!-- 縮圖控制按鈕 -->
+    <div class="grid grid-cols-4 gap-2 mb-4">
+        <template x-for="(slide, index) in slides" :key="index">
+            <button
+                @click="goToSlide(index)"
+                class="relative aspect-video rounded-lg overflow-hidden border-2 transition-all duration-200"
+                :class="currentSlideIndex === index
+                    ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105'
+                    : 'border-gray-300 hover:border-gray-400'">
+                <img
+                    :src="slide.image"
+                    :alt="slide.title"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 flex items-center justify-center transition-all duration-200"
+                     :class="currentSlideIndex === index ? 'bg-blue-500 bg-opacity-30' : 'bg-black bg-opacity-20 hover:bg-opacity-10'">
+                    <span class="text-white font-bold text-lg" x-text="index + 1"></span>
+                </div>
+                <!-- 選中指示器 -->
+                <div x-show="currentSlideIndex === index"
+                     class="absolute top-2 right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                    ✓
+                </div>
+            </button>
+        </template>
+    </div>
+
+    <!-- 數字按鈕控制 -->
+    <div class="flex gap-2 mb-4 justify-center">
+        <template x-for="(slide, index) in slides" :key="index">
+            <button
+                @click="goToSlide(index)"
+                class="w-12 h-12 rounded-full transition-all duration-200 font-bold text-lg border-2 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                :class="currentSlideIndex === index
+                    ? 'bg-blue-500 text-white border-blue-500 shadow-lg transform scale-110'
+                    : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
+                x-text="index + 1">
+            </button>
+        </template>
+    </div>
+
+    <!-- 方向控制按鈕 -->
+    <div class="flex gap-3 mb-4 justify-center">
+        <button
+            @click="previousSlide()"
+            class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            上一張
+        </button>
+
+        <button
+            @click="nextSlide()"
+            class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105">
+            下一張
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- 快速跳轉輸入 -->
+    <div class="flex items-center gap-2 mb-4 justify-center">
+        <label class="text-sm font-medium text-gray-700">快速跳轉:</label>
+        <input
+            type="number"
+            x-model="jumpTo"
+            min="1"
+            :max="slides.length"
+            class="w-16 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            @keyup.enter="goToSlide(Math.max(0, Math.min(parseInt(jumpTo) - 1, slides.length - 1)))">
+        <button
+            @click="goToSlide(Math.max(0, Math.min(parseInt(jumpTo) - 1, slides.length - 1)))"
+            class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 text-sm font-medium">
+            GO
+        </button>
+    </div>
+
+    <!-- 當前狀態顯示 -->
+    <div class="mb-4 text-center">
+        <div class="text-sm text-gray-600 mb-2">
+            當前圖片: <span x-text="currentSlideIndex + 1" class="font-bold text-blue-600"></span> / <span x-text="slides.length" class="font-bold"></span>
+        </div>
+
+        <!-- 進度條 -->
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+            <div class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
+                 :style="`width: ${((currentSlideIndex + 1) / slides.length) * 100}%`"></div>
+        </div>
+
+        <!-- 圓點指示器 -->
+        <div class="flex justify-center gap-2">
+            <template x-for="(slide, index) in slides" :key="index">
+                <button
+                    @click="goToSlide(index)"
+                    class="w-3 h-3 rounded-full transition-all duration-200"
+                    :class="currentSlideIndex === index
+                        ? 'bg-blue-500 transform scale-125'
+                        : 'bg-gray-300 hover:bg-gray-400'">
+                </button>
+            </template>
+        </div>
+    </div>
+
+    <!-- DaisyUI Carousel with Hover Arrows -->
+    <div class="relative"
+         @mouseenter="showArrows = true"
+         @mouseleave="showArrows = false">
+
+        <!-- Left Arrow (懸停時顯示) -->
+        <button
+            @click="previousSlide()"
+            x-show="showArrows"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 transform -translate-x-2"
+            x-transition:enter-end="opacity-100 transform translate-x-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 transform translate-x-0"
+            x-transition:leave-end="opacity-0 transform -translate-x-2"
+            class="absolute left-3 top-1/2 transform -translate-y-1/2 z-10
+                   bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800
+                   rounded-full w-12 h-12 flex items-center justify-center
+                   shadow-lg hover:shadow-xl transition-all duration-200
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                   hover:scale-110">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+
+        <!-- Right Arrow (懸停時顯示) -->
+        <button
+            @click="nextSlide()"
+            x-show="showArrows"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 transform translate-x-2"
+            x-transition:enter-end="opacity-100 transform translate-x-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 transform translate-x-0"
+            x-transition:leave-end="opacity-0 transform translate-x-2"
+            class="absolute right-3 top-1/2 transform -translate-y-1/2 z-10
+                   bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800
+                   rounded-full w-12 h-12 flex items-center justify-center
+                   shadow-lg hover:shadow-xl transition-all duration-200
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                   hover:scale-110">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+
+        <!-- DaisyUI Carousel -->
+        <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
+            <div id="item1" class="carousel-item w-full">
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
+                    class="w-full h-96 object-cover" />
+            </div>
+            <div id="item2" class="carousel-item w-full">
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+                    class="w-full h-96 object-cover" />
+            </div>
+            <div id="item3" class="carousel-item w-full">
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+                    class="w-full h-96 object-cover" />
+            </div>
+            <div id="item4" class="carousel-item w-full">
+                <img
+                    src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+                    class="w-full h-96 object-cover" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     @forelse ($product->images as $image)
                         <div class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
                             {{-- Curator 的 Media 模型有一個 getUrl() 方法可以取得圖片的 URL --}}
@@ -137,6 +407,7 @@
                     <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
                 </div>
             </div>
+
 
 
             <a href="{{ url()->previous() }}" class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">

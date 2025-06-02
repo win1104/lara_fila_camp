@@ -33,7 +33,6 @@ class FilamentLocale
             Config::set('app.fallback_locale', $systemLocale);
         }
 
-
         return $next($request);
     }
 }

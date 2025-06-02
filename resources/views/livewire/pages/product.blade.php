@@ -7,12 +7,37 @@
                 <div class="lg:w-4/5 mx-auto flex flex-wrap">
 
 
+                    @php
+                        $slides = [
+                            [
+                                'id' => 'item1',
+                                'image' => 'https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg',
+                                'title' => '圖片 1',
+                            ],
+                            [
+                                'id' => 'item2',
+                                'image' => 'https://mary-ui.com/photos/photo-1565098772267-60af42b81ef2.jpg',
+                                'title' => '圖片 2',
+                            ],
+                            [
+                                'id' => 'item3',
+                                'image' => 'https://mary-ui.com/photos/photo-1559703248-dcaaec9fab78.jpg',
+                                'title' => '圖片 3',
+                            ],
+                            [
+                                'id' => 'item4',
+                                'image' => 'https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg',
+                                'title' => '圖片 4',
+                            ],
+                        ];
+                    @endphp
 
                     <div x-data="{
                         currentSlideIndex: 0,
                         jumpTo: 1,
-                        showArrows: false,
-                        slides: [
+                        showArrows: true,
+                        slides: {{ json_encode($slides) }},
+                        {{-- slides: [
                             {
                                 id: 'item1',
                                 image: 'https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp',
@@ -33,7 +58,7 @@
                                 image: 'https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp',
                                 title: '圖片 4'
                             }
-                        ],
+                        ], --}}
                         goToSlide(index) {
                             this.currentSlideIndex = index;
                             this.jumpTo = index + 1;
@@ -241,26 +266,28 @@
                             <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
                                 <div id="item1" class="carousel-item w-full">
                                     <img
-                                        src="https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp"
+                                        src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
                                         class="w-full h-96 object-cover" />
                                 </div>
                                 <div id="item2" class="carousel-item w-full">
                                     <img
-                                        src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+                                        src="https://mary-ui.com/photos/photo-1565098772267-60af42b81ef2.jpg"
                                         class="w-full h-96 object-cover" />
                                 </div>
                                 <div id="item3" class="carousel-item w-full">
                                     <img
-                                        src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+                                        src="https://mary-ui.com/photos/photo-1559703248-dcaaec9fab78.jpg"
                                         class="w-full h-96 object-cover" />
                                 </div>
                                 <div id="item4" class="carousel-item w-full">
                                     <img
-                                        src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+                                        src="https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg"
                                         class="w-full h-96 object-cover" />
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
 
 

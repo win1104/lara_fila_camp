@@ -263,7 +263,7 @@
                             </button>
 
                             <!-- DaisyUI Carousel -->
-                            <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
+                            {{-- <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
                                 <div id="item1" class="carousel-item w-full">
                                     <img
                                         src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
@@ -276,15 +276,15 @@
                                 </div>
                                 <div id="item3" class="carousel-item w-full">
                                     <img
+                                        src="https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg"
+                                        class="w-full h-96 object-cover" />
+                                    </div>
+                                    <div id="item4" class="carousel-item w-full">
+                                        <img
                                         src="https://mary-ui.com/photos/photo-1559703248-dcaaec9fab78.jpg"
                                         class="w-full h-96 object-cover" />
                                 </div>
-                                <div id="item4" class="carousel-item w-full">
-                                    <img
-                                        src="https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg"
-                                        class="w-full h-96 object-cover" />
-                                </div>
-                            </div>
+                            </div> --}}
                         </div>
 
 
@@ -302,39 +302,51 @@
 
 
 
-                    @forelse ($product->images as $image)
-                        <div class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
+                    <div class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
+                    <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
+                    @forelse ($product->images as $key => $image)
                             {{-- Curator 的 Media 模型有一個 getUrl() 方法可以取得圖片的 URL --}}
                             {{-- <img src="{{ $image->getUrl() }}" alt="{{ $image->alt }}"
                                 class="w-full h-48 object-cover cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
                                 onclick="openLightbox('{{ $image->getUrl() }}')"> --}}
 
 
-                                {{-- 使用 <x-curator-glider> 元件 --}}
-                                <x-curator-glider
-                                    :media="$image"        {{-- 傳遞單個 Media 物件 --}}
-                                    class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                                    :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
-                                        '1000w' => 1000,
-                                        '750w' => 750,
-                                        '500w' => 500,
-                                    ]"
-                                    sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
-                                    width="600"             {{-- 可選：圖片寬度 --}}
-                                    height="600"            {{-- 可選：圖片高度 --}}
-                                    fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
-                                    quality="80"            {{-- 可選：圖片品質 (0-100) --}}
-                                    alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
-                                    onclick="openLightbox('{{ $image->url }}')" {{-- Lightbox 仍然可以使用原始 URL --}}
-                                />
+
+
+                                    <div id="item{{$key+1}}" class="carousel-item w-full">
+                                        {{-- <img
+                                            src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
+                                            class="w-full h-96 object-cover" /> --}}
+                                        <x-curator-glider
+                                            :media="$image"        {{-- 傳遞單個 Media 物件 --}}
+                                            class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                                            :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
+                                                '1000w' => 1000,
+                                                '750w' => 750,
+                                                '500w' => 500,
+                                            ]"
+                                            sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
+                                            width="600"             {{-- 可選：圖片寬度 --}}
+                                            height="600"            {{-- 可選：圖片高度 --}}
+                                            fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
+                                            quality="80"            {{-- 可選：圖片品質 (0-100) --}}
+                                            alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
+                                            onclick="openLightbox('{{ $image->url }}')" {{-- Lightbox 仍然可以使用原始 URL --}}
+                                        />
+                                    </div>
+
+
+
+
                             {{-- 可以在這裡顯示圖片的 alt 或 title --}}
                             @if ($image->alt)
-                                <p class="p-2 text-sm text-gray-500">{{ $image->alt }}</p>
+                                <p class="p-2 text-sm text-gray-500">{{ $image->alt }}hoho</p>
                             @endif
+                            @empty
+                            <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                            @endforelse
                         </div>
-                    @empty
-                        <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
-                    @endforelse
+                    </div>
 
                     {{-- @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-96 object-cover">

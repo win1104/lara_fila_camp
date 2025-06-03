@@ -22,16 +22,27 @@
                         @if ( $menus->count() > 0 )
                         {{-- <ul class="menu menu-horizontal px-1"> --}}
                             @foreach ($menus as $menu)
+                                @if ( $menu->type === 'post' || $menu->type === 'list' || $menu->type === 'tilelist' || $menu->type === 'tab' || $menu->type === 'collapse' )
+                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
+                                        {!! $menu->title !!}
+                                    </x-nav-link>
+                                @elseif($menu->type == 'product')
+                                    <x-nav-link :href="route('product.show', ['locale' => app()->getLocale()])">
+                                        {!! $menu->title !!}
+                                    </x-nav-link>
+                                @endif
+
+
+
+
+
+                                {{-- @if ( $menu->type == 'post' ) --}}
                                 {{-- <li>
                                     <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate>
                                         <x-mary-icon name="o-home" />
                                         {!! $menu->title !!}
-                                    </a> --}}
-
-                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
-                                        {!! $menu->title !!}
-                                    </x-nav-link>
-                                {{-- </li> --}}
+                                    </a>
+                                </li> --}}
                             @endforeach
                         {{-- </ul> --}}
                         @endif

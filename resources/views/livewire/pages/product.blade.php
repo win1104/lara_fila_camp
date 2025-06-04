@@ -112,7 +112,7 @@
                         }
                     }">
                         <!-- 縮圖控制按鈕 -->
-                        <div class="grid grid-cols-4 gap-2 mb-4">
+                        {{-- <div class="grid grid-cols-4 gap-2 mb-4">
                             <template x-for="(slide, index) in slides" :key="index">
                                 <button
                                     @click="goToSlide(index)"
@@ -135,10 +135,43 @@
                                     </div>
                                 </button>
                             </template>
+                        </div> --}}
+
+
+                        <div class="lg:w-4/5 mx-auto flex flex-wrap gap-2 mb">
+                                @forelse ($product->images as $key => $image)
+                                    <button
+                                        @click="goToSlide({{$key}})"
+                                        class="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
+                                        :class="currentSlideIndex === {{$key}}
+                                        ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105'
+                                        : 'border-gray-300 hover:border-gray-400'">
+                                        <x-curator-glider
+                                            :media="$image"        {{-- 傳遞單個 Media 物件 --}}
+                                            class="hover:opacity-75 transition duration-300 ease-in-out"
+                                            :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
+                                                '1000w' => 1000,
+                                                '750w' => 750,
+                                                '500w' => 500,
+                                            ]"
+                                            sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
+                                            width="80"             {{-- 可選：圖片寬度 --}}
+                                            height="80"            {{-- 可選：圖片高度 --}}
+                                            fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
+                                            quality="80"            {{-- 可選：圖片品質 (0-100) --}}
+                                            alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
+                                        />
+                                </button>
+                                @empty
+                                    <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                                @endforelse
                         </div>
 
+
+
+
                         <!-- 數字按鈕控制 -->
-                        <div class="flex gap-2 mb-4 justify-center">
+                        {{-- <div class="flex gap-2 mb-4 justify-center">
                             <template x-for="(slide, index) in slides" :key="index">
                                 <button
                                     @click="goToSlide(index)"
@@ -149,10 +182,10 @@
                                     x-text="index + 1">
                                 </button>
                             </template>
-                        </div>
+                        </div> --}}
 
                         <!-- 方向控制按鈕 -->
-                        <div class="flex gap-3 mb-4 justify-center">
+                        {{-- <div class="flex gap-3 mb-4 justify-center">
                             <button
                                 @click="previousSlide()"
                                 class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105">
@@ -170,10 +203,10 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                 </svg>
                             </button>
-                        </div>
+                        </div> --}}
 
                         <!-- 快速跳轉輸入 -->
-                        <div class="flex items-center gap-2 mb-4 justify-center">
+                        {{-- <div class="flex items-center gap-2 mb-4 justify-center">
                             <label class="text-sm font-medium text-gray-700">快速跳轉:</label>
                             <input
                                 type="number"
@@ -187,10 +220,10 @@
                                 class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 text-sm font-medium">
                                 GO
                             </button>
-                        </div>
+                        </div> --}}
 
                         <!-- 當前狀態顯示 -->
-                        <div class="mb-4 text-center">
+                        {{-- <div class="mb-4 text-center">
                             <div class="text-sm text-gray-600 mb-2">
                                 當前圖片: <span x-text="currentSlideIndex + 1" class="font-bold text-blue-600"></span> / <span x-text="slides.length" class="font-bold"></span>
                             </div>
@@ -213,7 +246,7 @@
                                     </button>
                                 </template>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <!-- DaisyUI Carousel with Hover Arrows -->
                         <div class="relative"
@@ -303,50 +336,60 @@
 
 
                     <div class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
-                    <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
-                    @forelse ($product->images as $key => $image)
-                            {{-- Curator 的 Media 模型有一個 getUrl() 方法可以取得圖片的 URL --}}
-                            {{-- <img src="{{ $image->getUrl() }}" alt="{{ $image->alt }}"
-                                class="w-full h-48 object-cover cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                                onclick="openLightbox('{{ $image->getUrl() }}')"> --}}
+                        <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
+                            @forelse ($product->images as $key => $image)
+                                {{-- Curator 的 Media 模型有一個 getUrl() 方法可以取得圖片的 URL --}}
+                                {{-- <img src="{{ $image->getUrl() }}" alt="{{ $image->alt }}"
+                                    class="w-full h-48 object-cover cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                                    onclick="openLightbox('{{ $image->getUrl() }}')"> --}}
 
 
 
 
-                                    <div id="item{{$key+1}}" class="carousel-item w-full">
-                                        {{-- <img
-                                            src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
-                                            class="w-full h-96 object-cover" /> --}}
-                                        <x-curator-glider
-                                            :media="$image"        {{-- 傳遞單個 Media 物件 --}}
-                                            class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                                            :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
-                                                '1000w' => 1000,
-                                                '750w' => 750,
-                                                '500w' => 500,
-                                            ]"
-                                            sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
-                                            width="600"             {{-- 可選：圖片寬度 --}}
-                                            height="600"            {{-- 可選：圖片高度 --}}
-                                            fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
-                                            quality="80"            {{-- 可選：圖片品質 (0-100) --}}
-                                            alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
-                                            onclick="openLightbox('{{ $image->url }}')" {{-- Lightbox 仍然可以使用原始 URL --}}
-                                        />
-                                    </div>
+                                        <div id="item{{$key+1}}" class="carousel-item w-full">
+                                            {{-- <img
+                                                src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
+                                                class="w-full h-96 object-cover" /> --}}
+                                            <x-curator-glider
+                                                :media="$image"        {{-- 傳遞單個 Media 物件 --}}
+                                                class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                                                :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
+                                                    '1000w' => 1000,
+                                                    '750w' => 750,
+                                                    '500w' => 500,
+                                                ]"
+                                                sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
+                                                width="600"             {{-- 可選：圖片寬度 --}}
+                                                height="600"            {{-- 可選：圖片高度 --}}
+                                                fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
+                                                quality="80"            {{-- 可選：圖片品質 (0-100) --}}
+                                                alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
+                                                onclick="openLightbox('{{ $image->url }}')" {{-- Lightbox 仍然可以使用原始 URL --}}
+                                            />
+                                        </div>
 
 
 
 
-                            {{-- 可以在這裡顯示圖片的 alt 或 title --}}
-                            @if ($image->alt)
-                                <p class="p-2 text-sm text-gray-500">{{ $image->alt }}hoho</p>
-                            @endif
+                                {{-- 可以在這裡顯示圖片的 alt 或 title --}}
+                                @if ($image->alt)
+                                    <p class="p-2 text-sm text-gray-500">{{ $image->alt }}hoho</p>
+                                @endif
                             @empty
-                            <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                                <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
                             @endforelse
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
+
 
                     {{-- @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-96 object-cover">

@@ -32,228 +32,39 @@
                         ];
                     @endphp
 
-                    <div x-data="{
-                        currentSlideIndex: 0,
-                        jumpTo: 1,
-                        showArrows: true,
-                        slides: {{ json_encode($slides) }},
-                        {{-- slides: [
-                            {
-                                id: 'item1',
-                                image: 'https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp',
-                                title: '圖片 1'
-                            },
-                            {
-                                id: 'item2',
-                                image: 'https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp',
-                                title: '圖片 2'
-                            },
-                            {
-                                id: 'item3',
-                                image: 'https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp',
-                                title: '圖片 3'
-                            },
-                            {
-                                id: 'item4',
-                                image: 'https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp',
-                                title: '圖片 4'
-                            }
-                        ], --}}
-                        goToSlide(index) {
-                            this.currentSlideIndex = index;
-                            this.jumpTo = index + 1;
-                            // 滾動到指定的圖片
-                            const targetElement = document.getElementById(this.slides[index].id);
-                            if (targetElement) {
-                                targetElement.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'nearest',
-                                    inline: 'start'
-                                });
-                            }
-                        },
-                        nextSlide() {
-                            const nextIndex = (this.currentSlideIndex + 1) % this.slides.length;
-                            this.goToSlide(nextIndex);
-                        },
-                        previousSlide() {
-                            const prevIndex = this.currentSlideIndex > 0
-                                ? this.currentSlideIndex - 1
-                                : this.slides.length - 1;
-                            this.goToSlide(prevIndex);
-                        },
-                        init() {
-                            // 監聽滾動事件來更新當前索引
-                            const carousel = this.$refs.carousel;
-                            if (carousel) {
-                                const observer = new IntersectionObserver((entries) => {
-                                    entries.forEach(entry => {
-                                        if (entry.isIntersecting) {
-                                            const index = this.slides.findIndex(slide =>
-                                                slide.id === entry.target.id
-                                            );
-                                            if (index !== -1) {
-                                                {{-- this.currentSlideIndex = index; --}}
-                                                this.jumpTo = index + 1;
-                                            }
-                                        }
-                                    });
-                                }, {
-                                    root: carousel,
-                                    threshold: 0.5
-                                });
-
-                                // 觀察所有 carousel item
-                                this.slides.forEach(slide => {
-                                    const element = document.getElementById(slide.id);
-                                    if (element) observer.observe(element);
-                                });
-                            }
-                        }
-                    }">
+                    <div x-data="productCarousel()" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
                         <!-- 縮圖控制按鈕 -->
-                        {{-- <div class="grid grid-cols-4 gap-2 mb-4">
-                            <template x-for="(slide, index) in slides" :key="index">
+                        <div class="lg:w-4/5 mx-auto flex flex-wrap gap-2 mb-4">
+                            @forelse ($product->images as $key => $image)
                                 <button
-                                    @click="goToSlide(index)"
-                                    class="relative aspect-video rounded-lg overflow-hidden border-2 transition-all duration-200"
-                                    :class="currentSlideIndex === index
-                                        ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105'
-                                        : 'border-gray-300 hover:border-gray-400'">
-                                    <img
-                                        :src="slide.image"
-                                        :alt="slide.title"
-                                        class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 flex items-center justify-center transition-all duration-200"
-                                        :class="currentSlideIndex === index ? 'bg-blue-500 bg-opacity-30' : 'bg-black bg-opacity-20 hover:bg-opacity-10'">
-                                        <span class="text-white font-bold text-lg" x-text="index + 1"></span>
-                                    </div>
-                                    <!-- 選中指示器 -->
-                                    <div x-show="currentSlideIndex === index"
-                                        class="absolute top-2 right-2 bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                                        ✓
-                                    </div>
+                                    @click="goToSlide({{$key}})"
+                                    class="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
+                                    :class="currentSlideIndex === {{$key}} ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105' : 'border-gray-300 hover:border-gray-400'">
+                                    <x-curator-glider
+                                        :media="$image"
+                                        class="hover:opacity-75 transition duration-300 ease-in-out"
+                                        :srcset="[
+                                            '1000w' => 1000,
+                                            '750w' => 750,
+                                            '500w' => 500,
+                                        ]"
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        width="80"
+                                        height="80"
+                                        fit="crop"
+                                        quality="80"
+                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"
+                                    />
                                 </button>
-                            </template>
-                        </div> --}}
-
-
-                        <div class="lg:w-4/5 mx-auto flex flex-wrap gap-2 mb">
-                                @forelse ($product->images as $key => $image)
-                                    <button
-                                        @click="goToSlide({{$key}})"
-                                        class="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
-                                        :class="currentSlideIndex === {{$key}}
-                                        ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105'
-                                        : 'border-gray-300 hover:border-gray-400'">
-                                        <x-curator-glider
-                                            :media="$image"        {{-- 傳遞單個 Media 物件 --}}
-                                            class="hover:opacity-75 transition duration-300 ease-in-out"
-                                            :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
-                                                '1000w' => 1000,
-                                                '750w' => 750,
-                                                '500w' => 500,
-                                            ]"
-                                            sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
-                                            width="80"             {{-- 可選：圖片寬度 --}}
-                                            height="80"            {{-- 可選：圖片高度 --}}
-                                            fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
-                                            quality="80"            {{-- 可選：圖片品質 (0-100) --}}
-                                            alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
-                                        />
-                                </button>
-                                @empty
-                                    <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
-                                @endforelse
+                            @empty
+                                <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                            @endforelse
                         </div>
 
+                        <!-- 主要輪播 -->
 
-
-
-                        <!-- 數字按鈕控制 -->
-                        {{-- <div class="flex gap-2 mb-4 justify-center">
-                            <template x-for="(slide, index) in slides" :key="index">
-                                <button
-                                    @click="goToSlide(index)"
-                                    class="w-12 h-12 rounded-full transition-all duration-200 font-bold text-lg border-2 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                                    :class="currentSlideIndex === index
-                                        ? 'bg-blue-500 text-white border-blue-500 shadow-lg transform scale-110'
-                                        : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'"
-                                    x-text="index + 1">
-                                </button>
-                            </template>
-                        </div> --}}
-
-                        <!-- 方向控制按鈕 -->
-                        {{-- <div class="flex gap-3 mb-4 justify-center">
-                            <button
-                                @click="previousSlide()"
-                                class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
-                                上一張
-                            </button>
-
-                            <button
-                                @click="nextSlide()"
-                                class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg transform hover:scale-105">
-                                下一張
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </button>
-                        </div> --}}
-
-                        <!-- 快速跳轉輸入 -->
-                        {{-- <div class="flex items-center gap-2 mb-4 justify-center">
-                            <label class="text-sm font-medium text-gray-700">快速跳轉:</label>
-                            <input
-                                type="number"
-                                x-model="jumpTo"
-                                min="1"
-                                :max="slides.length"
-                                class="w-16 px-2 py-1 border border-gray-300 rounded text-center focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                @keyup.enter="goToSlide(Math.max(0, Math.min(parseInt(jumpTo) - 1, slides.length - 1)))">
-                            <button
-                                @click="goToSlide(Math.max(0, Math.min(parseInt(jumpTo) - 1, slides.length - 1)))"
-                                class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 text-sm font-medium">
-                                GO
-                            </button>
-                        </div> --}}
-
-                        <!-- 當前狀態顯示 -->
-                        {{-- <div class="mb-4 text-center">
-                            <div class="text-sm text-gray-600 mb-2">
-                                當前圖片: <span x-text="currentSlideIndex + 1" class="font-bold text-blue-600"></span> / <span x-text="slides.length" class="font-bold"></span>
-                            </div>
-
-                            <!-- 進度條 -->
-                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
-                                <div class="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
-                                    :style="`width: ${((currentSlideIndex + 1) / slides.length) * 100}%`"></div>
-                            </div>
-
-                            <!-- 圓點指示器 -->
-                            <div class="flex justify-center gap-2">
-                                <template x-for="(slide, index) in slides" :key="index">
-                                    <button
-                                        @click="goToSlide(index)"
-                                        class="w-3 h-3 rounded-full transition-all duration-200"
-                                        :class="currentSlideIndex === index
-                                            ? 'bg-blue-500 transform scale-125'
-                                            : 'bg-gray-300 hover:bg-gray-400'">
-                                    </button>
-                                </template>
-                            </div>
-                        </div> --}}
-
-                        <!-- DaisyUI Carousel with Hover Arrows -->
-                        <div class="relative"
-                            @mouseenter="showArrows = true"
-                            @mouseleave="showArrows = false">
-
-                            <!-- Left Arrow (懸停時顯示) -->
+                        <div class="relative" @mouseenter="showArrows = true" @mouseleave="showArrows = false">
+                            <!-- 左箭頭 -->
                             <button
                                 @click="previousSlide()"
                                 x-show="showArrows"
@@ -274,7 +85,7 @@
                                 </svg>
                             </button>
 
-                            <!-- Right Arrow (懸停時顯示) -->
+                            <!-- 右箭頭 -->
                             <button
                                 @click="nextSlide()"
                                 x-show="showArrows"
@@ -295,96 +106,37 @@
                                 </svg>
                             </button>
 
-                            <!-- DaisyUI Carousel -->
-                            {{-- <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
-                                <div id="item1" class="carousel-item w-full">
-                                    <img
-                                        src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
-                                        class="w-full h-96 object-cover" />
-                                </div>
-                                <div id="item2" class="carousel-item w-full">
-                                    <img
-                                        src="https://mary-ui.com/photos/photo-1565098772267-60af42b81ef2.jpg"
-                                        class="w-full h-96 object-cover" />
-                                </div>
-                                <div id="item3" class="carousel-item w-full">
-                                    <img
-                                        src="https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg"
-                                        class="w-full h-96 object-cover" />
+                            <!-- 輪播內容 -->
+                            <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
+                                @forelse ($product->images as $key => $image)
+                                    <div id="item{{$key+1}}" class="carousel-item w-full">
+                                        <x-curator-glider
+                                            :media="$image"
+                                            class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
+                                            :srcset="[
+                                                '1000w' => 1000,
+                                                '750w' => 750,
+                                                '500w' => 500,
+                                            ]"
+                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                            width="600"
+                                            height="600"
+                                            fit="crop"
+                                            quality="80"
+                                            alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"
+                                            @click="$dispatch('open-lightbox', { index: {{$key}} })"
+                                        />
                                     </div>
-                                    <div id="item4" class="carousel-item w-full">
-                                        <img
-                                        src="https://mary-ui.com/photos/photo-1559703248-dcaaec9fab78.jpg"
-                                        class="w-full h-96 object-cover" />
-                                </div>
-                            </div> --}}
-                        </div>
-
-
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
-                        <div class="carousel w-full rounded-lg shadow-xl overflow-hidden" x-ref="carousel">
-                            @forelse ($product->images as $key => $image)
-                                {{-- Curator 的 Media 模型有一個 getUrl() 方法可以取得圖片的 URL --}}
-                                {{-- <img src="{{ $image->getUrl() }}" alt="{{ $image->alt }}"
-                                    class="w-full h-48 object-cover cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                                    onclick="openLightbox('{{ $image->getUrl() }}')"> --}}
-
-
-
-
-                                        <div id="item{{$key+1}}" class="carousel-item w-full">
-                                            {{-- <img
-                                                src="https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg"
-                                                class="w-full h-96 object-cover" /> --}}
-                                            <x-curator-glider
-                                                :media="$image"        {{-- 傳遞單個 Media 物件 --}}
-                                                class="cursor-pointer hover:opacity-75 transition duration-300 ease-in-out"
-                                                :srcset="[              {{-- 可選：響應式圖片設定 (srcset) --}}
-                                                    '1000w' => 1000,
-                                                    '750w' => 750,
-                                                    '500w' => 500,
-                                                ]"
-                                                sizes="(max-width: 768px) 100vw, 33vw" {{-- 可選：Sizes 屬性 --}}
-                                                width="600"             {{-- 可選：圖片寬度 --}}
-                                                height="600"            {{-- 可選：圖片高度 --}}
-                                                fit="crop"             {{-- 可選：圖片適合方式 (cover, contain, fill, crop, stretch) --}}
-                                                quality="80"            {{-- 可選：圖片品質 (0-100) --}}
-                                                alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}" {{-- 圖片 alt 屬性 --}}
-                                                onclick="openLightbox('{{ $image->url }}')" {{-- Lightbox 仍然可以使用原始 URL --}}
-                                            />
-                                        </div>
-
-
-
-
-                                {{-- 可以在這裡顯示圖片的 alt 或 title --}}
-                                @if ($image->alt)
-                                    <p class="p-2 text-sm text-gray-500">{{ $image->alt }}hoho</p>
-                                @endif
-                            @empty
-                                <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
-                            @endforelse
+                                    {{-- 可以在這裡顯示圖片的 alt 或 title --}}
+                                    @if ($image->alt)
+                                        <p class="p-2 text-sm text-gray-500">{{ $image->alt }}hoho</p>
+                                    @endif
+                                @empty
+                                    <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                                @endforelse
+                            </div>
                         </div>
                     </div>
-
-
-
-
-
 
 
 
@@ -496,19 +248,171 @@
                 &larr; 回到上一頁
             </a>
 
-            {{-- 簡易 Lightbox 範例 (可替換為實際的 JS 套件) --}}
-            <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden" onclick="closeLightbox()">
-                <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[90%] rounded-lg shadow-xl">
+
+            {{-- Lightbox --}}
+            <div id="lightbox"
+                 class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden"
+                 x-data="lightboxCarousel()"
+                 @open-lightbox.window="openLightbox($event.detail.index)"
+                 @keydown.escape="closeLightbox()"
+                 @keydown.arrow-left="previousSlide()"
+                 @keydown.arrow-right="nextSlide()">
+                {{-- 關閉按鈕 --}}
+                <button @click.stop="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-gray-300 focus:outline-none z-50">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                {{-- 左箭頭 --}}
+                <button @click.stop="previousSlide()" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none z-50">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    </svg>
+                </button>
+
+                {{-- 右箭頭 --}}
+                <button @click.stop="nextSlide()" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none z-50">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </button>
+
+                {{-- 圖片容器 --}}
+                <div class="relative w-full h-full flex items-center justify-center" @click.stop>
+                    <template x-for="(image, index) in images" :key="index">
+                        <div x-show="currentIndex === index"
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-95"
+                             class="absolute inset-0 flex items-center justify-center">
+                            <img :src="image.url" :alt="image.alt" class="max-w-full max-h-[90vh] object-contain">
+                        </div>
+                    </template>
+                </div>
+
+                {{-- 縮圖導航 --}}
+                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4 z-50">
+                    <template x-for="(image, index) in images" :key="index">
+                        <button @click.stop="goToSlide(index)"
+                                class="w-16 h-16 rounded-lg overflow-hidden border-2 transition-all duration-200"
+                                :class="currentIndex === index ? 'border-white scale-110' : 'border-transparent hover:border-white'">
+                            <img :src="image.url" :alt="image.alt" class="w-full h-full object-cover">
+                        </button>
+                    </template>
+                </div>
+
+                {{-- 圖片計數器 --}}
+                <div class="absolute top-4 left-4 text-white text-lg z-50">
+                    <span x-text="currentIndex + 1"></span> / <span x-text="images.length"></span>
+                </div>
             </div>
+
             <script>
-                function openLightbox(imageUrl) {
-                    document.getElementById('lightbox-img').src = imageUrl;
-                    document.getElementById('lightbox').classList.remove('hidden');
+                function productCarousel() {
+                    return {
+                        currentSlideIndex: 0,
+                        showArrows: false,
+                        totalSlides: {{ count($product->images) }},
+
+                        goToSlide(index) {
+                            this.currentSlideIndex = index;
+                            const targetElement = document.getElementById(`item${index + 1}`);
+                            if (targetElement) {
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'nearest',
+                                    inline: 'start'
+                                });
+                            }
+                        },
+
+                        nextSlide() {
+                            const nextIndex = (this.currentSlideIndex + 1) % this.totalSlides;
+                            this.goToSlide(nextIndex);
+                        },
+
+                        previousSlide() {
+                            const prevIndex = this.currentSlideIndex > 0
+                                ? this.currentSlideIndex - 1
+                                : this.totalSlides - 1;
+                            this.goToSlide(prevIndex);
+                        },
+
+                        init() {
+                            const carousel = this.$refs.carousel;
+                            if (carousel) {
+                                const observer = new IntersectionObserver((entries) => {
+                                    entries.forEach(entry => {
+                                        if (entry.isIntersecting) {
+                                            const id = entry.target.id;
+                                            const index = parseInt(id.replace('item', '')) - 1;
+                                            if (!isNaN(index)) {
+                                                this.currentSlideIndex = index;
+                                            }
+                                        }
+                                    });
+                                }, {
+                                    root: carousel,
+                                    threshold: 0.5
+                                });
+
+                                // 觀察所有輪播項目
+                                for (let i = 1; i <= this.totalSlides; i++) {
+                                    const element = document.getElementById(`item${i}`);
+                                    if (element) observer.observe(element);
+                                }
+                            }
+                        }
+                    }
                 }
 
-                function closeLightbox() {
-                    document.getElementById('lightbox').classList.add('hidden');
-                    document.getElementById('lightbox-img').src = '';
+                function lightboxCarousel() {
+                    return {
+                        images: [],
+                        currentIndex: 0,
+                        showArrows: true,
+
+                        init() {
+                            // 從 product images 初始化圖片陣列
+                            this.images = @json($product->images->map(function($image) {
+                                return [
+                                    'url' => $image->url,
+                                    'alt' => $image->alt
+                                ];
+                            }));
+                        },
+
+                        openLightbox(index) {
+                            this.currentIndex = index;
+                            const lightbox = document.getElementById('lightbox');
+                            lightbox.classList.remove('hidden');
+                            document.body.style.overflow = 'hidden'; // 防止背景滾動
+                        },
+
+                        closeLightbox() {
+                            const lightbox = document.getElementById('lightbox');
+                            lightbox.classList.add('hidden');
+                            document.body.style.overflow = ''; // 恢復背景滾動
+                        },
+
+                        nextSlide() {
+                            this.currentIndex = (this.currentIndex + 1) % this.images.length;
+                        },
+
+                        previousSlide() {
+                            this.currentIndex = this.currentIndex > 0
+                                ? this.currentIndex - 1
+                                : this.images.length - 1;
+                        },
+
+                        goToSlide(index) {
+                            this.currentIndex = index;
+                        }
+                    }
                 }
             </script>
 

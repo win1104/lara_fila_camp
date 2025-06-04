@@ -7,7 +7,7 @@
                 <div class="lg:w-4/5 mx-auto flex flex-wrap">
 
 
-                    @php
+                    {{-- @php
                         $slides = [
                             [
                                 'id' => 'item1',
@@ -30,39 +30,12 @@
                                 'title' => '圖片 4',
                             ],
                         ];
-                    @endphp
+                    @endphp --}}
 
-                    <div x-data="productCarousel()" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded border rounded-lg overflow-hidden shadow-md">
-                        <!-- 縮圖控制按鈕 -->
-                        <div class="lg:w-4/5 mx-auto flex flex-wrap gap-2 mb-4">
-                            @forelse ($product->images as $key => $image)
-                                <button
-                                    @click="goToSlide({{$key}})"
-                                    class="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
-                                    :class="currentSlideIndex === {{$key}} ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105' : 'border-gray-300 hover:border-gray-400'">
-                                    <x-curator-glider
-                                        :media="$image"
-                                        class="hover:opacity-75 transition duration-300 ease-in-out"
-                                        :srcset="[
-                                            '1000w' => 1000,
-                                            '750w' => 750,
-                                            '500w' => 500,
-                                        ]"
-                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                        width="80"
-                                        height="80"
-                                        fit="crop"
-                                        quality="80"
-                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"
-                                    />
-                                </button>
-                            @empty
-                                <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
-                            @endforelse
-                        </div>
+                    <div x-data="productCarousel()" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded rounded-lg overflow-hidden">
+
 
                         <!-- 主要輪播 -->
-
                         <div class="relative" @mouseenter="showArrows = true" @mouseleave="showArrows = false">
                             <!-- 左箭頭 -->
                             <button
@@ -136,6 +109,37 @@
                                 @endforelse
                             </div>
                         </div>
+
+
+                        <!-- 縮圖控制按鈕 -->
+                        <div class="mx-auto flex flex-wrap gap-2 mb-4 mt-2">
+                            @forelse ($product->images as $key => $image)
+                                <button
+                                    @click="goToSlide({{$key}})"
+                                    class="relative rounded-lg overflow-hidden border-2 transition-all duration-200"
+                                    :class="currentSlideIndex === {{$key}} ? 'border-blue-500 ring-2 ring-blue-200 transform scale-105' : 'border-gray-300 hover:border-gray-400'">
+                                    <x-curator-glider
+                                        :media="$image"
+                                        class="hover:opacity-75 transition duration-300 ease-in-out"
+                                        :srcset="[
+                                            '1000w' => 1000,
+                                            '750w' => 750,
+                                            '500w' => 500,
+                                        ]"
+                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                        width="80"
+                                        height="80"
+                                        fit="crop"
+                                        quality="80"
+                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"
+                                    />
+                                </button>
+                            @empty
+                                <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                            @endforelse
+                        </div>
+
+
                     </div>
 
 
@@ -230,7 +234,7 @@
 
 
                 {{-- tabs --}}
-                <div class="tabs tabs-lift">
+                <div class="lg:w-4/5  mx-auto tabs tabs-lift">
                     <input type="radio" name="my_tabs_3" class="tab" aria-label="Tab 1" />
                     <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 1</div>
 
@@ -251,12 +255,12 @@
 
             {{-- Lightbox --}}
             <div id="lightbox"
-                 class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden"
-                 x-data="lightboxCarousel()"
-                 @open-lightbox.window="openLightbox($event.detail.index)"
-                 @keydown.escape="closeLightbox()"
-                 @keydown.arrow-left="previousSlide()"
-                 @keydown.arrow-right="nextSlide()">
+                class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 hidden"
+                x-data="lightboxCarousel()"
+                @open-lightbox.window="openLightbox($event.detail.index)"
+                @keydown.escape="closeLightbox()"
+                @keydown.arrow-left="previousSlide()"
+                @keydown.arrow-right="nextSlide()">
                 {{-- 關閉按鈕 --}}
                 <button @click.stop="closeLightbox()" class="absolute top-4 right-4 text-white hover:text-gray-300 focus:outline-none z-50">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,13 +286,13 @@
                 <div class="relative w-full h-full flex items-center justify-center" @click.stop>
                     <template x-for="(image, index) in images" :key="index">
                         <div x-show="currentIndex === index"
-                             x-transition:enter="transition ease-out duration-300"
-                             x-transition:enter-start="opacity-0 transform scale-95"
-                             x-transition:enter-end="opacity-100 transform scale-100"
-                             x-transition:leave="transition ease-in duration-200"
-                             x-transition:leave-start="opacity-100 transform scale-100"
-                             x-transition:leave-end="opacity-0 transform scale-95"
-                             class="absolute inset-0 flex items-center justify-center">
+                            x-transition:enter="transition ease-out duration-300"
+                            x-transition:enter-start="opacity-0 transform scale-95"
+                            x-transition:enter-end="opacity-100 transform scale-100"
+                            x-transition:leave="transition ease-in duration-200"
+                            x-transition:leave-start="opacity-100 transform scale-100"
+                            x-transition:leave-end="opacity-0 transform scale-95"
+                            class="absolute inset-0 flex items-center justify-center">
                             <img :src="image.url" :alt="image.alt" class="max-w-full max-h-[90vh] object-contain">
                         </div>
                     </template>

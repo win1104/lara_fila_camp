@@ -33,6 +33,7 @@ class MenuResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('locale')
+                            ->disabled()
                             ->required(),
                         Forms\Components\TextInput::make('slug')
                             ->maxLength(255),

@@ -108,6 +108,9 @@ class PostsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $menu = $this->getOwnerRecord();
+        $shouldShowCreateAction = $menu->type !== 'posts';
+
         return $table
             // ->heading('病患資料')
             ->recordTitleAttribute('title')
@@ -149,7 +152,8 @@ class PostsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->visible($shouldShowCreateAction),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

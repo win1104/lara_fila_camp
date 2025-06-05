@@ -44,9 +44,11 @@ class MenuResource extends Resource
                             ->default(0),
                         Forms\Components\Select::make('type')
                             ->options([
-                                'post' => 'Post',
-                                'list' => 'List',
-                                'download' => 'Download',
+                                'posts' => 'Posts',
+                                'listS' => 'Lists',
+                                'tilelists' => 'Tilelists',
+                                'tabs' => 'Tabs',
+                                'collapses' => 'Collapses',
                             ])
                             ->required(),
                     ])

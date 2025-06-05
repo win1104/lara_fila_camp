@@ -22,11 +22,11 @@
                         @if ( $menus->count() > 0 )
                         {{-- <ul class="menu menu-horizontal px-1"> --}}
                             @foreach ($menus as $menu)
-                                @if ( $menu->type === 'post' || $menu->type === 'list' || $menu->type === 'tilelist' || $menu->type === 'tab' || $menu->type === 'collapse' )
+                                @if ( $menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses' )
                                     <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
                                         {!! $menu->title !!}
                                     </x-nav-link>
-                                @elseif($menu->type == 'product')
+                                @elseif($menu->type == 'products')
                                     <x-nav-link :href="route('product.show', ['locale' => app()->getLocale()])">
                                         {!! $menu->title !!}
                                     </x-nav-link>

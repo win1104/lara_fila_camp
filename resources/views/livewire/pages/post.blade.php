@@ -1,5 +1,5 @@
 <div>
-    @if($menuType == 'list')
+    @if($menuType == 'lists')
         <div class="container mx-auto px-4 py-8">
             <h2 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h2>
             <div class="grid gap-6">
@@ -29,7 +29,7 @@
                 </section>
             </div>
         </div>
-    @elseif($menuType == 'tilelist')
+    @elseif($menuType == 'tilelists')
         <div class="container mx-auto px-4 py-8">
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
@@ -55,7 +55,7 @@
                 </section>
             </div>
         </div>
-    @elseif($menuType == 'tab')
+    @elseif($menuType == 'tabs')
         <div class="container mx-auto px-4 py-8">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div x-data="{ tabs: [] }">
@@ -91,7 +91,7 @@
             </div>
 
         </div>
-    @elseif($menuType == 'collapse')
+    @elseif($menuType == 'collapses')
         <div class="container mx-auto px-4 py-8">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div class="border rounded shadow-sm">

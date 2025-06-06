@@ -60,7 +60,8 @@ class Product extends Model
     {
         return $this->belongsToMany(Media::class, 'product_media', 'product_id', 'media_id')
                     ->withPivot('order') // 如果你需要排序，可以在中間表添加 'order' 欄位
-                    ->orderBy('pivot_order'); // 依據排序欄位排序
+                    ->orderBy('order'); // 依據排序欄位排序
+                    // ->orderBy('pivot_order'); // 依據排序欄位排序
     }
 
     protected static function boot()

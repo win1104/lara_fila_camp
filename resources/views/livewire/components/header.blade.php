@@ -1,14 +1,15 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1640px] mx-auto lg:px-5">
         <div class="h-18">
 
 
             <!-- maryUI -->
-            <div class="navbar bg-base-100 ">
+            <div class="navbar bg-base-100 justify-between">
 
                 <!-- Logo -->
-                <div class="shrink-0 items-center">
+                {{-- <div class="shrink-0 items-center"> --}}
+                <div class="navbar-start w-auto">
                     <a href="{{ route('home', ['locale' => app()->getLocale()]) }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                         {{-- <img src="/storage/bright_future_logo.jpg" alt="logo" width="50" height="50"/> --}}
@@ -16,13 +17,13 @@
                 </div>
 
 
-                <div class="navbar-start">
+                {{-- <div class="navbar-start"> --}}
                     <div class="navbar-center hidden lg:flex">
 
-                        @if ( $menus->count() > 0 )
+                        @if ($menus->count() > 0)
                         {{-- <ul class="menu menu-horizontal px-1"> --}}
                             @foreach ($menus as $menu)
-                                @if ( $menu->type === 'post' || $menu->type === 'list' || $menu->type === 'tilelist' || $menu->type === 'tab' || $menu->type === 'collapse' )
+                                @if ($menu->type === 'post' || $menu->type === 'list' || $menu->type === 'tilelist' || $menu->type === 'tab' || $menu->type === 'collapse')
                                     <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
                                         {!! $menu->title !!}
                                     </x-nav-link>
@@ -68,7 +69,7 @@
                             {{ __('Mobile') }}
                         </x-nav-link>
                     </div>
-                </div>
+                {{-- </div> --}}
 
 
                 <div class="navbar-end">
@@ -136,7 +137,7 @@
                                     <div class="w-10 rounded-full">
                                         <img
                                             alt="{{ auth()->user()->name }} profile picture"
-                                            src="{{ '/storage/'.auth()->user()->avatar }}" />
+                                            src="{{ '/storage/' . auth()->user()->avatar }}" />
                                     </div>
                                 </div>
                                 <ul

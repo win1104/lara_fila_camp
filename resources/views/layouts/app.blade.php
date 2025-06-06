@@ -21,7 +21,7 @@
     </head>
     <body class="font-sans antialiased">
 
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-white">
 
             {{-- @include('layouts.navigation') --}}
             <livewire:components.header />
@@ -36,7 +36,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="max-w-[1640px] mx-auto px-5">
                 {{ $slot }}
             </main>
         </div>

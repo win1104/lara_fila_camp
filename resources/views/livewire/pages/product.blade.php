@@ -424,24 +424,41 @@
     @else
         {{-- 產品列表頁面 --}}
         @if($products)
-            <section class="text-gray-600 body-font">
-                <div class="container px-5 py-24 mx-auto">
+            <section class="text-gray-600 body-font max-w-[1640px] mx-auto">
+                <div class=" px-5 py-24">
                     <div class="flex flex-wrap -m-4">
                         @foreach($products as $product)
-                            <div class="p-4 md:w-1/3">
-                                <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                                    @if($product->image)
-                                        <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}">
+                            <div class="p-4 ">
+                                <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden max-h-[424px]">
+                                    @if($product->images)
+                                        @forelse ($product->images as $key => $image)
+                                            @if($key == 0 )
+                                                <x-curator-glider class="h-1/2 object-cover w-full"
+                                                    :media="$image"
+                                                    class="hover:opacity-75 transition duration-300 ease-in-out"
+                                                    :srcset="[
+                                                        '1000w' => 1000,
+                                                        '750w' => 750,
+                                                        '500w' => 500,
+                                                    ]"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                    width="473"
+                                                    height="192"
+                                                    fit="crop"
+                                                    quality="80"
+                                                    alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"
+                                                />
+                                            @endif
+                                        @empty
+                                            <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                                        @endforelse
                                     @else
                                         <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
-                                        {{-- <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
-                                            無圖片
-                                        </div> --}}
                                     @endif
                                     <div class="p-6">
                                         <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</h2>
                                         <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</h1>
-                                        <p class="leading-relaxed mb-3">{!! Str::limit($product->content, 200) !!}</p>
+                                        <div class="leading-relaxed mb-3 max-w-[425px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div>
                                         <div class="flex items-center flex-wrap ">
                                             <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
                                                 <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">

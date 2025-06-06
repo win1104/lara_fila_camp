@@ -19,7 +19,7 @@ class CreateAssistant extends Command
      *
      * @var string
      */
-    protected $description = 'Creates the MP3_200_User_Manual_V1.0_TW assistant.';
+    protected $description = 'Creates the MUJI furniture Chat Bot assistant.';
 
     /**
      * Execute the console command.
@@ -33,9 +33,13 @@ class CreateAssistant extends Command
         //     'file-PijZiqujDEfioayC2a5gFc'   // BlastInjuriesManual
         // ];
         $fileIds = $this->option('file-ids') ?: [
-            'file-NfPLvzsApTzBkrd6txC15R',
-            'file-2MD9zqcfvAYmbLeNDK4Qu6',
-            'file-PijZiqujDEfioayC2a5gFc',
+            // 'file-NfPLvzsApTzBkrd6txC15R',
+            // 'file-2MD9zqcfvAYmbLeNDK4Qu6',
+            // 'file-PijZiqujDEfioayC2a5gFc',
+            'file-S7EUQBzr4RpnHmswktRFwg',
+            'file-8siV98XYvUqNcM4Rgc5po8',
+            'file-TKEtbNPWtmzCHLiy2bj9mK',
+            'file-WBm4jYJPMcZdUPT1QoBFJh',
         ];
 
         $vectorStore = OpenAI::vectorStores()->create([
@@ -44,7 +48,7 @@ class CreateAssistant extends Command
         $this->info('Vector Store ID: ' . $vectorStore->id);
 
         $assistant = OpenAI::assistants()->create([
-            'name' => 'MP3_200 Chat Bot',
+            'name' => 'bright_future furniture Chat Bot',
             'tools' => [
                 [
                     'type' => 'file_search',
@@ -55,7 +59,7 @@ class CreateAssistant extends Command
                     'vector_store_ids' => [$vectorStore->id],
                 ],
             ],
-            'instructions' => '你是一位根據文件內容提供協助的客服助理。請根據所提供的文件回答使用者的問題，並使用與使用者問題相同的語言作答。如果文件中找不到相關資訊，請用對應語言回覆：「抱歉，我不清楚這個問題的答案。」',
+            'instructions' => '你是一位根據文件內容提供協助的客服助理。請根據所提供的文件回答使用者的問題，並使用與使用者問題相同的語言作答，如為中文問題用中文回答；如為英文問題用英文回答，以此類推。如果文件中找不到相關資訊，請用對應語言回覆：「抱歉，我不清楚這個問題的答案。」',
             'model' => 'gpt-4o-mini',
         ]);
 

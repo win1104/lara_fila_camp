@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <x-slot name="header">
+    <x-slot name="header" class="max-w-[1632px]">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('美好未來 AI 檢測分析') }}
         </h2>

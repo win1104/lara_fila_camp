@@ -38,6 +38,7 @@ class Post extends Component
                 $this->post = PostModel::where('menu_slug', $menu)
                     ->where('locale', app()->getLocale())
                     ->where('display', 1)
+                    ->limit(1)
                     ->first();
             }
 

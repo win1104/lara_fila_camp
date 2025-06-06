@@ -5,7 +5,7 @@
 
 
             <!-- maryUI -->
-            <div class="navbar bg-base-100 ">
+            <div class="navbar bg-base-100 relative">
 
                 <!-- Logo -->
                 <div class="shrink-0 items-center">
@@ -16,43 +16,56 @@
                 </div>
 
 
+
+
                 <div class="navbar-start">
-                    <div class="navbar-center hidden lg:flex">
+                    <div class="navbar-center hidden lg:flex relative">
 
                         @if ( $menus->count() > 0 )
-                        {{-- <ul class="menu menu-horizontal px-1"> --}}
                             @foreach ($menus as $menu)
                                 @if ( $menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses' )
-                                    <x-nav-link :href="route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug])">
-                                        {!! $menu->title !!}
-                                    </x-nav-link>
+                                    @if($menu->children->count() > 0)
+                                        <div class="dropdown dropdown-hover">
+                                            <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
+                                                @foreach($menu->children as $child)
+                                                    <li>
+                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
+                                                            {!! $child->title !!}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @else
+                                        <x-mary-button link="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}" class="btn-ghost text-base">
+                                            {!! $menu->title !!}
+                                        </x-mary-button>
+                                    @endif
+
                                 @elseif($menu->type == 'products')
-                                    <x-nav-link :href="route('product.show', ['locale' => app()->getLocale()])">
+                                    <x-mary-button link="{{ route('product.show', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
                                         {!! $menu->title !!}
-                                    </x-nav-link>
+                                    </x-mary-button>
                                 @endif
 
-
-
-
-
-                                {{-- @if ( $menu->type == 'post' ) --}}
-                                {{-- <li>
-                                    <a href="{{ route('home', ['locale' => app()->getLocale()]) }}" wire:navigate>
-                                        <x-mary-icon name="o-home" />
-                                        {!! $menu->title !!}
-                                    </a>
-                                </li> --}}
                             @endforeach
-                        {{-- </ul> --}}
                         @endif
+                    </div>
+                </div>
+
+
+
+
+
+
 
 
 
                         {{-- <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link> --}}
-                        <x-nav-link :href="route('chirps.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('chirps.index')">
+                        {{-- <x-nav-link :href="route('chirps.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('chirps.index')">
                             {{ __('Chirps') }}
                         </x-nav-link>
                         <x-nav-link :href="route('note.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('note.index')">
@@ -66,9 +79,11 @@
                         </x-nav-link>
                         <x-nav-link :href="route('mobile.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('mobile.index')">
                             {{ __('Mobile') }}
-                        </x-nav-link>
-                    </div>
-                </div>
+                        </x-nav-link> --}}
+
+
+
+
 
 
                 <div class="navbar-end">

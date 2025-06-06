@@ -33,6 +33,7 @@ class MenuResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->maxLength(255),
                         Forms\Components\TextInput::make('locale')
+                            ->disabled()
                             ->required(),
                         Forms\Components\TextInput::make('slug')
                             ->maxLength(255),
@@ -44,9 +45,11 @@ class MenuResource extends Resource
                             ->default(0),
                         Forms\Components\Select::make('type')
                             ->options([
-                                'post' => 'Post',
-                                'list' => 'List',
-                                'download' => 'Download',
+                                'posts' => 'Posts',
+                                'listS' => 'Lists',
+                                'tilelists' => 'Tilelists',
+                                'tabs' => 'Tabs',
+                                'collapses' => 'Collapses',
                             ])
                             ->required(),
                     ])

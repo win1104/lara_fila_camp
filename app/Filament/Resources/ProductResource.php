@@ -5,12 +5,11 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
-use App\Models\Category;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\ProductCategory;
 use Filament\Resources\Resource;
 // use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
@@ -34,7 +33,7 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('locale')
                     ->required()
-                    ->default(fn () => app()->getLocale()),
+                    ->default(fn () => Request::route('locale')),
                 SelectTree::make('product_categories')
                     ->label('產品分類')
                     ->placeholder('Select Category')

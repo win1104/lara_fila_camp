@@ -26,9 +26,9 @@ class Post extends Component
         //     'parameters' => request()->route()->parameters()
         // ]);
 
-        if ($type === 'post')
+        if ($type === 'posts')
         {
-            // 如果提供了 post 參數，直接使用它，for post detail
+            // 如果提供了 posts 參數，直接使用它，for post detail
             if ($post instanceof PostModel) {
                 $this->post = $post;
             }

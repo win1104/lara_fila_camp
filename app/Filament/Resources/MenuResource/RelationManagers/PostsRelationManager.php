@@ -6,14 +6,9 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use FilamentTiptapEditor\TiptapEditor;
-use Illuminate\Database\Eloquent\Builder;
-use FilamentTiptapEditor\Enums\TiptapOutput;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
 
@@ -113,6 +108,9 @@ class PostsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $menu = $this->getOwnerRecord();
+        $shouldShowCreateAction = $menu->type !== 'posts';
+
         return $table
             // ->heading('病患資料')
             ->recordTitleAttribute('title')
@@ -154,7 +152,8 @@ class PostsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->visible($shouldShowCreateAction),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

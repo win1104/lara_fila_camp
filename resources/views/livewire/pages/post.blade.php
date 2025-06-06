@@ -1,7 +1,6 @@
 <div>
-    @if($menuType == 'list')
-        {{-- <div class="container mx-auto px-4 py-8"> --}}
-        <div class="mx-auto py-8">
+    @if($menuType == 'lists')
+        <div class="container mx-auto px-4 py-8">
             <h2 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h2>
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
@@ -30,12 +29,11 @@
                 </section>
             </div>
         </div>
-    @elseif($menuType == 'tilelist')
-        <div class="mx-auto py-8">
+    @elseif($menuType == 'tilelists')
+        <div class="container mx-auto px-4 py-8">
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
-                    {{-- <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap"> --}}
-                    <div class="py-24 flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
+                    <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
                         @foreach($posts as $post)
                             <x-mary-card title="{{ $post->title }}" class="bg-white rounded-lg shadow-md">
                                 {{-- {!! $post->content !!} --}}
@@ -57,9 +55,8 @@
                 </section>
             </div>
         </div>
-    @elseif($menuType == 'tab')
-        {{-- <div class="container mx-auto px-4 py-8"> --}}
-        <div class="mx-auto py-8">
+    @elseif($menuType == 'tabs')
+        <div class="container mx-auto px-4 py-8">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div x-data="{ tabs: [] }">
             <x-mary-tabs wire:model="activeTab">
@@ -94,8 +91,8 @@
             </div>
 
         </div>
-    @elseif($menuType == 'collapse')
-        <div class="mx-auto py-8">
+    @elseif($menuType == 'collapses')
+        <div class="container mx-auto px-4 py-8">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div class="border rounded shadow-sm">
                 <button type="button" aria-label="Open item" title="Open item"
@@ -147,8 +144,7 @@
 
         </div>
     @else
-        {{-- <div class="container mx-auto px-4 py-8"> --}}
-        <div class="mx-auto py-8">
+        <div class="container mx-auto px-4 py-8">
             <article class="bg-white rounded-lg shadow-md p-6">
                 <h1 class="text-3xl font-bold mb-4">{{ $post->title }}</h1>
                 @if($post->intro)

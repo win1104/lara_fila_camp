@@ -83,7 +83,15 @@ class MenuWidget extends BaseWidget
         if (! $record) {
             return '';
         }
-        return "[{$record->slug}] {$record->title}";
+
+        $display = $record->display ? '✓' : '✗';
+        $color = $record->display ? 'text-success-500' : 'text-danger-500';
+
+
+        return "<span class='$color mr-2'> $display </span>
+            {$record->title}
+            <div class='inline-block bg-gray-100 ml-2 px-3 py-1 rounded-md text-xs text-gray-600 font-light'>{$record->slug}</div>"
+            ;
     }
 
     // protected function getParentField(): string

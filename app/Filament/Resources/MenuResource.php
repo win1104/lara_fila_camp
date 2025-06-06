@@ -35,14 +35,16 @@ class MenuResource extends Resource
                         Forms\Components\TextInput::make('locale')
                             ->disabled()
                             ->required(),
-                        Forms\Components\TextInput::make('slug')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('parent_slug')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('order')
-                            ->required()
-                            ->numeric()
-                            ->default(0),
+                            Forms\Components\TextInput::make('slug')
+                            ->required(),
+                        // Forms\Components\TextInput::make('parent_slug')
+                        //     ->maxLength(255),
+                        Forms\Components\Toggle::make('display')
+                            ->label('Display'),
+                        // Forms\Components\TextInput::make('order')
+                        //     ->required()
+                        //     ->numeric()
+                        //     ->default(0),
                         Forms\Components\Select::make('type')
                             ->options([
                                 'posts' => 'Posts',

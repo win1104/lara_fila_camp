@@ -27,13 +27,15 @@
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
-                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border">
                                                 @foreach($menu->children as $child)
-                                                    <li>
-                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
-                                                            {!! $child->title !!}
-                                                        </a>
-                                                    </li>
+                                                    @if($child->display == 1)
+                                                        <li>
+                                                            <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type, 'menu' => $child->slug]) }}">
+                                                                {!! $child->title !!}
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -102,12 +104,11 @@
                 <div class="navbar-end">
                     <div class="">
 
-                        {{-- <a class="btn btn-ghost text-xl">
-                            {{ config("app.name")}}
-                        </a> --}}
-
+                        <x-mary-button class="indicator" onclick="my_modal_1.showModal()">
+                            Inbox
+                            <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
+                        </x-mary-button>
                         <!-- daisyui modal -->
-                        <button class="btn btn-ghost text-xl" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
                                 <h3 class="text-lg font-bold">Hello!</h3>
@@ -121,10 +122,6 @@
                             </div>
                         </dialog>
 
-                        <x-mary-button class="indicator">
-                            Inbox
-                            <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
-                        </x-mary-button>
 
                         <!-- theme switcher at home.blade.php -->
                         <button onclick="toggleTheme()"

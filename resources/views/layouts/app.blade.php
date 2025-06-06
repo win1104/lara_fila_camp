@@ -14,10 +14,33 @@
         <!-- Mary UI -->
         <link href="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.css" rel="stylesheet">
 
-
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+
+        <style>
+            .dropdown {
+                position: relative;
+            }
+            .dropdown-content {
+                position: absolute !important;
+                transform: none !important;
+                margin-top: 0 !important;
+                padding-top: 0.5rem !important;
+                font-size: 1rem;
+            }
+            .dropdown-content::before {
+                content: '';
+                position: absolute;
+                top: -0.5rem;
+                left: 0;
+                right: 0;
+                height: 0.5rem;
+            }
+            .dropdown-content ul {
+                margin-top: 0 !important;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased">
 

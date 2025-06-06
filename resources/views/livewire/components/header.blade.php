@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="h-18">
+    <div class="max-w-[1632px] mx-auto">
+        <div class="h-16 px-8 lg:px-32">
 
 
             <!-- maryUI -->
@@ -21,9 +21,9 @@
                 <div class="navbar-start">
                     <div class="navbar-center hidden lg:flex relative">
 
-                        @if ( $menus->count() > 0 )
+                        @if ($menus->count() > 0)
                             @foreach ($menus as $menu)
-                                @if ( $menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses' )
+                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
@@ -164,7 +164,7 @@
                                     <div class="w-10 rounded-full">
                                         <img
                                             alt="{{ auth()->user()->name }} profile picture"
-                                            src="{{ '/storage/'.auth()->user()->avatar }}" />
+                                            src="{{ '/storage/' . auth()->user()->avatar }}" />
                                     </div>
                                 </div>
                                 <ul

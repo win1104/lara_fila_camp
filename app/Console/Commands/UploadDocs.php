@@ -28,7 +28,7 @@ class UploadDocs extends Command
     public function handle()
     {
         $uploadedFile = OpenAI::files()->upload([
-            'file' => Storage::disk('local')->readStream('bright_future/ASUS HealthHub健康小站介紹_中文版_20241111.pdf'),
+            'file' => Storage::disk('local')->readStream('bright_future/美好未來QA最終版.pdf'),
             'purpose' => 'assistants',
         ]);
 

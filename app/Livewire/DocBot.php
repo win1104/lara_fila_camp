@@ -54,7 +54,7 @@ class DocBot extends Component
     {
         return OpenAI::threads()->createAndRun([
             // 'assistant_id' => 'asst_jKi5NvszoIqw1Wiww2feZLWR',
-            'assistant_id' => 'asst_nHPDpr52vnIJRCm12ynGd8DV',
+            'assistant_id' => 'asst_Xq6By9KlVhYz8FBa73BArt2S',
             'thread' => [
                 'messages' => [
                     [

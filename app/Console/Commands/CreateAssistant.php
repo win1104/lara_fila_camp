@@ -40,6 +40,8 @@ class CreateAssistant extends Command
             'file-8siV98XYvUqNcM4Rgc5po8',
             'file-TKEtbNPWtmzCHLiy2bj9mK',
             'file-WBm4jYJPMcZdUPT1QoBFJh',
+            'file-QVGdYVigdt5LY5XjiMAnGS',
+            'file-8UUhPUiXKqdTijeg8pnZpE',
         ];
 
         $vectorStore = OpenAI::vectorStores()->create([

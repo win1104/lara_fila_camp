@@ -424,8 +424,8 @@
     @else
         {{-- 產品列表頁面 --}}
         @if($products)
-            <section class="text-gray-600 body-font max-w-[1640px] mx-auto">
-                <div class=" px-5 py-24">
+            <section class="text-gray-600 body-font max-w-[1632px] mx-auto">
+                <div class="py-24">
                     <div class="flex flex-wrap -m-4">
                         @foreach($products as $product)
                             <div class="p-4 ">

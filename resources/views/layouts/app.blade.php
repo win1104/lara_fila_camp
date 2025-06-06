@@ -59,7 +59,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="max-w-[1640px] mx-auto px-5">
+            <main class="max-w-[1632px] mx-auto px-8 lg:px-32">
                 {{ $slot }}
             </main>
         </div>

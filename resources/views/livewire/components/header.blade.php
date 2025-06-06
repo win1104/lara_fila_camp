@@ -50,6 +50,19 @@
                                 @endif
 
                             @endforeach
+
+
+
+                            <x-mary-button link="{{ route('openai.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                {{ __('OPEN AI') }}
+                            </x-mary-button>
+                            <x-mary-button link="{{ route('gpt.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                {{ __('Chat GTP') }}
+                            </x-mary-button>
+                            <x-mary-button link="{{ route('mobile.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                {{ __('Chat Bot') }}
+                            </x-mary-button>
+
                         @endif
                     </div>
                 </div>

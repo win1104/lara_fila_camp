@@ -1,4 +1,4 @@
-<div class="p-6">
+<div class="">
     @if ($this->articles->count() > 0)
 
         <div class="max-w-[1632px] py-10 lg:py-14 mx-auto">

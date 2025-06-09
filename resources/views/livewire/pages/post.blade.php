@@ -30,12 +30,12 @@
             </div>
         </div>
     @elseif($menuType == 'tilelists')
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto py-8">
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
-                    <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
+                    <div class="container py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
                         @foreach($posts as $post)
-                            <x-mary-card title="{{ $post->title }}" class="bg-white rounded-lg shadow-md">
+                            <x-mary-card title="{{ $post->title }}" class="bg-white rounded-lg shadow-md h-[424px]">
                                 {{-- {!! $post->content !!} --}}
                                 {!! Str::limit($post->content, 100) !!}
                                 <x-slot:figure>

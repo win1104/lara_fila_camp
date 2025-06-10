@@ -114,7 +114,7 @@
         {{ __('手冊助理') }}
     </h2>
 </x-slot>
-<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+<div class="py-8">
     <form wire:submit.prevent="ask" wire:key="form-{{ $formKey }}">
         <div>
             <textarea type="text"
@@ -128,29 +128,39 @@
 
     {{-- Chat bubble atart --}}
     <div class="flex-1">
-        <div class="max-w-7xl mx-auto p-2 overflow-y-auto max-h-full">
-            @foreach ($chats as $chat)
-                <div class="chat chat-end">
-                    @if ($chat->user->avatar)
-                        <div class="chat-image avatar">
-                            <div class="w-10 rounded-full">
-                                <img alt="User's avatar" src="{{ asset('storage/' . $chat->user->avatar) }}" />
+        <div class="p-2 overflow-y-auto">
+
+
+            {{-- @foreach ($tempChats as $temp)
+                    @if ($temp['type'] === 'user')
+                        <div class="chat chat-end">
+                            <div class="chat-header">You
+                                <time class="text-xs opacity-50">{{ $temp['timestamp'] }}</time>
                             </div>
+                            <div class="chat-bubble break-words bg-indigo-100">{{ $temp['content'] }}</div>
                         </div>
-                    @else
-                        <div class="chat-image">
-                            <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center">
-                                {{ strtoupper(Str::substr($chat->user->name, 0, 1)) }}
+                    @elseif ($temp['type'] === 'assistant')
+                        <div class="chat chat-start">
+                            <div class="chat-header">Assistant
+                                <time class="text-xs opacity-50">{{ $temp['timestamp'] }}</time>
                             </div>
+
+                            @if (isset($temp['loading']) && $temp['loading'])
+                                <div class="chat-bubble bg-gray-200 animate-pulse">
+                                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full mr-1"></span>
+                                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full mr-1"></span>
+                                    <span class="inline-block w-2 h-2 bg-gray-500 rounded-full"></span>
+                                </div>
+                            @else
+                                <div class="chat-bubble bg-white">{{ $temp['content'] }}</div>
+                            @endif
                         </div>
                     @endif
-                    <div class="chat-header">
-                        {{ $chat->user->name }}
-                        <time class="text-xs opacity-50">{{ $chat->created_at->format('H:i') }}</time>
-                    </div>
-                    <div class="chat-bubble break-words bg-white">{{ $chat->title }}</div>
-                    <div class="chat-footer opacity-50">Delivered</div>
-                </div>
+            @endforeach --}}
+
+
+
+            @foreach ($chats as $chat)
                 <div class="chat chat-start">
                     <div class="chat-image avatar">
                         <div class="w-10 rounded-full">
@@ -164,6 +174,29 @@
                     <div class="chat-bubble break-words bg-white">{!! Str::markdown($chat->message) !!}</div>
                     <div class="chat-footer opacity-50">Delivered</div>
                 </div>
+
+                    <div class="chat chat-end">
+                        @if ($chat->user->avatar)
+                            <div class="chat-image avatar">
+                                <div class="w-10 rounded-full">
+                                    <img alt="User's avatar" src="{{ asset('storage/' . $chat->user->avatar) }}" />
+                                </div>
+                            </div>
+                        @else
+                            <div class="chat-image">
+                                <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center">
+                                    {{ strtoupper(Str::substr($chat->user->name, 0, 1)) }}
+                                </div>
+                            </div>
+                        @endif
+                        <div class="chat-header">
+                            {{ $chat->user->name }}
+                            <time class="text-xs opacity-50">{{ $chat->created_at->format('H:i') }}</time>
+                        </div>
+                        <div class="chat-bubble break-words bg-white">{{ $chat->title }}</div>
+                        <div class="chat-footer opacity-50">Delivered</div>
+                    </div>
+
             @endforeach
 
         </div>

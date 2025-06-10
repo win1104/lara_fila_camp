@@ -1,13 +1,13 @@
-<div class="fixed bottom-4 right-4 z-50 flex items-end gap-4">
+<div class="fixed bottom-4 right-4 z-50 flex items-end gap-4 mx-8">
     @if ($open)
-        <div class="bg-white shadow-lg rounded-lg w-80 h-96 flex flex-col">
+        <div class="bg-white shadow-lg rounded-lg w-full max-w-96 h-[534px] flex flex-col">
             <div class="bg-indigo-600 text-white px-4 py-2 flex justify-between items-center">
                 <span>{{ __('手冊助理') }}</span>
                 <button wire:click="toggle" class="text-white">✖</button>
             </div>
             <div class="flex-1">
 
-                <div id="chatMessages" class="max-w-7xl mx-auto p-2 overflow-y-auto max-h-60">
+                <div id="chatMessages" class="mx-auto p-2 overflow-y-auto max-h-96">
                     {{-- chatbot end --}}
 
                     {{-- Chat bubble atart --}}

@@ -107,7 +107,7 @@
                         </a> --}}
 
                         <!-- daisyui modal -->
-                        <button class="btn btn-ghost text-xl" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+                        <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
                                 <h3 class="text-lg font-bold">Hello!</h3>
@@ -121,20 +121,20 @@
                             </div>
                         </dialog>
 
-                        <x-mary-button class="indicator">
+                        <x-mary-button class="indicator hidden lg:inline-block">
                             Inbox
                             <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
                         </x-mary-button>
 
                         <!-- theme switcher at home.blade.php -->
                         <button onclick="toggleTheme()"
-                            class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                            class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 hidden lg:inline-block">
                             <span class="dark:hidden">🌙</span>
                             <span class="hidden dark:inline">☀️</span>
                         </button>
 
 
-                        <div class="dropdown dropdown-end">
+                        <div class="dropdown dropdown-end hidden lg:inline-block">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                                 <div class="indicator">
                                     <x-mary-icon name="o-shopping-cart"/>

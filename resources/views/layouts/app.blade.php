@@ -52,7 +52,7 @@
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
-                    <div class="max-w-[1632px] mx-auto px-32 py-6">
+                    <div class="max-w-[1632px] mx-auto px-8 py-6 lg:px-32">
                         {{ $header }}
                     </div>
                 </header>

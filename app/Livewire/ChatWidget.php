@@ -20,6 +20,7 @@ class ChatWidget extends Component
     public function mount($chats = [])
     {
         $this->chats = Chat_assistant::with('user')->latest()->take(5)->get()->reverse();
+        // $this->chats = Chat_assistant::where('client', $this->client)->with('user')->latest()->take(5)->get()->reverse();
     }
 
     public function toggle()

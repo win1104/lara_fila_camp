@@ -13,6 +13,9 @@
 
         <!-- Mary UI -->
         <link href="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.css" rel="stylesheet">
+        <!-- Tailwind CDN（測試用）-->
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -68,6 +71,7 @@
 
         <!-- Livewire Scripts (必須在 Alpine 之前) -->
         @livewireScripts
+        <script src="{{ asset('js/app.js') }}"></script>
 
         <!-- Mary UI Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}

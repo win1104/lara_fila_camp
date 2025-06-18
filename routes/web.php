@@ -76,6 +76,9 @@ Route::post('/admin/logout', [LogoutController::class, 'admin_logout'])
     ->middleware(['web'])
     ->name('filament.admin.auth.logout');
 
+Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
+    ->name('embed');
+
 
 // 需要語系的路由
 Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()

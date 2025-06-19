@@ -23,7 +23,7 @@
 
                         @if ($menus->count() > 0)
                             @foreach ($menus as $menu)
-                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses')
+                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>

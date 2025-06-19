@@ -1,5 +1,5 @@
 <div class="fixed bottom-4 right-4 z-50 flex items-end gap-4 mx-8">
-    {{-- @if ($open) --}}
+    @if ($open)
         <div class="bg-white shadow-lg rounded-lg w-full max-w-96 h-[534px] flex flex-col">
             <div class="bg-indigo-600 text-white px-4 py-2 flex justify-between items-center">
                 <span>{{ __('手冊助理') }}</span>
@@ -106,7 +106,7 @@
 
 
         </div>
-    {{-- @endif --}}
+    @endif
 
     <button wire:click="toggle"
         class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg">

@@ -76,9 +76,6 @@ Route::post('/admin/logout', [LogoutController::class, 'admin_logout'])
     ->middleware(['web'])
     ->name('filament.admin.auth.logout');
 
-Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
-    ->name('embed');
-
 
 // 需要語系的路由
 Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
@@ -117,6 +114,10 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
 
     Route::get('assistant_ustech', ChatWidget::class);
+    Route::get('assistant', ChatWidget::class);
+
+    Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
+        ->name('embed');
 
 
     // routes/web.php

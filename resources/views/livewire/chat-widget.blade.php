@@ -106,7 +106,7 @@
         </div>
     @endif
 
-    <button wire:click="toggle" class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
+    <button type="submit" wire:click="toggle" class="bg-indigo-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" class="h-10 w-10 ">
             <path d="M149.3,79.9c0.9,0,1.9,0,2.9,0c3.2,0,6.3,0,9.5,0c2.3,0,4.5,0,6.8,0c7.4,0,14.9,0,22.3,0c2.6,0,5.1,0,7.7,0
                 c10.7,0,21.3,0,32,0c2.8,0,5.5,0,8.3,0c1,0,1,0,2.1,0c11.1,0,22.2,0,33.4-0.1c11.4,0,22.9-0.1,34.3-0.1c6.4,0,12.8,0,19.2,0

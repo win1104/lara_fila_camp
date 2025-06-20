@@ -24,10 +24,9 @@ class ChatWidget extends Component
     }
 
     public function toggle()
-   {
-       $this->open = !$this->open;
-       $this->dispatch('scrollToBottom');
-
+    {
+        $this->open = !$this->open;
+        $this->dispatch('scrollToBottom');
     }
 
     public function ask()

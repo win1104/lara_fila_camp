@@ -29,11 +29,11 @@
                 </section>
             </div>
         </div>
-    @elseif($menuType == 'tilelists')
+    @elseif($menuType == 'grid')
         <div class="container mx-auto py-8">
-            <div class="grid gap-6">
+            <div class="">
                 <section class="text-gray-600 body-font overflow-hidden">
-                    <div class="container py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
+                    <div class=" py-24 grid  gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         @foreach($posts as $post)
                             <x-mary-card title="{{ $post->title }}" class="bg-white rounded-lg shadow-md h-[424px]">
                                 {{-- {!! $post->content !!} --}}
@@ -55,7 +55,7 @@
                 </section>
             </div>
         </div>
-        @elseif($menuType == 'timeline')
+    @elseif($menuType == 'timeline')
             <div class="container mx-auto py-24">
                 <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
                     @foreach($posts as $index => $post)

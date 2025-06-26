@@ -41,7 +41,6 @@ class Home extends Component
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局
-
     public function render(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.pages.home');

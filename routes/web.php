@@ -1,10 +1,13 @@
 <?php
 
 use App\Livewire\DocBot;
+use App\Livewire\ChatWidget;
+use Illuminate\Http\Request;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Post;
 use App\Livewire\Pages\Product;
 use App\Livewire\Pages\Article;
+use App\Livewire\Pages\Aiing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
@@ -23,14 +26,16 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Models\Chat_assistant;
 
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 // Route::get("/", Home::class)->name('home');
-Route::get('/', function ()
-{
-    return redirect('/'.config('app.fallback_locale'));
-});
+// Route::get('/', function ()
+// {
+//     return redirect('/'.config('app.fallback_locale'));
+// });
+Route::get('/aiing', Aiing::class);
 
 // 認證相關路由
 Route::middleware('guest')->group(function () {
@@ -109,5 +114,21 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     //OpenAI
     Route::get('gpt', [ChatController::class, 'index'])->name('gpt.index');
     Route::post('gpt', [ChatController::class, 'store'])->name('gpt.store');
+
+    Route::get('assistant_ustech', ChatWidget::class);
+    Route::get('assistant', ChatWidget::class);
+
+    Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
+        ->name('embed');
+
+
+    // routes/web.php
+    // Route::get('/assistant_ustech', function (Request $request) {
+    //     $client = $request->get('client', 'default');
+    //     $open = $request->get('open', '1') === 'true';
+    //     $chats = Chat_assistant::where('client', $client)->with('user')->latest()->take(5)->get()->reverse();
+    //     return view('livewire.chat-widget', compact('client', 'open', 'chats'));
+    // });
+
 
 });

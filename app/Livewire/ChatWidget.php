@@ -20,13 +20,13 @@ class ChatWidget extends Component
     public function mount($chats = [])
     {
         $this->chats = Chat_assistant::with('user')->latest()->take(5)->get()->reverse();
+        // $this->chats = Chat_assistant::where('client', $this->client)->with('user')->latest()->take(5)->get()->reverse();
     }
 
     public function toggle()
-   {
-       $this->open = !$this->open;
-       $this->dispatch('scrollToBottom');
-
+    {
+        $this->open = !$this->open;
+        $this->dispatch('scrollToBottom');
     }
 
     public function ask()
@@ -54,7 +54,8 @@ class ChatWidget extends Component
     private function createAndRunThread(): ThreadRunResponse
     {
         return OpenAI::threads()->createAndRun([
-            'assistant_id' => 'asst_jKi5NvszoIqw1Wiww2feZLWR',
+            // 'assistant_id' => 'asst_jKi5NvszoIqw1Wiww2feZLWR',
+            'assistant_id' => 'asst_BiYDmF1gGPeGd59wDV0TMDJD',
             'thread' => [
                 'messages' => [
                     [

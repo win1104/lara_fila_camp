@@ -65,15 +65,6 @@
             <main class="">
                 {{ $slot }}
             </main>
-
-            <livewire:components.footer />
-            @isset($footer)
-                <header class="bg-white shadow">
-                    <div class="max-w-[1632px] mx-auto px-8 py-6 lg:px-32">
-                        {{ $footer }}
-                    </div>
-                </header>
-            @endisset
         </div>
 
         @livewire('chat-widget')

@@ -27,14 +27,14 @@
 </x-mary-card> --}}
 
 <a href="{{ route('article.show', ['locale' => app()->getLocale(), 'articles' => $article]) }}">
-    <x-mary-card title="{!! $article->title !!}" class="container mx-auto h-108 flex flex-col">
+    <x-mary-card title="{!! $article->title !!}" class="shadow-lg p-6 h-full">
 
         <div class="min-h-[72px] flex-grow">
-            {!! Str::limit( $article->content, 100 )!!}
+            {!! Str::limit($article->content, 100)!!}
         </div>
 
-        <x-slot:figure class="max-h-[234px]">
-            <img src="/storage/{{ $article?->image?->path }}" />
+        <x-slot:figure class="">
+            <img class="overflow-hidden h-64 object-cover w-full" src="/storage/{{ $article?->image?->path }}" />
             {{-- <img src="https://picsum.photos/500/400" /> --}}
         </x-slot:figure>
         <x-slot:menu>
@@ -42,7 +42,7 @@
             <x-mary-button icon="o-share" class="btn-circle btn-sm" />
             <x-mary-icon name="o-heart" class="cursor-pointer" />
         </x-slot:menu>
-        <x-slot:actions separator>
+        <x-slot:actions separator class="">
             <x-mary-badge value="Products" class="badge-soft"/>
         </x-slot:actions>
     </x-mary-card>

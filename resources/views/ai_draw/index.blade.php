@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-8">
+    <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
         <form method="POST" action="{{ route('openai.store', ['locale' => app()->getLocale()]) }}">
             @csrf
             <textarea

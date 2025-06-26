@@ -1,6 +1,7 @@
 <div>
     @if($menuType == 'lists')
-        <div class="container mx-auto px-4 py-8">
+        {{-- <div class="container mx-auto px-4 py-8"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <h2 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h2>
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
@@ -30,7 +31,8 @@
             </div>
         </div>
     @elseif($menuType == 'grid')
-        <div class="container mx-auto py-8">
+        {{-- <div class="container mx-auto py-8"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <div class="">
                 <section class="text-gray-600 body-font overflow-hidden">
                     <div class=" py-24 grid  gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -56,50 +58,52 @@
             </div>
         </div>
     @elseif($menuType == 'timeline')
-            <div class="container mx-auto py-24">
-                <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-                    @foreach($posts as $index => $post)
-                        <li>
-                            <hr />
-                            <div class="timeline-middle">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            @if ($index % 2 === 0)
-                                <div class="timeline-start mb-10 md:text-end">
-                            @else
-                                <div class="timeline-end md:mb-10">
-                            @endif
-                                    <time class="font-mono italic">{{ \Carbon\Carbon::parse($post->date)->year }}</time>
-                                    <div class="text-lg font-black">{{ $post->title }}</div>
-                                    {!! Str::limit($post->content, 300) !!}
-                                </div>
-                            <hr />
-                        </li>
-                        {{-- <li>
-                            <hr />
-                            <div class="timeline-middle">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
+        {{-- <div class="container mx-auto py-24"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-24 lg:px-32">
+            <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+                @foreach($posts as $index => $post)
+                    <li>
+                        <hr />
+                        <div class="timeline-middle">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        @if ($index % 2 === 0)
+                            <div class="timeline-start mb-10 md:text-end">
+                        @else
                             <div class="timeline-end md:mb-10">
+                        @endif
                                 <time class="font-mono italic">{{ \Carbon\Carbon::parse($post->date)->year }}</time>
                                 <div class="text-lg font-black">{{ $post->title }}</div>
                                 {!! Str::limit($post->content, 300) !!}
                             </div>
-                            <hr />
-                        </li> --}}
-                    @endforeach
-                </ul>
-            </div>
-        @elseif($menuType == 'tabs')
-        <div class="container mx-auto px-4 py-8">
+                        <hr />
+                    </li>
+                    {{-- <li>
+                        <hr />
+                        <div class="timeline-middle">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="timeline-end md:mb-10">
+                            <time class="font-mono italic">{{ \Carbon\Carbon::parse($post->date)->year }}</time>
+                            <div class="text-lg font-black">{{ $post->title }}</div>
+                            {!! Str::limit($post->content, 300) !!}
+                        </div>
+                        <hr />
+                    </li> --}}
+                @endforeach
+            </ul>
+        </div>
+    @elseif($menuType == 'tabs')
+        {{-- <div class="container mx-auto px-4 py-8"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div x-data="{ tabs: [] }">
             <x-mary-tabs wire:model="activeTab">
@@ -135,7 +139,8 @@
 
         </div>
     @elseif($menuType == 'collapses')
-        <div class="container mx-auto px-4 py-8">
+        {{-- <div class="container mx-auto px-4 py-8"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
             {{-- <div class="border rounded shadow-sm">
                 <button type="button" aria-label="Open item" title="Open item"
@@ -187,7 +192,8 @@
 
         </div>
     @else
-        <div class="container mx-auto px-4 py-8">
+        {{-- <div class="container mx-auto px-4 py-8"> --}}
+        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <article class="bg-white rounded-lg shadow-md p-6">
                 <h1 class="text-3xl font-bold mb-4">{{ $post->title }}</h1>
                 @if($post->intro)

@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-[1632px] mx-auto">
+    <div class="max-w-[1600px] mx-auto">
         <div class="h-16 px-8 lg:px-32">
 
 

@@ -28,7 +28,7 @@
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
                                             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
-                                                @foreach($menu->children as $child)
+                                                @foreach($menu->children->where('display', 1) as $child)
                                                     <li>
                                                         <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
                                                             {!! $child->title !!}
@@ -48,7 +48,7 @@
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
                                             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
-                                                @foreach($menu->children as $child)
+                                                @foreach($menu->children->where('display', 1) as $child)
                                                     <li>
                                                         <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
                                                             {!! $child->title !!}

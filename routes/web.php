@@ -116,8 +116,8 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get('assistant_ustech', ChatWidget::class);
     Route::get('assistant', ChatWidget::class);
 
-    Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
-        ->name('embed');
+    // Route::post('/embed/{embed:slug}', [EmbedController::class, 'embed.show'])
+    //     ->name('embed');
 
 
     // routes/web.php

@@ -1,7 +1,7 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="h-18">
+    <div class="max-w-[1600px] mx-auto">
+        <div class="h-16 px-8 lg:px-32">
 
 
             <!-- maryUI -->
@@ -21,21 +21,19 @@
                 <div class="navbar-start">
                     <div class="navbar-center hidden lg:flex relative">
 
-                        @if ( $menus->count() > 0 )
+                        @if ($menus->count() > 0)
                             @foreach ($menus as $menu)
-                                @if ( $menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'tilelists' || $menu->type === 'tabs' || $menu->type === 'collapses' )
+                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'grid' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
-                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border">
-                                                @foreach($menu->children as $child)
-                                                    @if($child->display == 1)
-                                                        <li>
-                                                            <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type, 'menu' => $child->slug]) }}">
-                                                                {!! $child->title !!}
-                                                            </a>
-                                                        </li>
-                                                    @endif
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
+                                                @foreach($menu->children->where('display', 1) as $child)
+                                                    <li>
+                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
+                                                            {!! $child->title !!}
+                                                        </a>
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -46,9 +44,27 @@
                                     @endif
 
                                 @elseif($menu->type == 'products')
-                                    <x-mary-button link="{{ route('product.show', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                        {!! $menu->title !!}
-                                    </x-mary-button>
+                                    @if($menu->children->count() > 0)
+                                        <div class="dropdown dropdown-hover">
+                                            <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
+                                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
+                                                @foreach($menu->children->where('display', 1) as $child)
+                                                    <li>
+                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
+                                                            {!! $child->title !!}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @else
+                                        <x-mary-button link="{{ route('product.show', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                            {!! $menu->title !!}
+                                        </x-mary-button>
+                                    @endif
+
+
+
                                 @endif
 
                             @endforeach
@@ -104,11 +120,12 @@
                 <div class="navbar-end">
                     <div class="">
 
-                        <x-mary-button class="indicator" onclick="my_modal_1.showModal()">
-                            Inbox
-                            <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
-                        </x-mary-button>
+                        {{-- <a class="btn btn-ghost text-xl">
+                            {{ config("app.name")}}
+                        </a> --}}
+
                         <!-- daisyui modal -->
+                        <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
                                 <h3 class="text-lg font-bold">Hello!</h3>
@@ -122,16 +139,20 @@
                             </div>
                         </dialog>
 
+                        <x-mary-button class="indicator hidden lg:inline-block">
+                            Inbox
+                            <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
+                        </x-mary-button>
 
                         <!-- theme switcher at home.blade.php -->
                         <button onclick="toggleTheme()"
-                            class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700">
+                            class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 hidden lg:inline-block">
                             <span class="dark:hidden">🌙</span>
                             <span class="hidden dark:inline">☀️</span>
                         </button>
 
 
-                        <div class="dropdown dropdown-end">
+                        <div class="dropdown dropdown-end hidden lg:inline-block">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                                 <div class="indicator">
                                     <x-mary-icon name="o-shopping-cart"/>
@@ -161,7 +182,7 @@
                                     <div class="w-10 rounded-full">
                                         <img
                                             alt="{{ auth()->user()->name }} profile picture"
-                                            src="{{ '/storage/'.auth()->user()->avatar }}" />
+                                            src="{{ '/storage/' . auth()->user()->avatar }}" />
                                     </div>
                                 </div>
                                 <ul

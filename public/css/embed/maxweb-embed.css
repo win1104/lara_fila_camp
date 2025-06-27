@@ -1,0 +1,153 @@
+/**
+ * MaxWeb Embed Styles
+ * 版本: 1.0.0
+ */
+
+/* 主要容器樣式 */
+.max_inquiry_box {
+width: 100%;
+border: 1px solid #ddd;
+border-radius: 4px;
+overflow: hidden;
+position: relative;
+background: #fff;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+margin: 10px 0;
+}
+
+/* iframe 樣式 */
+.max_inquiry_box iframe {
+width: 100%;
+border: 0;
+display: block;
+transition: height 0.3s ease;
+background: #fff;
+}
+
+/* 載入狀態樣式 */
+.maxweb-loading {
+text-align: center;
+padding: 40px 20px;
+color: #666;
+background: #f8f9fa;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+font-size: 14px;
+position: relative;
+}
+
+.maxweb-loading:before {
+content: '';
+display: inline-block;
+width: 20px;
+height: 20px;
+border: 2px solid #e3e3e3;
+border-top: 2px solid #666;
+border-radius: 50%;
+animation: maxweb-spin 1s linear infinite;
+margin-right: 10px;
+vertical-align: middle;
+}
+
+@keyframes maxweb-spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+/* 錯誤狀態樣式 */
+.maxweb-error {
+text-align: center;
+padding: 40px 20px;
+color: #dc3545;
+background: #f8d7da;
+border: 1px solid #f5c6cb;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+font-size: 14px;
+border-radius: 4px;
+margin: 10px;
+}
+
+.maxweb-error:before {
+content: '⚠️';
+display: block;
+font-size: 24px;
+margin-bottom: 10px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+.max_inquiry_box {
+      margin: 15px 0;
+      border-radius: 6px;
+}
+
+.maxweb-loading,
+.maxweb-error {
+      padding: 30px 15px;
+      font-size: 13px;
+}
+}
+
+@media (max-width: 480px) {
+.max_inquiry_box {
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      margin: 10px 0;
+}
+
+.maxweb-loading,
+.maxweb-error {
+      padding: 25px 10px;
+      font-size: 12px;
+}
+}
+
+/* 高對比度模式支援 */
+@media (prefers-contrast: high) {
+.max_inquiry_box {
+      border: 2px solid #000;
+}
+
+.maxweb-loading {
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+}
+
+.maxweb-error {
+      border: 2px solid #dc3545;
+      background: #fff;
+}
+}
+
+/* 減少動畫偏好設定 */
+@media (prefers-reduced-motion: reduce) {
+.max_inquiry_box iframe {
+      transition: none;
+}
+
+.maxweb-loading:before {
+      animation: none;
+}
+}
+
+/* 印刷樣式 */
+@media print {
+.max_inquiry_box {
+      border: 1px solid #000;
+      box-shadow: none;
+}
+
+.max_inquiry_box iframe {
+      display: none;
+}
+
+.max_inquiry_box:after {
+      content: '此處為嵌入內容，請至網站查看';
+      display: block;
+      padding: 20px;
+      text-align: center;
+      font-style: italic;
+      color: #666;
+}
+}

@@ -94,21 +94,6 @@ class MenuWidget extends BaseWidget
             ;
     }
 
-    // protected function getParentField(): string
-    // {
-    //     return 'parent_slug';
-    // }
-
-    // protected function getChildrenRelationship(): string
-    // {
-    //     return 'children';
-    // }
-
-    // protected function getOrderField(): string
-    // {
-    //     return 'order';
-    // }
-
     public function getParentKey(?Model $record = null): ?string
     {
         if (!$record) {

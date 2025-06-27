@@ -40,6 +40,8 @@ class ProductCategoryResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Forms\Components\Toggle::make('display')
+                    ->label('Published'),
             ]);
     }
 

@@ -17,7 +17,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['"Lantinghei TC"', 'Figtree', ...defaultTheme.fontFamily.sans],
             },
             // colors: {
             //     'sherry': '#1fb6ff',

@@ -125,7 +125,14 @@
                         </a> --}}
 
                         <!-- daisyui modal -->
+<<<<<<< HEAD
                         <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+=======
+<<<<<<< HEAD
+=======
+                        <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+>>>>>>> lab
+>>>>>>> dd55e22193dc699e76a363117ff5f8df30e46177
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
                                 <h3 class="text-lg font-bold">Hello!</h3>
@@ -139,10 +146,19 @@
                             </div>
                         </dialog>
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> dd55e22193dc699e76a363117ff5f8df30e46177
                         <x-mary-button class="indicator hidden lg:inline-block">
                             Inbox
                             <x-mary-badge value="7" class="badge-secondary badge-sm indicator-item" />
                         </x-mary-button>
+<<<<<<< HEAD
+=======
+>>>>>>> lab
+>>>>>>> dd55e22193dc699e76a363117ff5f8df30e46177
 
                         <!-- theme switcher at home.blade.php -->
                         <button onclick="toggleTheme()"

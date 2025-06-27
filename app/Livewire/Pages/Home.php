@@ -7,36 +7,51 @@ use Livewire\Attributes\Layout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
-use App\Models\Article as ArticleModel;
+use App\Models\Menu as MenuModel;
 use App\Models\Post as PostModel;
+use Illuminate\Support\Facades\DB;
 
 class Home extends Component
 {
-    public $articles;
-    // public $posts;
+    public $menus;
+    public $activeTab = 'all';
+    public $works = [];
 
     public function mount()
     {
-        $this->articles = ArticleModel::where('locale', app()->getLocale())
+        $this->menus = MenuModel::where('locale', app()->getLocale())
             ->where('display', 1)
-            ->limit(8)
-            ->orderBy('sort', 'asc')
+            ->where('parent_slug', 'works')
+            ->orderBy('order', 'asc')
             ->get();
 
-
-
-        // $this->posts = PostModel::where('locale', app()->getLocale())
-        //     ->where('display', 1)
-        //     ->limit(8)
-        //     ->orderBy('order', 'asc')
-        //     ->get();
-
+        $this->loadPosts();
 
         // return static::where('slug', $value)
         //     ->where('locale', app()->getLocale())
         //     ->firstOrFail();
 
+    }
 
+    public function switchTab($tab)
+    {
+        $this->activeTab = $tab;
+        $this->loadPosts();
+    }
+
+    protected function loadPosts()
+    {
+        $query = PostModel::where('locale', app()->getLocale())
+            ->where('menu_slug', 'works')
+            ->where('display', 1)
+            ->orderBy('order', 'asc');
+            // ->limit(4);
+
+        if ($this->activeTab !== 'all') {
+            $this->works->where('slug', $this->activeTab);
+        }
+
+        $this->works = $query->get();
 
     }
 
@@ -44,5 +59,6 @@ class Home extends Component
     public function render(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.pages.home');
+        // return view('home');
     }
 }

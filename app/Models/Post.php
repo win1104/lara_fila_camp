@@ -56,7 +56,8 @@ class Post extends Model
     {
         return $this->belongsToMany(Media::class, 'post_media', 'post_id', 'media_id')
                     ->withPivot('order') // 如果你需要排序，可以在中間表添加 'order' 欄位
-                    ->orderBy('pivot_order'); // 依據排序欄位排序
+                    // ->orderBy('pivot_order'); // 依據排序欄位排序
+                    ->orderBy('order'); // 依據排序欄位排序
     }
 
     // public function resolveRouteBinding($value, $field = null)

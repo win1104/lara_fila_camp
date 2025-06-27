@@ -4,17 +4,17 @@ namespace App\Filament\Resources\ProductCategoryResource\Widgets;
 
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\DB;
-use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use SolutionForest\FilamentTree\Actions\Action;
-use SolutionForest\FilamentTree\Actions\ActionGroup;
-use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Actions\LinkAction;
 use SolutionForest\FilamentTree\Actions\ViewAction;
+use SolutionForest\FilamentTree\Actions\ActionGroup;
+use SolutionForest\FilamentTree\Actions\DeleteAction;
 use SolutionForest\FilamentTree\Widgets\Tree as BaseWidget;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class ProductCategoryWidget extends BaseWidget
 {
@@ -131,11 +131,15 @@ class ProductCategoryWidget extends BaseWidget
         if (! $record) {
             return '';
         }
-        // $id = $record->getKey();
-        // $title = $record->{(method_exists($record, 'determineTitleColumnName') ? $record->determineTitleColumnName() : 'title')};
-        // return "[{$id} 上下架] {$title}";
 
-        return "[{$record->slug}] {$record->title}";
+        $display = $record->display ? '✓' : '✗';
+        $color = $record->display ? 'text-success-500' : 'text-danger-500';
+
+
+        return "<span class='$color mr-2'> $display </span>
+            {$record->title}
+            <div class='inline-block bg-gray-100 ml-2 px-3 py-1 rounded-md text-xs text-gray-600 font-light'>{$record->slug}</div>"
+            ;
     }
 
     public function getParentKey(?Model $record = null): ?string

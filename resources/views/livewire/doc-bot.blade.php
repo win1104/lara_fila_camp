@@ -114,7 +114,7 @@
         {{ __('手冊助理') }}
     </h2>
 </x-slot>
-<div class="py-8">
+<div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
     <form wire:submit.prevent="ask" wire:key="form-{{ $formKey }}">
         <div>
             <textarea type="text"

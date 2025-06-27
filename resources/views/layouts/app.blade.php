@@ -45,7 +45,7 @@
             }
         </style>
     </head>
-    <body class="font-sans antialiased">
+    <body class="antialiased">
 
         <div class="min-h-screen bg-white">
 
@@ -62,9 +62,18 @@
             @endisset
 
             <!-- Page Content -->
-            <main class="max-w-[1632px] mx-auto px-8 lg:px-32">
+            <main class="">
                 {{ $slot }}
             </main>
+
+            <livewire:components.footer />
+            @isset($footer)
+                <header class="bg-white shadow">
+                    <div class="max-w-[1632px] mx-auto px-8 py-6 lg:px-32">
+                        {{ $footer }}
+                    </div>
+                </header>
+            @endisset
         </div>
 
         @livewire('chat-widget')

@@ -7,6 +7,7 @@ use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Post;
 use App\Livewire\Pages\Product;
 use App\Livewire\Pages\Article;
+use App\Livewire\Pages\Aiing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
@@ -30,10 +31,11 @@ use App\Models\Chat_assistant;
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 // Route::get("/", Home::class)->name('home');
-Route::get('/', function ()
-{
-    return redirect('/'.config('app.fallback_locale'));
-});
+// Route::get('/', function ()
+// {
+//     return redirect('/'.config('app.fallback_locale'));
+// });
+Route::get('/aiing', Aiing::class);
 
 // 認證相關路由
 Route::middleware('guest')->group(function () {

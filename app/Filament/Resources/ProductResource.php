@@ -5,12 +5,20 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
+use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 // use Illuminate\Support\Facades\Log;
+use Filament\Resources\Pages\Page;
+use Filament\Resources\Components\Tab;
+use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Request;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\SelectFilter;
+
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
@@ -26,6 +34,7 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
     protected static ?string $navigationLabel = '產品';
     protected static ?string $navigationGroup = 'Pruoducts';
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {
@@ -121,9 +130,22 @@ class ProductResource extends Resource
             ->reorderable('order') // 啟用拖拉排序功能
             ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
-                //
+                SelectFilter::make('display')
+                    ->label('發布狀態')
+                    ->options([
+                        '1' => '已發布',
+                        '0' => '未發布',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return match ($data['value']) {
+                            '1' => $query->where('display', 1),
+                            '0' => $query->where('display', 0),
+                            default => $query,
+                        };
+                    }),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -131,6 +153,36 @@ class ProductResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\TextEntry::make('locale'),
+                Infolists\Components\TextEntry::make('title'),
+                Infolists\Components\TextEntry::make('slug'),
+                Infolists\Components\TextEntry::make('date'),
+                Infolists\Components\TextEntry::make('display')
+                    ->columnSpanFull(),
+            ]);
+    }
+
+    public static function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('全部產品')
+                ->badge(Product::count()),
+            'published' => Tab::make('已發布')
+                ->badge(Product::where('display', 1)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
+            'unpublished' => Tab::make('未發布')
+                ->badge(Product::where('display', 0)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
+            'recent' => Tab::make('最近更新')
+                ->badge(Product::where('updated_at', '>=', now()->subDays(7))->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
+        ];
     }
 
     public static function getRelations(): array
@@ -145,8 +197,20 @@ class ProductResource extends Resource
         return [
             'index' => Pages\ListProducts::route('/'),
             'create' => Pages\CreateProduct::route('/create'),
+            'view' => Pages\ViewProduct::route('/{record}'),
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ViewProduct::class,
+            Pages\EditProduct::class,
+            // Pages\EditCustomerContact::class,
+            // Pages\ManageCustomerAddresses::class,
+            // Pages\ManageCustomerPayments::class,
+        ]);
     }
 
     // public static function afterCreate(Form $form, $record): void

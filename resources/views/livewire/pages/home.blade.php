@@ -20,52 +20,51 @@
                     </p>
                 </div>
                 <div class="grid gap-4 row-gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="flex flex-col justify-between p-5 border rounded-3xl shadow-sm"
+                    <div class="flex flex-col justify-between py-6 px-8 border rounded-3xl shadow-sm h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
-                            <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full" style="background-color: #9BBF3E; ">
+                            <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
                                 <img src="{{ asset('Page-1.png') }}" alt="">
                             </div>
-                            <h3 class="mb-2 font-black leading-5 text-2xl">AI 問答助理</h3>
-                            <p class="mb-3 text-sm text-gray-900">
-                                A flower in my garden, a mystery in my panties. Heart attack never stopped old Big Bear.
+                            <h3 class="mb-5 font-black leading-5 text-2xl">AI 問答助理</h3>
+                            <p class="mb-3 text-base text-gray-600">
+                                宣傳| 僑委會2024輔助國內青年志工赴東南亞僑（華）校志願服務
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between p-5 border rounded-3xl shadow-sm"
+                    <div class="flex flex-col justify-between py-6 px-8 border rounded-3xl shadow-sm h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
-                            <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full" style="background-color: #9BBF3E; ">
+                            <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
                                 <img src="{{ asset('Group 1536.png') }}" alt="">
                             </div>
-                            <h3 class="mb-2 font-black leading-5 text-2xl">無障礙網站</h3>
-                            <p class="mb-3 text-sm text-gray-900">
-                                Rough pomfret lemon shark plownose chimaera southern sandfish kokanee northern sea.
+                            <h3 class="mb-5 font-black leading-5 text-2xl">無障礙網站</h3>
+                            <p class="mb-3 text-base text-gray-600">
+                                宣傳| 僑委會2024輔助國內青年志工赴東南亞僑（華）校志願服務
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between p-5 border rounded-3xl shadow-sm"
+                    <div class="flex flex-col justify-between py-6 px-8 border rounded-3xl shadow-sm h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
-                            <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full" style="background-color: #9BBF3E; ">
+                            <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
                                 <img src="{{ asset('Group 1535.png') }}" alt="">
                             </div>
-                            <h3 class="mb-2 font-black leading-5 text-2xl">FHIR 醫療系統</h3>
-                            <p class="mb-3 text-sm text-gray-900">
-                                A slice of heaven. O for awesome, this chocka full cuzzie is as rip-off as a cracker.
+                            <h3 class="mb-5 font-black leading-5 text-2xl">FHIR 醫療系統</h3>
+                            <p class="mb-3 text-base text-gray-600">
+                                宣傳| 僑委會2024輔助國內青年志工赴東南亞僑（華）校志願服務
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between p-5 border rounded-3xl shadow-sm"
+                    <div class="flex flex-col justify-between py-6 px-8 border rounded-3xl shadow-sm h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
-                            <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full" style="background-color: #9BBF3E; ">
+                            <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
                                 <img src="{{ asset('Group 1534.png') }}" alt="">
                             </div>
-                            <h3 class="mb-2 font-black leading-5 text-2xl">地理資訊系統</h3>
-                            <p class="mb-3 text-sm text-gray-900">
-                                Disrupt inspire and think tank, social entrepreneur but preliminary thinking think tank
-                                compelling.
+                            <h3 class="mb-5 font-black leading-5 text-2xl">地理資訊系統</h3>
+                            <p class="mb-3 text-base text-gray-600">
+                                宣傳| 僑委會2024輔助國內青年志工赴東南亞僑（華）校志願服務
                             </p>
                         </div>
                     </div>
@@ -77,37 +76,59 @@
     {{-- 經歷 --}}
     <section class="text-gray-600 body-font">
         <div class="max-w-[1600px] mx-auto px-8 py-28 lg:px-32">
-            <div class=" mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
-                <div class="lg:max-w-md max-h-96 lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
-                    <img class="object-cover object-center rounded" alt="hero" src="https://dummyimage.com/720x600">
+            <div class="flex px-5 py-24 md:flex-row flex-col items-center gap-28">
+                <div class="flex-1">
+                    <img class="object-cover object-center rounded" alt="hero" src="{{ asset('pad_phone.png') }}">
                 </div>
                 <div
-                    class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
-                    <h2 class="title-font sm:text-4xl text-3xl mb-3 font-medium text-gray-800">混合無限智慧科技
+                    class="flex flex-col md:items-start md:text-left items-center text-center flex-1">
+                    <h2 class="title-font sm:text-4xl text-3xl mb-3 font-black text-gray-800 font-sans">混合無限智慧科技
                     </h2>
-                    <h2 class="title-font sm:text-4xl text-3xl mb-5 font-medium text-gray-800">設計不只是設計
+                    <h2 class="title-font sm:text-4xl text-3xl mb-5 font-black text-gray-800 font-sans">設計不只是設計
                         {{-- <br class="hidden lg:inline-block">設計不只是設計 --}}
                     </h2>
                     <p class="text-lg leading-relaxed">
                         有別於採大量套版、內容千篇一律的制式化網站，或過度強調花大錢打廣告，而不注重網站本質好壞的網路行銷手法，我們從接案開始，就會審慎替客戶評估外在市場環境與企業內部需求，加上我們對網際網路的經驗法則，提供符合各方需求的品牌網站，讓客戶贏在對的起跑點上。
                     </p>
 
-                    <div class="px-4 py-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-4 lg:px-8 lg:py-12">
+                    {{-- <div class="px-4 py-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-4 lg:px-8 lg:py-12">
                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 row-gap-8">
                             <div class="text-center md:border-r border-gray-400">
-                                <h6 class="text-4xl font-bold lg:text-3xl xl:text-4xl">55</h6>
-                                <p class="text-sm font-medium tracking-widest text-gray-800 uppercase lg:text-base">
+                                <h6 class="text-4xl font-bold lg:text-3xl text-gray-800">55</h6>
+                                <p class="text-sm font-medium tracking-widest uppercase">
                                     我們的客戶
                                 </p>
                             </div>
                             <div class="px-7 text-center md:border-r border-gray-400 md:px-3">
-                                <h6 class="text-4xl font-bold lg:text-3xl xl:text-4xl">242</h6>
-                                <p class="text-sm font-medium tracking-widest text-gray-800 uppercase lg:text-base">
+                                <h6 class="text-4xl font-bold lg:text-3xl text-gray-800">242</h6>
+                                <p class="text-sm font-medium tracking-widest uppercase">
                                     我們的作品
                                 </p>
                             </div>
                             <div class="text-center">
-                                <h6 class="text-4xl font-bold lg:text-3xl xl:text-4xl">20</h6>
+                                <h6 class="text-4xl font-bold lg:text-3xl text-gray-800">20</h6>
+                                <p class="text-sm font-medium tracking-widest uppercase">
+                                    公司的歷史
+                                </p>
+                            </div>
+                        </div>
+                    </div> --}}
+                    <div class="py-4 sm:max-w-xl md:max-w-full lg:max-w-screen-xl lg:py-12">
+                        <div class="grid grid-cols-1 gap-8 lg:gap-0 lg:grid-cols-3" id="counter-section">
+                            <div class="text-center lg:border-r px-7">
+                                <h6 class="text-2xl font-bold lg:text-3xl text-gray-800 mb-4 counter" data-target="55">0</h6>
+                                <p class="text-sm font-medium tracking-widest text-gray-800 uppercase lg:text-base">
+                                    我們的客戶
+                                </p>
+                            </div>
+                            <div class="text-center lg:border-r px-7">
+                                <h6 class="text-2xl font-bold lg:text-3xl text-gray-800 mb-4 counter" data-target="242">0</h6>
+                                <p class="text-sm font-medium tracking-widest text-gray-800 uppercase lg:text-base">
+                                    我們的作品
+                                </p>
+                            </div>
+                            <div class="text-center px-7">
+                                <h6 class="text-2xl font-bold lg:text-3xl text-gray-800 mb-4 counter" data-target="20">0</h6>
                                 <p class="text-sm font-medium tracking-widest text-gray-800 uppercase lg:text-base">
                                     公司的歷史
                                 </p>
@@ -131,10 +152,10 @@
 
         <!-- 內容 -->
         <div class="max-w-[1600px] mx-auto px-8 py-28 lg:px-32">
-            <div class="relative px-4 py-32 max-w-[500px] text-left">
-                <h2 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">AI 浪潮來襲
+            <div class="relative px-4 max-w-[500px] text-left">
+                <h2 class="title-font sm:text-4xl text-3xl mb-4 font-black text-white font-sans">AI 浪潮來襲
                 </h2>
-                <h2 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">你跟上了嗎？
+                <h2 class="title-font sm:text-4xl text-3xl mb-4 font-black text-white">你跟上了嗎？
                     {{-- <br class="hidden lg:inline-block">你跟上了嗎？ --}}
                 </h2>
                 <p class="text-lg leading-relaxed text-white">AI 好像很紅，但和我的生意有什麼關係？和我的網站有什麼關係？我可以如何在生意上結合 AI 以帶來更多的好處與收益，GPT
@@ -155,23 +176,26 @@
     {{-- 最近作品 --}}
     <section class="text-gray-600 body-font">
         <div class="max-w-[1280px] px-5 py-24 mx-auto flex flex-wrap flex-col">
-            <h2 class="text-center title-font sm:text-4xl text-3xl mb-20 font-black text-gray-800">近期作品</h2>
+            <h2 class="text-center title-font sm:text-4xl text-3xl mb-20 font-black text-gray-800 font-sans">近期作品</h2>
             <div class="flex items-center justify-between mb-14">
                 <div class="flex flex-wrap text-lg">
-                    <button wire:click="switchTab('all')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">All</button>
-                    <button wire:click="switchTab('科技')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">科技</button>
-                    <button wire:click="switchTab('教育')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t"style="color:#9BBF3E;">教育</button>
-                    <button wire:click="switchTab('醫療')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">醫療</button>
-                    <button wire:click="switchTab('學/協會')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">學/協會</button>
-                    <button wire:click="switchTab('服務')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">服務</button>
-                    <button wire:click="switchTab('GIS')"
-                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">GIS</button>
+                    @foreach ($menus as $menu)
+
+                        {{-- <button wire:click="switchTab('all')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">All</button> --}}
+                        <button wire:click="switchTab('{{ $menu->slug }}')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider{{ $activeTab === $menu->slug ? 'text-[#9BBF3E]' : 'hover:text-gray-900' }}">{{ $menu->title }}</button>
+                        {{-- <button wire:click="switchTab('教育')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t"style="color:#9BBF3E;">教育</button>
+                        <button wire:click="switchTab('醫療')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">醫療</button>
+                        <button wire:click="switchTab('學/協會')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">學/協會</button>
+                        <button wire:click="switchTab('服務')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">服務</button>
+                        <button wire:click="switchTab('GIS')"
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">GIS</button> --}}
+                    @endforeach
                 </div>
                 <div class="flex items-center space-x-4">
                     <button wire:click="previousSlide"
@@ -225,22 +249,24 @@
                 </div>
             </div> --}}
             <div class="flex flex-wrap -m-4 px-5">
-                <div class="p-2 md:w-1/3">
-                    <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
-                        <img class="h-72 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
-                        <div class="p-6">
-                            <p
-                                class="border-gray-400 text-center border rounded-md max-w-[46px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
-                                科技</p>
-                            <h1 class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">網站 A</h1>
-                            <div class="flex items-center flex-wrap ">
-                                <a class=" inline-flex items-center md:mb-2 lg:mb-0">觀看網站 ➔
-                                </a>
+                @foreach ($works as $work)
+                    <div class="p-2 md:w-1/3">
+                        <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
+                            <img class="h-72 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
+                            <div class="p-6">
+                                <p
+                                    class="border-gray-400 text-center border rounded-md max-w-[46px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
+                                    {{ $menu->title }}</p>
+                                <h1 class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</h1>
+                                <div class="flex items-center flex-wrap ">
+                                    <a class=" inline-flex items-center md:mb-2 lg:mb-0">觀看網站 ➔
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="p-2 md:w-1/3">
+                @endforeach
+                {{-- <div class="p-2 md:w-1/3">
                     <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
                         <img class="h-72 w-full object-cover object-center" src="https://dummyimage.com/721x401" alt="blog">
                         <div class="p-6">
@@ -315,7 +341,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>
@@ -324,8 +350,8 @@
     {{-- 最新消息 --}}
     <section class="text-gray-600 body-font overflow-hidden" style="background-color:#F2F6F9;">
         {{-- <div class="max-w-[1280px] px-5 py-24 mx-auto"> --}}
-        <div class="max-w-[1600px] mx-auto px-8 py-24 lg:px-32">
-            <h2 class="text-center title-font sm:text-4xl text-3xl mb-10 font-black" style="color:#9BBF3E;">最新消息</h2>
+        <div class="max-w-[1600px] mx-auto px-8 py-20 lg:px-32">
+            <h2 class="text-center title-font sm:text-4xl text-3xl mb-10 font-black text-gray-800 font-sans">最新消息</h2>
             <div class="">
                 <div class="pl-4 flex mx-auto flex-wrap border-b-2 border-gray-800 text-lg">
                     <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">All</a>

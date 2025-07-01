@@ -18,7 +18,6 @@ use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Resources\Components\Tab;
 
 class PostResource extends Resource
 {
@@ -151,26 +150,6 @@ class PostResource extends Resource
                 Infolists\Components\TextEntry::make('date')
                     ->columnSpanFull(),
             ]);
-    }
-
-    public static function getTabs(): array
-    {
-        return [
-            'all' => Tab::make('全部文章')
-                ->badge(Post::count()),
-            'published' => Tab::make('已發布')
-                ->badge(Post::where('display', 1)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
-            'unpublished' => Tab::make('未發布')
-                ->badge(Post::where('display', 0)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
-            'recent' => Tab::make('最近更新')
-                ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
-            'this_month' => Tab::make('本月發布')
-                ->badge(Post::whereMonth('created_at', now()->month)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month)),
-        ];
     }
 
     public static function getRelations(): array

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Menu;
+use App\Models\PostCategory;
 use Awcodes\Curator\Models\Media;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
@@ -45,8 +46,8 @@ class Post extends Model
 
     public function menu():BelongsTo
     {
-        return $this->belongsTo(Menu::class, 'menu_slug', 'slug')
-            ->where('locale', $this->locale);
+        return $this->belongsTo(Menu::class, 'menu_slug', 'slug');
+            // ->where('locale', $this->locale);
     }
 
     // 定義與 Curator Media 模型的多對多關聯
@@ -59,6 +60,12 @@ class Post extends Model
                     // ->orderBy('pivot_order'); // 依據排序欄位排序
                     ->orderBy('order'); // 依據排序欄位排序
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_id', 'post_category_id');
+    }
+
 
     // public function resolveRouteBinding($value, $field = null)
     // {

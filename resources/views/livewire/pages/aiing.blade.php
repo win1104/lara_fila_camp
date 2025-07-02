@@ -26,7 +26,7 @@
                         style="background-color:rgb(251 251 251 / 20%);">
                         <div>
                             <div class="flex items-center w-16 h-8 mb-5 rounded-full">
-                                <img src="{{ asset('Page-1.png') }}" alt="">
+                                <img src="{{ asset('nobg_ai.png') }}" alt="">
                             </div>
                             <h3 class="mb-3 font-black leading-5 text-white">超越客服，打造沉浸式品牌體驗</h3>
                             <p class="mb-3 text-base text-white">
@@ -249,7 +249,7 @@
     <footer class="text-gray-600 body-font bg-gray-100">
         <div
             class="border-b-2 border-gray-300 max-w-[1600px] px-5 lg:px-32 pt-20 pb-14 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-            <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-right md:mt-0 mt-10">
+            <div class=" flex-shrink-0 md:mx-0 mx-auto text-center md:text-right md:mt-0 mt-10">
                 <a class="flex title-font font-medium items-center md:justify-end justify-center text-gray-900">
                     <img src="{{ asset('logo_black.png') }}" alt="maxweb Logo" role="img">
                 </a>

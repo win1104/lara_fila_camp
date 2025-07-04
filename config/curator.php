@@ -67,4 +67,5 @@ return [
     'table' => [
         'layout' => 'grid',
     ],
+
 ];

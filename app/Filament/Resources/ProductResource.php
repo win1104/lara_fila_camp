@@ -15,10 +15,11 @@ use Filament\Resources\Pages\Page;
 use Filament\Resources\Components\Tab;
 use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Request;
+use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Filters\SelectFilter;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
@@ -40,7 +41,6 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-<<<<<<< HEAD
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
@@ -124,62 +124,6 @@ class ProductResource extends Resource
 
             ])
             ->columns(3);
-=======
-                Forms\Components\TextInput::make('locale')
-                    ->required()
-                    ->default(fn () => Request::route('locale')),
-                SelectTree::make('product_categories')
-                    ->label('產品分類')
-                    ->placeholder('Select Category')
-                    ->parentNullValue('home')
-                    ->withKey('slug')
-                    ->relationship('product_category', 'title', 'parent_slug')
-                    ->withCount()
-                    ->expandSelected(true)
-                    // ->alwaysOpen()
-                    ->multiple(true)
-                    ->searchable()
-                    ->saveRelationshipsUsing(function (Product $record, $state) {
-                        $record->product_category()->sync(
-                            collect($state)->mapWithKeys(function ($slug) use ($record) {
-                                return [$slug => ['product_slug' => $record->slug]];
-                            })
-                        );
-                    }),
-                Forms\Components\TextInput::make('title')
-                    ->label('Title')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
-                // CuratorPicker::make('media_id')
-                //     ->label('Media')
-                //     ->multiple()
-                //     ->relationship('product', 'image')
-                //     ->orderColumn('order'),
-                CuratorPicker::make('images') // 這是你的模型關聯名稱
-                    ->label('產品圖片')
-                    ->multiple() // 啟用多選模式，這是關鍵！
-                    ->constrained(true) // 可選：限制圖片尺寸比例
-                    ->columnSpanFull() // 讓圖片欄位佔滿整行
-                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
-                Forms\Components\RichEditor::make('content')
-                    ->label('Content')
-                    ->required(),
-                Forms\Components\Toggle::make('display')
-                    ->label('Published'),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
-
-
-                // Forms\Components\Textarea::make('intro')
-                //     ->label('Intro')
-                //     ->columnSpan('full')
-                //     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                //     ->maxLength(65535),
-            ]);
->>>>>>> f3bbcb29a4fec7d72ffdc1bc627a5f32d5b28d9f
     }
 
     public static function table(Table $table): Table
@@ -216,7 +160,7 @@ class ProductResource extends Resource
                     ->searchable(),
             ])
             ->reorderable('order') // 啟用拖拉排序功能
-            ->defaultSort('order') // 預設按 sort_order 排序
+            ->defaultSort('order', 'asc') // 預設按 sort_order 排序
             ->filters([
                 SelectFilter::make('display')
                     ->label('發布狀態')
@@ -233,12 +177,82 @@ class ProductResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\RestoreAction::make()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title(__('title'))
+                                ->body(__('body')),
+                        ),
+                    Tables\Actions\DeleteAction::make()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title(__('title'))
+                                ->body(__('body')),
+                        ),
+                ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('print')
+                        // ->label(__('label'))
+                        ->icon('heroicon-o-printer')
+                        ->form([
+                            Forms\Components\TextInput::make('quantity')
+                                ->label(__('form.fields.quantity'))
+                                ->required()
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(100),
+                            Forms\Components\Radio::make('format')
+                                ->label(__('form.fields.format'))
+                                ->options([
+                                    'dymo'       => __('form.fields.format-options.dymo'),
+                                    '2x7_price'  => __('form.fields.format-options.2x7_price'),
+                                    '4x7_price'  => __('form.fields.format-options.4x7_price'),
+                                    '4x12'       => __('form.fields.format-options.4x12'),
+                                    '4x12_price' => __('form.fields.format-options.4x12_price'),
+                                ])
+                                ->default('2x7_price')
+                                ->required(),
+                        ])
+                        ->action(function (array $data, $records) {
+                            // $pdf = PDF::loadView('products::filament.resources.products.actions.print', [
+                            //     'records'  => $records,
+                            //     'quantity' => $data['quantity'],
+                            //     'format'   => $data['format'],
+                            // ]);
+
+                            // $paperSize = match ($data['format']) {
+                            //     'dymo'  => [0, 0, 252.2, 144],
+                            //     default => 'a4',
+                            // };
+
+                            // $pdf->setPaper($paperSize, 'portrait');
+
+                            // return response()->streamDownload(function () use ($pdf) {
+                            //     echo $pdf->output();
+                            // }, 'Product-Barcode.pdf');
+                            return null;
+                        }),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title(__('notification.title'))
+                                ->body(__('notification.body')),
+                        ),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->successNotification(
+                            Notification::make()
+                                ->success()
+                                ->title(__('notification.title'))
+                                ->body(__('notification.body')),
+                        ),
                 ]),
             ]);
     }
@@ -262,6 +276,7 @@ class ProductResource extends Resource
                                 Infolists\Components\ImageEntry::make('images')
                                     ->hiddenLabel()
                                     ->circular(),
+
                             ])
                             ->visible(fn ($record): bool => ! empty($record->images)),
                     ])

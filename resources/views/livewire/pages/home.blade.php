@@ -179,12 +179,18 @@
             <h2 class="text-center title-font sm:text-4xl text-3xl mb-20 font-black text-gray-800 font-sans">近期作品</h2>
             <div class="flex items-center justify-between mb-14">
                 <div class="flex flex-wrap text-lg">
+                    @if($this->activeTab == 'all')
+                    <button wire:click="switchTab('all')"
+                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider text-[#9BBF3E] border-b-2 border-[#9BBF3E]">All</button>
+                    @else
+                    <button wire:click="switchTab('all')"
+                        class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider text-gray-600 hover:text-gray-900 hover:border-b-2 hover:border-gray-900">All</button>
+                    @endif
                     @foreach ($menus as $menu)
 
-                        {{-- <button wire:click="switchTab('all')"
-                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider hover:text-gray-900">All</button> --}}
+
                         <button wire:click="switchTab('{{ $menu->slug }}')"
-                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider{{ $activeTab === $menu->slug ? 'text-[#9BBF3E]' : 'hover:text-gray-900' }}">{{ $menu->title }}</button>
+                            class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider {{ $activeTab === $menu->slug ? 'text-[#9BBF3E] border-b-2 border-[#9BBF3E]' : 'text-gray-600 hover:text-gray-900 hover:border-b-2 hover:border-gray-900' }}">{{ $menu->title }}</button>
                         {{-- <button wire:click="switchTab('教育')"
                             class="sm:px-6 py-3 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t"style="color:#9BBF3E;">教育</button>
                         <button wire:click="switchTab('醫療')"
@@ -254,9 +260,9 @@
                         <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
                             <img class="h-72 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
                             <div class="p-6">
-                                <p
-                                    class="border-gray-400 text-center border rounded-md max-w-[46px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
-                                    {{ $menu->title }}</p>
+                                <p class="border-gray-400 text-center border rounded-md max-w-[46px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
+                                    {{ $work->menu?->title }}</p>
+                                    {{-- {{ $work->menu->title }}</p> --}}
                                 <h1 class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</h1>
                                 <div class="flex items-center flex-wrap ">
                                     <a class=" inline-flex items-center md:mb-2 lg:mb-0">觀看網站 ➔
@@ -354,30 +360,43 @@
             <h2 class="text-center title-font sm:text-4xl text-3xl mb-10 font-black text-gray-800 font-sans">最新消息</h2>
             <div class="">
                 <div class="pl-4 flex mx-auto flex-wrap border-b-2 border-gray-800 text-lg">
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">All</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">科技</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t" style="color:#9BBF3E;">教育</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">資安</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">SEO</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">GIS</a>
-                    <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">FHIR</a>
+                    @if($this->changeTab == 'all')
+                        <button wire:click="newsTab('all')"
+                            class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none text-[#9BBF3E] border-b-2 border-[#9BBF3E]">All</button>
+                    @else
+                        <button wire:click="newsTab('all')"
+                            class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none text-gray-600 hover:text-gray-900 hover:border-b-2 hover:border-gray-900">All</button>
+                    @endif
+                    @foreach ($news_cate as $n_cate)
+
+                        <button wire:click="newsTab('{{ $n_cate->id }}')" class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none {{ $changeTab == $n_cate->id ? 'text-[#9BBF3E] border-b border-[#9BBF3E]' : 'text-gray-600 hover:text-gray-900 hover:border-b hover:border-gray-950' }}">{{$n_cate->title}}</button>
+                        {{-- <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">科技</a>
+                        <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t" style="color:#9BBF3E;">教育</a>
+                        <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">資安</a>
+                        <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">SEO</a>
+                        <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">GIS</a>
+                        <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">FHIR</a> --}}
+                    @endforeach
                 </div>
             </div>
             <div class="divide-y divide-gray-300 px-5">
-                <div class="py-8 flex flex-wrap md:flex-nowrap">
-                    <div class="pl-8 md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                        <span class="font-semibold title-font text-gray-700 mt-1.5">2025-04-22</span>
-                        <span
-                            class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">科技</span>
-                    </div>
-                    <div class="md:flex-grow">
-                        <h2 class="text-xl font-black text-gray-900 title-font mb-2">原住民族重要民俗文化資產輔助培力(第四期)計畫</h2>
-                        <p class="leading-relaxed">計畫時間： 2023/03/01~2024/05/31</p>
-                        <p class="leading-relaxed">補助/委託或合作機構：文化部文化資產局</p>
+                @foreach ($news_post as $news)
 
+
+                    <div class="py-8 flex flex-wrap md:flex-nowrap">
+                        <div class="pl-8 md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
+                            <span class="font-semibold title-font text-gray-700 mt-1.5">{{ $news->date }}</span>
+                            <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->categories->first()->title }}</span>
+                        </div>
+                        <div class="md:flex-grow">
+                            <h2 class="text-xl font-black text-gray-900 title-font mb-2">{{ $news->title }}</h2>
+                            <p class="leading-relaxed">{{ $news->content }}</p>
+
+                        </div>
                     </div>
-                </div>
-                <div class="py-8 flex flex-wrap md:flex-nowrap">
+
+                @endforeach
+                {{-- <div class="py-8 flex flex-wrap md:flex-nowrap">
                     <div class="pl-8 md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                         <span class="font-semibold title-font text-gray-700 mt-1.5">112 年度</span>
                         <span
@@ -412,7 +431,7 @@
                         <p class="leading-relaxed">年齡與職業的標籤，限制不了你投入學習的實踐；空間與地域的限制，鎖不住你對未來的想像。</p>
 
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

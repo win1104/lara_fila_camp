@@ -8,14 +8,18 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use App\Models\Menu as MenuModel;
+use App\Models\PostCategory as PostCategoryModel;
 use App\Models\Post as PostModel;
 use Illuminate\Support\Facades\DB;
 
 class Home extends Component
 {
     public $menus;
+    public $news_cate;
     public $activeTab = 'all';
+    public $changeTab = 'all';
     public $works = [];
+    public $news_post = [];
 
     public function mount()
     {
@@ -27,9 +31,12 @@ class Home extends Component
 
         $this->loadPosts();
 
-        // return static::where('slug', $value)
-        //     ->where('locale', app()->getLocale())
-        //     ->firstOrFail();
+        $this->news_cate = PostCategoryModel::where('locale', app()->getLocale())
+            ->where('display', 1)
+            // ->where('slug', 'works')
+            ->orderBy('order', 'asc')
+            ->get();
+        $this->loadNews();
 
     }
 
@@ -39,19 +46,58 @@ class Home extends Component
         $this->loadPosts();
     }
 
+    public function newsTab($tab_id)
+    {
+        $this->changeTab = $tab_id;
+        $this->loadNews();
+    }
+
     protected function loadPosts()
     {
         $query = PostModel::where('locale', app()->getLocale())
-            ->where('menu_slug', 'works')
+            // ->where('slug', 'works')
             ->where('display', 1)
             ->orderBy('order', 'asc');
             // ->limit(4);
 
-        if ($this->activeTab !== 'all') {
-            $this->works->where('slug', $this->activeTab);
+        if ($this->activeTab === 'all') {
+            $menuSlugs = $this->menus->pluck('slug')->toArray();
+            $query->whereIn('menu_slug', $menuSlugs);
+            $this->activeMenu = null;
+        }else{
+            $query->where('menu_slug', $this->activeTab);
+            $this->activeMenu = $this->menus->firstWhere('slug', $this->activeTab);
         }
 
-        $this->works = $query->get();
+        $this->works = $query->with('menu')->get();
+
+        // dd($this->menus);
+    }
+
+    protected function loadNews()
+    {
+        $query = PostModel::where('locale', app()->getLocale())
+            ->where('menu_slug', 'news')
+            ->where('display', 1)
+            ->orderBy('order', 'asc')
+            ->limit(4);
+
+        if ($this->changeTab !== 'all') {
+            $postIds = DB::table('post_relation')
+                ->where('post_category_id', $this->changeTab)
+                ->pluck('post_id')
+                ->toArray();
+            // 如果有符合的 post_id，再加條件
+            if (!empty($postIds)) {
+                $query->whereIn('id', $postIds);
+            } else {
+                // 沒有對應文章，直接設空集合
+                $this->news_post = collect();
+                return;
+            }
+        }
+
+        $this->news_post = $query->with('categories')->get();
 
     }
 

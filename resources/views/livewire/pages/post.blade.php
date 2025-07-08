@@ -195,9 +195,9 @@
         {{-- <div class="container mx-auto px-4 py-8"> --}}
         <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
             <article class="bg-white rounded-lg shadow-md p-6">
-                <h1 class="text-3xl font-bold mb-4">{{ $post->title }}</h1>
+                <h2 class="text-3xl font-bold mb-4">{{ $post->title }}</h2>
                 @if($post->intro)
-                    <div class="text-gray-600 mb-6">{{ $post->intro }}</div>
+                    <div class="text-gray-600 mb-6">{!! $post->intro !!}</div>
                 @endif
                 <div class="prose max-w-none">
                     {{-- {!! Str::limit($post->content, 100) !!} --}}

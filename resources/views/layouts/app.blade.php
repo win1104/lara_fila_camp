@@ -81,7 +81,7 @@
 
         <!-- Livewire Scripts (必須在 Alpine 之前) -->
         @livewireScripts
-        <script src="{{ asset('js/app.js') }}"></script>
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
         <!-- Mary UI Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}

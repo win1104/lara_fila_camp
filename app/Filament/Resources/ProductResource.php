@@ -40,6 +40,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+<<<<<<< HEAD
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make()
@@ -123,6 +124,62 @@ class ProductResource extends Resource
 
             ])
             ->columns(3);
+=======
+                Forms\Components\TextInput::make('locale')
+                    ->required()
+                    ->default(fn () => Request::route('locale')),
+                SelectTree::make('product_categories')
+                    ->label('產品分類')
+                    ->placeholder('Select Category')
+                    ->parentNullValue('home')
+                    ->withKey('slug')
+                    ->relationship('product_category', 'title', 'parent_slug')
+                    ->withCount()
+                    ->expandSelected(true)
+                    // ->alwaysOpen()
+                    ->multiple(true)
+                    ->searchable()
+                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                        $record->product_category()->sync(
+                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                return [$slug => ['product_slug' => $record->slug]];
+                            })
+                        );
+                    }),
+                Forms\Components\TextInput::make('title')
+                    ->label('Title')
+                    ->required(),
+                Forms\Components\TextInput::make('slug')
+                    ->label('Slug')
+                    ->required(),
+                // CuratorPicker::make('media_id')
+                //     ->label('Media')
+                //     ->multiple()
+                //     ->relationship('product', 'image')
+                //     ->orderColumn('order'),
+                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                    ->label('產品圖片')
+                    ->multiple() // 啟用多選模式，這是關鍵！
+                    ->constrained(true) // 可選：限制圖片尺寸比例
+                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
+                Forms\Components\RichEditor::make('content')
+                    ->label('Content')
+                    ->required(),
+                Forms\Components\Toggle::make('display')
+                    ->label('Published'),
+                Forms\Components\DatePicker::make('date')
+                    ->label('Published At'),
+
+
+                // Forms\Components\Textarea::make('intro')
+                //     ->label('Intro')
+                //     ->columnSpan('full')
+                //     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                //     ->maxLength(65535),
+            ]);
+>>>>>>> f3bbcb29a4fec7d72ffdc1bc627a5f32d5b28d9f
     }
 
     public static function table(Table $table): Table

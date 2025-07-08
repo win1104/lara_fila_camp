@@ -40,58 +40,89 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('locale')
-                    ->required()
-                    ->default(fn () => Request::route('locale')),
-                SelectTree::make('product_categories')
-                    ->label('產品分類')
-                    ->placeholder('Select Category')
-                    ->parentNullValue('home')
-                    ->withKey('slug')
-                    ->relationship('product_category', 'title', 'parent_slug')
-                    ->withCount()
-                    ->expandSelected(true)
-                    // ->alwaysOpen()
-                    ->multiple(true)
-                    ->searchable()
-                    ->saveRelationshipsUsing(function (Product $record, $state) {
-                        $record->product_category()->sync(
-                            collect($state)->mapWithKeys(function ($slug) use ($record) {
-                                return [$slug => ['product_slug' => $record->slug]];
-                            })
-                        );
-                    }),
-                Forms\Components\TextInput::make('title')
-                    ->label('Title')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
-                // CuratorPicker::make('media_id')
-                //     ->label('Media')
-                //     ->multiple()
-                //     ->relationship('product', 'image')
-                //     ->orderColumn('order'),
-                CuratorPicker::make('images') // 這是你的模型關聯名稱
-                    ->label('產品圖片')
-                    ->multiple() // 啟用多選模式，這是關鍵！
-                    ->constrained(true) // 可選：限制圖片尺寸比例
-                    ->columnSpanFull() // 讓圖片欄位佔滿整行
-                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
-                Forms\Components\RichEditor::make('content')
-                    ->label('Content')
-                    ->required(),
-                Forms\Components\Toggle::make('display')
-                    ->label('Published'),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
-                // Forms\Components\Textarea::make('intro')
-                //     ->label('Intro')
-                //     ->columnSpan('full')
-                //     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                //     ->maxLength(65535),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Title')
+                                    ->required(),
+                                Forms\Components\TextInput::make('slug')
+                                    ->label('Slug')
+                                    ->required(),
+                                Forms\Components\RichEditor::make('intro')
+                                    ->label('簡介')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('date')
+                                    ->label('Published At'),
+                                // Forms\Components\Textarea::make('intro')
+                                //     ->label('Intro')
+                                //     ->columnSpan('full')
+                                //     ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                                //     ->maxLength(65535),
+                            ]),
+
+                        Forms\Components\Section::make('圖片')
+                            ->schema([
+
+                                // CuratorPicker::make('media_id')
+                                //     ->label('Media')
+                                //     ->multiple()
+                                //     ->relationship('product', 'image')
+                                //     ->orderColumn('order'),
+                                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                                    ->label('產品圖片')
+                                    ->multiple() // 啟用多選模式，這是關鍵！
+                                    ->constrained(true) // 可選：限制圖片尺寸比例
+                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
+                            ]),
+
+                        Forms\Components\Section::make('庫存')
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->label('說明')
+                                    ->required(),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('設定'))
+                            ->schema([
+                                Forms\Components\Toggle::make('display')
+                                    ->label('上架'),
+                                Forms\Components\TextInput::make('locale')
+                                    ->label('語系')
+                                    ->required()
+                                    ->default(fn () => Request::route('locale')),
+                                SelectTree::make('product_categories')
+                                    ->label('產品分類')
+                                    ->placeholder('Select Category')
+                                    ->parentNullValue('home')
+                                    ->withKey('slug')
+                                    ->relationship('product_category', 'title', 'parent_slug')
+                                    ->withCount()
+                                    ->expandSelected(true)
+                                    // ->alwaysOpen()
+                                    ->multiple(true)
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                                        $record->product_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                                return [$slug => ['product_slug' => $record->slug]];
+                                            })
+                                        );
+                                    }),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -159,13 +190,35 @@ class ProductResource extends Resource
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('locale'),
-                Infolists\Components\TextEntry::make('title'),
-                Infolists\Components\TextEntry::make('slug'),
-                Infolists\Components\TextEntry::make('date'),
-                Infolists\Components\TextEntry::make('display')
-                    ->columnSpanFull(),
-            ]);
+                Infolists\Components\Group::make()
+                    ->schema([
+                        Infolists\Components\Section::make()
+                            ->schema([
+                                Infolists\Components\TextEntry::make('locale'),
+                                Infolists\Components\TextEntry::make('title'),
+                                Infolists\Components\TextEntry::make('slug'),
+                                Infolists\Components\TextEntry::make('date'),
+                            ]),
+
+                        Infolists\Components\Section::make(__('title'))
+                            ->schema([
+                                Infolists\Components\ImageEntry::make('images')
+                                    ->hiddenLabel()
+                                    ->circular(),
+                            ])
+                            ->visible(fn ($record): bool => ! empty($record->images)),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+                Infolists\Components\Group::make()
+                    ->schema([
+                        Infolists\Components\Section::make(__('title'))
+                            ->schema([
+                                Infolists\Components\TextEntry::make('display')
+                            ])
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function getTabs(): array

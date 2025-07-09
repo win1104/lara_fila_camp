@@ -2,17 +2,16 @@
 
 namespace App\Filament\Resources\MenuResource\RelationManagers;
 
-
-
-use App\Models\Post;
 use Filament\Forms;
+use App\Models\Post;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Components\Tab;
 use FilamentTiptapEditor\TiptapEditor;
+use Illuminate\Database\Eloquent\Builder;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -22,6 +21,17 @@ class PostsRelationManager extends RelationManager
 
 
     protected static string $relationship = 'posts';
+
+    // protected static string $view = 'filament.relation-managers.posts-relation-manager';
+
+    // public ?string $activeTab = 'all'; // 預設值
+
+    // protected static ?string $recordTitleAttribute = 'title';
+
+    // public function setActiveTab($tabKey)
+    // {
+    //     $this->activeTab = $tabKey;
+    // }
 
     public function mount(): void
     {
@@ -171,16 +181,29 @@ class PostsRelationManager extends RelationManager
             ]);
     }
 
+    public function getHeaderActions(): array
+    {
+        return [
+            // 將 tabs 作為 header actions
+            Action::make('tabs')
+                // ->view('filament.components.custom-tabs')
+                ->extraAttributes(['class' => 'w-full']),
+        ];
 
+        // return $this->table(new \Filament\Tables\Table($this))->getHeaderActions();
+    }
 
 
     // public static function getTabs(): array
     public function getTabs(): array
     {
+        $ownerRecord = $this->getOwnerRecord();
+
         // 基於用戶權限的 Tab
         $tabs = [
             'all' => Tab::make('全部文章')
-                ->badge(Post::count())
+                ->badge($ownerRecord->posts()->count())
+                // ->badge(Post::count())
                 ->icon('heroicon-o-document-duplicate'),
             'published' => Tab::make('已發布')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
@@ -208,32 +231,36 @@ class PostsRelationManager extends RelationManager
         //         ->badgeColor('warning');
         // }
 
-
-        // 不綁權限的 Tab
-        // return [
-        //     'all' => Tab::make('全部文章')
-        //         ->badge(Post::count())
-        //         ->icon('heroicon-o-document-duplicate'),
-        //     'published' => Tab::make('已發布')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
-        //         ->badge(Post::where('display', 1)->count())
-        //         ->badgeColor('success')
-        //         ->icon('heroicon-o-check-circle'),
-        //     'unpublished' => Tab::make('未發布')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
-        //         ->badge(Post::where('display', 0)->count())
-        //         ->badgeColor('gray')
-        //         ->icon('heroicon-o-pencil-square'),
-        //     'recent' => Tab::make('最近更新')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)))
-        //         ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
-        //         ->badgeColor('warning'),
-        //     'this_month' => Tab::make('本月發布')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month))
-        //         ->badge(Post::whereMonth('created_at', now()->month)->count())
-        //         ->badgeColor('warning'),
-        // ];
-
         return $tabs;
+    }
+
+    // 提供給視圖使用的資料
+    protected function getViewData(): array
+    {
+        return [
+            'tabs' => $this->getTabs(),
+            'activeTab' => $this->activeTab,
+            'relationship' => static::$relationship,
+            'ownerRecord' => $this->getOwnerRecord(),
+        ];
+    }
+
+    // 取得當前 tab 的計數
+    public function getCurrentTabCount(): int
+    {
+        $ownerRecord = $this->getOwnerRecord();
+
+        switch ($this->activeTab) {
+            case 'published':
+                return $ownerRecord->posts()->where('display', '1')->count();
+            case 'unpublished':
+                return $ownerRecord->posts()->where('display', '0')->count();
+            // case 'scheduled':
+            //     return $ownerRecord->posts()->where('status', 'scheduled')->count();
+            // case 'archived':
+            //     return $ownerRecord->posts()->where('status', 'archived')->count();
+            default:
+                return $ownerRecord->posts()->count();
+        }
     }
 }

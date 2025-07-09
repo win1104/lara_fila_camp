@@ -13,6 +13,16 @@ class ListProducts extends ListRecords
 {
     protected static string $resource = ProductResource::class;
 
+    protected static string $view = 'filament.resources.product-resource.pages.list-products';
+
+    public ?string $activeTab = 'all'; // 預設值
+
+    public function setActiveTab($tabKey)
+    {
+        $this->activeTab = $tabKey;
+    }
+
+
     public function getTabs(): array
     {
         return [
@@ -54,6 +64,12 @@ class ListProducts extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('created_at', '>=', now()->subDays(7)))
                 ->badge(fn () => Product::where('created_at', '>=', now()->subDays(7))->count()),
         ];
+    }
+
+    public function getCurrentTabLabel(): string
+    {
+        $tabs = $this->getTabs();
+        return $tabs[$this->activeTab]->getLabel() ?? '全部產品';
     }
 
     protected function getHeaderActions(): array

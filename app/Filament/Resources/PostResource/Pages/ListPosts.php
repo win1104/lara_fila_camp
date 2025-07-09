@@ -56,6 +56,9 @@ class ListPosts extends ListRecords
                 ->badgeColor('warning');
         }
 
+        $tabs['article'] = Tab::make('文章管理')
+            ->icon('heroicon-o-check-circle'); // 你可以自訂 icon
+
         return $tabs;
 
 
@@ -96,13 +99,13 @@ class ListPosts extends ListRecords
     // }
 
     // 提供給視圖使用的資料
-    protected function getViewData(): array
-    {
-        return array_merge(parent::getViewData(), [
-            'tabs' => $this->getTabs(),
-            'activeTab' => $this->activeTab,
-        ]);
-    }
+    // protected function getViewData(): array
+    // {
+    //     return array_merge(parent::getViewData(), [
+    //         'tabs' => $this->getTabs(),
+    //         'activeTab' => $this->activeTab,
+    //     ]);
+    // }
 
     // 取得當前 tab 的標籤
     public function getCurrentTabLabel(): string

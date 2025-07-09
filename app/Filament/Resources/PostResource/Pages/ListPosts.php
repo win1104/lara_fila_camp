@@ -13,7 +13,14 @@ class ListPosts extends ListRecords
 {
     protected static string $resource = PostResource::class;
 
+    protected static string $view = 'filament.resources.post-resource.pages.list-posts';
 
+    public ?string $activeTab = 'all'; // 預設值
+
+    public function setActiveTab($tabKey)
+    {
+        $this->activeTab = $tabKey;
+    }
 
     // public static function getTabs(): array
     public function getTabs(): array
@@ -32,7 +39,7 @@ class ListPosts extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
                 ->badge(Post::where('display', 0)->count())
                 ->badgeColor('gray')
-                ->icon('heroicon-o-pencil-square'),
+                ->icon('heroicon-o-x-circle'),
         ];
 
         if (auth()->user()->can('view_draft_posts')) {
@@ -77,6 +84,33 @@ class ListPosts extends ListRecords
         //         ->badgeColor('warning'),
         // ];
     }
+
+    // 當 tab 改變時觸發
+    // public function updatedActiveTab()
+    // {
+    //     // 重置分頁
+    //     $this->resetPage();
+
+    //     // 重新載入 table
+    //     $this->resetTable();
+    // }
+
+    // 提供給視圖使用的資料
+    protected function getViewData(): array
+    {
+        return array_merge(parent::getViewData(), [
+            'tabs' => $this->getTabs(),
+            'activeTab' => $this->activeTab,
+        ]);
+    }
+
+    // 取得當前 tab 的標籤
+    public function getCurrentTabLabel(): string
+    {
+        $tabs = $this->getTabs();
+        return $tabs[$this->activeTab]->getLabel() ?? '全部文章';
+    }
+
 
     protected function getHeaderActions(): array
     {

@@ -2,11 +2,16 @@
 
 namespace App\Filament\Resources\MenuResource\RelationManagers;
 
+
+
+use App\Models\Post;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Components\Tab;
 use FilamentTiptapEditor\TiptapEditor;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
@@ -121,7 +126,7 @@ class PostsRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\IconColumn::make('display')
-                    ->label('Published')
+                    ->label('上架')
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
@@ -164,5 +169,71 @@ class PostsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+
+
+
+    // public static function getTabs(): array
+    public function getTabs(): array
+    {
+        // 基於用戶權限的 Tab
+        $tabs = [
+            'all' => Tab::make('全部文章')
+                ->badge(Post::count())
+                ->icon('heroicon-o-document-duplicate'),
+            'published' => Tab::make('已發布')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
+                ->badge(Post::where('display', 1)->count())
+                ->badgeColor('success')
+                ->icon('heroicon-o-check-circle'),
+            'unpublished' => Tab::make('未發布')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
+                ->badge(Post::where('display', 0)->count())
+                ->badgeColor('gray')
+                ->icon('heroicon-o-x-circle'),
+        ];
+
+        // if (auth()->user()->can('view_draft_posts')) {
+        //     $tabs['recent'] = Tab::make('最近更新')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)))
+        //         ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
+        //         ->badgeColor('warning');
+        // }
+
+        // if (auth()->user()->can('view_archived_posts')) {
+        //     $tabs['this_month'] = Tab::make('本月發布')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month))
+        //         ->badge(Post::whereMonth('created_at', now()->month)->count())
+        //         ->badgeColor('warning');
+        // }
+
+
+        // 不綁權限的 Tab
+        // return [
+        //     'all' => Tab::make('全部文章')
+        //         ->badge(Post::count())
+        //         ->icon('heroicon-o-document-duplicate'),
+        //     'published' => Tab::make('已發布')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
+        //         ->badge(Post::where('display', 1)->count())
+        //         ->badgeColor('success')
+        //         ->icon('heroicon-o-check-circle'),
+        //     'unpublished' => Tab::make('未發布')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
+        //         ->badge(Post::where('display', 0)->count())
+        //         ->badgeColor('gray')
+        //         ->icon('heroicon-o-pencil-square'),
+        //     'recent' => Tab::make('最近更新')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)))
+        //         ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
+        //         ->badgeColor('warning'),
+        //     'this_month' => Tab::make('本月發布')
+        //         ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month))
+        //         ->badge(Post::whereMonth('created_at', now()->month)->count())
+        //         ->badgeColor('warning'),
+        // ];
+
+        return $tabs;
     }
 }

@@ -15,7 +15,7 @@ return [
             ],
 
             'save' => [
-                'label' => '保存',
+                'label' => '儲存',
             ],
 
         ],
@@ -25,7 +25,7 @@ return [
     'notifications' => [
 
         'saved' => [
-            'title' => '已保存',
+            'title' => '已儲存',
         ],
 
     ],

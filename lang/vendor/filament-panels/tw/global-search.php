@@ -3,7 +3,7 @@
 return [
 
     'field' => [
-        'label' => '全域搜尋',
+        'label' => '全文檢尋',
         'placeholder' => '搜尋',
     ],
 

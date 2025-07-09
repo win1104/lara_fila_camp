@@ -22,7 +22,10 @@ use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
+use Illuminate\Support\Facades\Storage;
+use Filament\Resources\Pages\CreateRecord;
 // use App\Filament\Resources\ProductResource\RelationManagers;
 
 
@@ -67,6 +70,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required(),
+                    // ->afterStateUpdated(fn ($state) => CustomPathGenerator::$slug = $state),
                 // CuratorPicker::make('media_id')
                 //     ->label('Media')
                 //     ->multiple()
@@ -78,7 +82,8 @@ class ProductResource extends Resource
                     ->constrained(true) // 可選：限制圖片尺寸比例
                     ->columnSpanFull() // 讓圖片欄位佔滿整行
                     ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
+                    ->orderColumn('order') // 可選：指定中間表中的排序欄位
+                    ->pathGenerator(CustomPathGenerator::class),
                 Forms\Components\RichEditor::make('content')
                     ->label('Content')
                     ->required(),
@@ -215,36 +220,4 @@ class ProductResource extends Resource
         ]);
     }
 
-    // public static function afterCreate(Form $form, $record): void
-    // {
-    //     $newId = $record->id;
-
-    //     Log::info('新增產品', ['user_id' => auth()->id(), 'post_id' => $newId]); // 現在 $newId 包含了剛建立的記錄的 ID
-    //     // Log::error('發生錯誤：' . $e->getMessage(), ['exception' => $e]);
-    //     // Log::emergency('系統崩潰', ['exception' => $e]);
-    //     // Log::warning('密碼嘗試次數過多', ['ip_address' => $request->ip()]);
-    //     // Log::debug('變數值：' . $variable);
-    // }
-
-    // public static function afterSave(Form $form, $record): void
-    // {
-    //     if ($record->wasRecentlyCreated) {
-    //         $logMessage = static::getModelLabel() . " 已建立，ID： " . $record->id;
-    //         $logType = '建立';
-    //     } else {
-    //         $logMessage = static::getModelLabel() . " 已更新，ID： " . $record->id;
-    //         $logType = '更新';
-    //     }
-
-    //     Log::info($logType . 'info紀錄', [
-    //         'model' => static::getModelLabel(),
-    //         'id' => $record->id,
-    //         'data' => $record->toArray(),
-    //     ]);
-    //     Log::debug($logType . 'debug紀錄', [
-    //         'model' => static::getModelLabel(),
-    //         'id' => $record->id,
-    //         'data' => $record->toArray(),
-    //     ]);
-    // }
 }

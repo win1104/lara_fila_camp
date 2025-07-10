@@ -28,7 +28,7 @@ class PostResource extends Resource
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
     protected static ?string $label = '文章'; // 這將用於單數形式
 
-    protected static ?string $navigationParentItem = 'Article';
+    protected static ?string $navigationParentItem = '內容管理';
     protected static ?string $navigationGroup = 'Website';
 
 

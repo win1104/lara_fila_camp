@@ -25,8 +25,8 @@ class FilamentLocale
 
             // 設定 Laravel 的語系
             App::setLocale($systemLocale);
-            URL::defaults(['locale' => $systemLocale]);
-            // URL::defaults(['locale' => $urlLocale]);
+            // URL::defaults(['locale' => $systemLocale]);
+            URL::defaults(['locale' => $urlLocale]);
 
             // 設定 Filament 的語系
             Config::set('app.locale', $systemLocale);

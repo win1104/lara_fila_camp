@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Filament\Resources\Components\Tab;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PostResource\Pages;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -171,7 +172,8 @@ class PostsRelationManager extends RelationManager
                     ->visible($shouldShowCreateAction),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->url(fn (Post $record): string => route('filament.admin.resources.posts.edit', $record)),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -207,12 +209,12 @@ class PostsRelationManager extends RelationManager
                 ->icon('heroicon-o-document-duplicate'),
             'published' => Tab::make('已發布')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
-                ->badge(Post::where('display', 1)->count())
+                ->badge($ownerRecord->posts()->where('display', 1)->count())
                 ->badgeColor('success')
                 ->icon('heroicon-o-check-circle'),
             'unpublished' => Tab::make('未發布')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
-                ->badge(Post::where('display', 0)->count())
+                ->badge($ownerRecord->posts()->where('display', 0)->count())
                 ->badgeColor('gray')
                 ->icon('heroicon-o-x-circle'),
         ];

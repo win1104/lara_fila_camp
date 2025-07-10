@@ -26,6 +26,24 @@ class ListProducts extends ListRecords
     public function getTabs(): array
     {
         return [
+
+
+            // 'all' => Tab::make('全部產品')
+            //     ->badge(Product::query()->count()),
+            // 'published' => Tab::make('上架')
+            //     ->badge(Product::query()->where('display', 1)->count())
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
+            // 'unpublished' => Tab::make('下架')
+            //     ->badge(Product::query()->where('display', 0)->count())
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
+            // 'recent' => Tab::make('最近更新')
+            //     ->badge(Product::query()->where('updated_at', '>=', now()->subDays(7))->count())
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
+
+
+
+
+
             'all' => Tab::make('全部商品')
                 ->icon('heroicon-o-shopping-bag')
                 //使用快取來優化徽章計數
@@ -35,20 +53,21 @@ class ListProducts extends ListRecords
             'active' => Tab::make('上架中')
                 ->icon('heroicon-o-check-circle')
                 //使用快取來優化徽章計數
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'active'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '1'))
                 ->badge(fn () => cache()->remember('products.published.count', 300, fn () => Product::where('display', '1')->count()))
                 // ->badge(fn () => Product::where('display', '1')->count())
                 ->badgeColor('success'),
 
             'inactive' => Tab::make('下架')
                 ->icon('heroicon-o-x-circle')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'inactive'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '0'))
                 ->badge(fn () => Product::where('display', '0')->count())
                 ->badgeColor('danger'),
 
             'out_of_stock' => Tab::make('缺貨')
                 ->icon('heroicon-o-exclamation-triangle')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'out_of_stock'))
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '0'))
+                // ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'out_of_stock'))
                 ->badge(fn () => Product::where('check', '1')->count())
                 // ->badge(fn () => Product::where('status', 'out_of_stock')->count())
                 ->badgeColor('warning'),

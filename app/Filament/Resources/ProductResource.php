@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Request;
 use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Tables\Filters\SelectFilter;
-
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
@@ -39,6 +38,11 @@ class ProductResource extends Resource
     protected static ?string $navigationLabel = '產品';
     protected static ?string $navigationGroup = 'Pruoducts';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('產品');
+    }
 
     public static function form(Form $form): Form
     {
@@ -300,16 +304,16 @@ class ProductResource extends Resource
     public static function getTabs(): array
     {
         return [
-            'all' => Tab::make('全部產品')
-                ->badge(Product::count()),
-            'published' => Tab::make('已發布')
-                ->badge(Product::where('display', 1)->count())
+            'all' => Tab::make('全部商品')
+                ->badge(Product::query()->count()),
+            'published' => Tab::make('上架')
+                ->badge(Product::query()->where('display', 1)->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
-            'unpublished' => Tab::make('未發布')
-                ->badge(Product::where('display', 0)->count())
+            'unpublished' => Tab::make('下架')
+                ->badge(Product::query()->where('display', 0)->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
             'recent' => Tab::make('最近更新')
-                ->badge(Product::where('updated_at', '>=', now()->subDays(7))->count())
+                ->badge(Product::query()->where('updated_at', '>=', now()->subDays(7))->count())
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
         ];
     }
@@ -336,9 +340,9 @@ class ProductResource extends Resource
         return $page->generateNavigationItems([
             Pages\ViewProduct::class,
             Pages\EditProduct::class,
-            // Pages\EditCustomerContact::class,
-            // Pages\ManageCustomerAddresses::class,
-            // Pages\ManageCustomerPayments::class,
+            // Pages\EditProductContact::class,
+            // Pages\ManageProductAddresses::class,
+            // Pages\ManageProductPayments::class,
         ]);
     }
 

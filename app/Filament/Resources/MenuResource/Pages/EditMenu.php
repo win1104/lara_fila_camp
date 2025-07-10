@@ -58,6 +58,11 @@ class EditMenu extends EditRecord
         ];
     }
 
+    public function getTitle(): string
+    {
+        return $this->record->title;
+    }
+
     protected function getFormActions(): array
     {
         return [];

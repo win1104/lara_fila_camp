@@ -11,23 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products_attributes', function (Blueprint $table) {
+        Schema::create('products_options', function (Blueprint $table) {
             $table->id();
             $table->string('locale')->default('tw');
-            $table->string('slug')->default('home');
+            $table->string('product_slug');
+
+            $table->foreign(['locale', 'product_slug'])
+                ->references(['locale', 'slug'])
+                ->on('products')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+
             $table->string('name');
-            $table->string('type');
+            $table->string('slug');
+            $table->string('type')->nullable();
             $table->integer('order')->default('1');
             $table->boolean('display')->default('0');
             $table->string('date')->nullable();
             $table->text('description')->nullable();
 
-
-            $table->foreignId('product_slug')
-                ->constrained('products')
-                ->cascadeOnDelete();
-
-            $table->foreignId('creator_id')
+            $table->foreignId('admin_id')
                 ->nullable()
                 ->constrained('admins')
                 ->nullOnDelete();

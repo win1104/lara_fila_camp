@@ -13,19 +13,20 @@ use Filament\Resources\Resource;
 // use Illuminate\Support\Facades\Log;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Components\Tab;
+use Filament\Navigation\NavigationItem;
 use Filament\Tables\Columns\IconColumn;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
 use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
-use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
-use Illuminate\Support\Facades\Storage;
-use Filament\Resources\Pages\CreateRecord;
+use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 // use App\Filament\Resources\ProductResource\RelationManagers;
 
 
@@ -337,13 +338,29 @@ class ProductResource extends Resource
 
     public static function getRecordSubNavigation(Page $page): array
     {
-        return $page->generateNavigationItems([
-            Pages\ViewProduct::class,
-            Pages\EditProduct::class,
-            // Pages\EditProductContact::class,
-            // Pages\ManageProductAddresses::class,
-            // Pages\ManageProductPayments::class,
-        ]);
+        $record = $page->getRecord();
+
+        // return $page->generateNavigationItems([
+        //     Pages\ViewProduct::class,
+        //     Pages\EditProduct::class,
+        // ]);
+
+        return [
+            NavigationItem::make(Pages\ViewProduct::getNavigationLabel())
+                ->icon('heroicon-o-eye')
+                ->url(Pages\ViewProduct::getUrl(['record' => $record]))
+                ->isActiveWhen(fn () => $page instanceof Pages\ViewProduct),
+
+            NavigationItem::make(Pages\EditProduct::getNavigationLabel())
+                ->icon('heroicon-o-pencil-square')
+                ->url(Pages\EditProduct::getUrl(['record' => $record]))
+                ->isActiveWhen(fn () => $page instanceof Pages\EditProduct),
+
+            NavigationItem::make('Product Options')
+                ->icon('heroicon-o-rectangle-stack')
+                ->url(ProductOptionResource::getUrl('index', ['record' => $record]))
+                ->isActiveWhen(fn () => request()->routeIs('filament.admin.resources.product-options.*')),
+        ];
     }
 
 }

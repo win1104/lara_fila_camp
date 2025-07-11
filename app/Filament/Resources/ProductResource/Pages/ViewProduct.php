@@ -13,10 +13,10 @@ class ViewProduct extends ViewRecord
 {
     protected static string $resource = ProductResource::class;
 
-    public function getSubNavigationPosition(): SubNavigationPosition
-    {
-        return SubNavigationPosition::Top;
-    }
+    // public function getSubNavigationPosition(): SubNavigationPosition
+    // {
+    //     return SubNavigationPosition::Top;
+    // }
 
     protected function getHeaderActions(): array
     {

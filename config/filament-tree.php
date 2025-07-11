@@ -16,7 +16,7 @@ return [
     /**
      * Tree model default parent key
      */
-    'default_parent_id' => 'home',
+    'default_parent_id' => null,
     /**
      * Tree model default children key name
      */

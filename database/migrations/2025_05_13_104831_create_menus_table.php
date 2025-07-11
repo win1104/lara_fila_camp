@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug')->default('home');
             $table->string('parent_slug')->default('home');
             $table->string('type')->default('post');
-            $table->treeColumns();
+            $table->string('title', 2048);
+            $table->integer('order')->default(1);
             // $table->string('title', 2048);
             // $table->string('parent_id', 255)->nullable();
             // $table->integer('order')->default('1');

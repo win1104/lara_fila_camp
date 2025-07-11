@@ -6,12 +6,12 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-// use SolutionForest\FilamentTree\Concern\ModelTree;
+use SolutionForest\FilamentTree\Concern\ModelTree;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductCategory extends Model
 {
-    // use ModelTree;
+    use ModelTree;
 
     protected $fillable = [
         'locale',
@@ -25,10 +25,6 @@ class ProductCategory extends Model
         'fixuser',
     ];
 
-    // protected $casts = [
-    //     'parent_id' => 'int'
-    // ];
-
     protected $table = 'product_categories';
 
     /**
@@ -39,16 +35,35 @@ class ProductCategory extends Model
         return 'slug';
     }
 
-    public function products():HasMany
+    /**
+     * For filament-tree to recognize the parent key type as a string.
+     */
+    public function determineParentKeyType(): string
     {
-        return $this->hasMany(Product::class, 'product_category_id', 'id')
-            ->where('locale', $this->locale);
-        // return $this->hasMany(Product::class);
+        return 'string';
     }
 
+    /**
+     * For filament-tree to get the default parent key.
+     */
     public static function defaultParentKey()
     {
         return 'home';
+    }
+
+    /**
+     * For filament-tree to resolve the tree key.
+     */
+    public function resolveTreeKey()
+    {
+        return $this->slug;
+    }
+
+    public function products():HasMany
+    {
+        // return $this->hasMany(Product::class, 'product_category_id', 'id')
+        return $this->hasMany(Product::class, 'product_category_slug', 'slug')
+            ->where('locale', $this->locale);
     }
 
     public function parent()

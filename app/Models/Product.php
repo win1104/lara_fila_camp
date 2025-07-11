@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Log;
-// use App\Models\Category;
+use App\Models\ProductOption;
 use App\Models\ProductCategory;
 use Awcodes\Curator\Models\Media;
+use Illuminate\Support\Facades\Log;
+// use App\Models\Category;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -52,6 +54,11 @@ class Product extends Model
     {
         return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_slug', 'product_category_slug', 'slug', 'slug')
             ->withTimestamps();
+    }
+
+    public function productOptions(): HasMany
+    {
+        return $this->hasMany(ProductOption::class, 'product_slug', 'slug');
     }
 
     // 定義與 Curator Media 模型的多對多關聯

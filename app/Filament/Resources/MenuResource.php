@@ -76,6 +76,7 @@ class MenuResource extends Resource
     {
         return $table
             ->heading('網站架構（表格模式）')
+            // ->defaultPaginationPageOptions([50])
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),

@@ -165,7 +165,8 @@ class ProductResource extends Resource
                     ->label('Published At')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
+                Tables\Columns\TextColumn::make('product_category.title')
+                    ->label('產品分類')
                     ->searchable(),
             ])
             ->reorderable('order') // 啟用拖拉排序功能
@@ -304,6 +305,7 @@ class ProductResource extends Resource
 
     public static function getTabs(): array
     {
+        dd(222);
         return [
             'all' => Tab::make('全部商品')
                 ->badge(Product::query()->count()),

@@ -12,9 +12,8 @@ use Filament\Actions\CreateAction;
 
 class ListProductOptions extends ListRecords
 {
-    protected static string $resource = ProductOptionResource::class;
-
     public ?Product $product = null;
+    protected static string $resource = ProductOptionResource::class;
 
     public function mount(): void
     {

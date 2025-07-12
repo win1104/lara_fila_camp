@@ -19,16 +19,11 @@ use Filament\Navigation\NavigationItem;
 class ProductOptionResource extends Resource
 {
     protected static ?string $model = ProductOption::class;
-
     protected static bool $shouldRegisterNavigation = false;
-
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
-
     protected static ?string $navigationGroup = 'Pruoducts';
-
     protected static ?string $navigationLabel = '產品';
-
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
 

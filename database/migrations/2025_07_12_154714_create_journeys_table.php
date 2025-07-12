@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('journeys', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->text('notes')->nullable();
             $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->string('type');
+            $table->string('title');
+            $table->integer('order')->default('1');
+            $table->boolean('display')->default('0');
             $table->unsignedInteger('price')->nullable();
+            $table->text('description');
+            $table->text('notes')->nullable();
+            $table->boolean('check')->default('0')->nullable();
             $table->timestamps();
         });
     }

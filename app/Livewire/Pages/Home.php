@@ -20,6 +20,7 @@ class Home extends Component
     public $changeTab = 'all';
     public $works = [];
     public $news_post = [];
+    public $activeMenu = null;
 
     public function mount()
     {
@@ -96,9 +97,7 @@ class Home extends Component
                 return;
             }
         }
-
         $this->news_post = $query->with('categories')->get();
-
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局

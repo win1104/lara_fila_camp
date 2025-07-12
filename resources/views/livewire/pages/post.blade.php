@@ -2,7 +2,7 @@
     @if($menuType == 'lists')
         {{-- <div class="container mx-auto px-4 py-8"> --}}
         <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-            <h2 class="text-3xl font-bold mb-6">{{ $posts->first()->menu->title }}</h2>
+            <h2 class="text-3xl font-bold mb-6">{{ $posts->first()?->menu?->title ?? '文章列表' }}</h2>
             <div class="grid gap-6">
                 <section class="text-gray-600 body-font overflow-hidden">
                     <div class="container px-5 py-24 mx-auto flex flex-wrap gap-6 justify-center items-center lg:flex-nowrap">
@@ -104,7 +104,7 @@
     @elseif($menuType == 'tabs')
         {{-- <div class="container mx-auto px-4 py-8"> --}}
         <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
+            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()?->menu?->title ?? '文章列表' }}</h2>
             {{-- <div x-data="{ tabs: [] }">
             <x-mary-tabs wire:model="activeTab">
                 @foreach($posts as $index => $tabb)
@@ -141,7 +141,7 @@
     @elseif($menuType == 'collapses')
         {{-- <div class="container mx-auto px-4 py-8"> --}}
         <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()->menu->title }}</h2>
+            <h2 class="text-center text-3xl font-bold mb-12">{{ $posts->first()?->menu?->title ?? '文章列表' }}</h2>
             {{-- <div class="border rounded shadow-sm">
                 <button type="button" aria-label="Open item" title="Open item"
                     class="flex items-center justify-between w-full p-4 focus:outline-none">

@@ -386,7 +386,7 @@
                     <div class="py-8 flex flex-wrap md:flex-nowrap">
                         <div class="pl-8 md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                             <span class="font-semibold title-font text-gray-700 mt-1.5">{{ $news->date }}</span>
-                            <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->categories->first()->title }}</span>
+                            <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->categories->first()?->title ?? '未分類' }}</span>
                         </div>
                         <div class="md:flex-grow">
                             <h2 class="text-xl font-black text-gray-900 title-font mb-2">{{ $news->title }}</h2>

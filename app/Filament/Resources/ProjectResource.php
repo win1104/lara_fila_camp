@@ -51,6 +51,28 @@ class ProjectResource extends Resource
                                 'collapses' => 'Collapses',
                             ])
                             ->required(),
+                        Forms\Components\Select::make('sales_id')
+                            ->label('銷售人員')
+                            ->relationship('sales', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('姓名')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Email')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('phone')
+                                    ->label('電話')
+                                    ->tel()
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
+                            ->nullable(),
                     ])
                     ->collapsible()
                     ->collapsed()
@@ -82,6 +104,10 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('sales.name')
+                    ->label('銷售人員')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

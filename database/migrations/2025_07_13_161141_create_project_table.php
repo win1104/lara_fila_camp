@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->date('date_of_birth');
-            $table->string('name');
-            $table->foreignId('salesman_id')->constrained('salesmen')->cascadeOnDelete();
-            $table->string('type');
+            $table->string('locale')->default('tw');
+            $table->string('parent_slug')->default('home');
+            $table->string('title', 2048);
+            $table->string('slug')->default('home');
+            $table->string('type')->default('post');
+            $table->integer('order')->default(1);
+            $table->boolean('display')->default('0');
+            $table->text('note')->nullable();
+            $table->string('fixuser')->nullable();
             $table->timestamps();
+
+            $table->unique(['locale', 'slug']);
         });
     }
 

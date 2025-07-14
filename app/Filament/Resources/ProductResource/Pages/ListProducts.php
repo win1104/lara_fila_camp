@@ -27,23 +27,28 @@ class ListProducts extends ListRecords
     public function getTabs(): array
     {
         $tabs = [
-            'all' => Tab::make('全部產品'),
+            'all' => Tab::make('全部產品')
+                ->icon('heroicon-o-shopping-bag'),
         ];
 
         $productCategories = ProductCategory::where('parent_slug', 'works')->get();
 
         foreach ($productCategories as $category) {
             $tabs[$category->slug] = Tab::make($category->title)
+                ->icon('heroicon-o-tag')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('product_category', function (Builder $query) use ($category) {
-                    $query->where('product_category_slug', $category->slug);
+                    $query->where('slug', $category->slug);
                 }));
         }
 
         $tabs['published'] = Tab::make('上架')
+            ->icon('heroicon-o-check-circle')
             ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1));
         $tabs['unpublished'] = Tab::make('下架')
+            ->icon('heroicon-o-x-circle')
             ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0));
         $tabs['recent'] = Tab::make('最近更新')
+            ->icon('heroicon-o-clock')
             ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)));
 
         return $tabs;

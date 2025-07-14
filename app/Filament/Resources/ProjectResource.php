@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
+use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -53,7 +54,7 @@ class ProjectResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('sales_id')
                             ->label('銷售人員')
-                            ->relationship('sales', 'name')
+                            ->relationship('projectsales', 'name')
                             ->searchable()
                             ->preload()
                             ->createOptionForm([
@@ -104,7 +105,7 @@ class ProjectResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sales.name')
+                Tables\Columns\TextColumn::make('projectsales.name')
                     ->label('銷售人員')
                     ->searchable()
                     ->sortable(),
@@ -132,7 +133,7 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ProjectJourneyRelationManager::class,
         ];
     }
 

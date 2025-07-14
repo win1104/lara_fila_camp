@@ -11,7 +11,8 @@ class ProjectJourney extends Model
     use HasFactory;
 
     protected $fillable = [
-        'project_menu_slug',
+        'locale',
+        'project_slug',
         'slug',
         'title',
         'tag',
@@ -21,6 +22,7 @@ class ProjectJourney extends Model
         'url',
         'url_target',
         'image',
+        'media_id',
         'info',
         'intro',
         'content',
@@ -30,6 +32,6 @@ class ProjectJourney extends Model
 
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class, 'project_menu_slug', 'slug');
+        return $this->belongsTo(Project::class, 'project_slug', 'slug');
     }
 }

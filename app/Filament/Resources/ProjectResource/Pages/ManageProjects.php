@@ -6,7 +6,7 @@ use App\Filament\Resources\ProjectResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageProjectMenus extends ManageRecords
+class ManageProjects extends ManageRecords
 {
     protected static string $resource = ProjectResource::class;
 

@@ -26,14 +26,14 @@ class Project extends Model
 
     protected $table = 'projects';
 
-    public function sales(): BelongsTo
+    public function projectsales(): BelongsTo
     {
         return $this->belongsTo(ProjectSales::class);
     }
 
-    public function journeys(): HasMany
+    public function projectjourney(): HasMany
     {
-        return $this->hasMany(ProjectJourney::class, 'project_menu_slug', 'slug')
+        return $this->hasMany(ProjectJourney::class, 'project_slug', 'slug')
             ->where('locale', $this->locale);
     }
 }

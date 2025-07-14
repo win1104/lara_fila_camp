@@ -305,7 +305,6 @@ class ProductResource extends Resource
 
     public static function getTabs(): array
     {
-        dd(222);
         return [
             'all' => Tab::make('全部商品')
                 ->badge(Product::query()->count()),

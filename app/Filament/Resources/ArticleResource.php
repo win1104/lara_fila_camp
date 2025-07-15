@@ -15,6 +15,7 @@ use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ArticleResource\RelationManagers;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
+use Filament\Resources\Components\Tab;
 
 class ArticleResource extends Resource
 {
@@ -100,6 +101,23 @@ class ArticleResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('全部文章')
+                ->badge(Article::count()),
+            'published' => Tab::make('已發布')
+                ->badge(Article::where('is_published', 1)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_published', 1)),
+            'unpublished' => Tab::make('未發布')
+                ->badge(Article::where('is_published', 0)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_published', 0)),
+            'recent' => Tab::make('最近更新')
+                ->badge(Article::where('updated_at', '>=', now()->subDays(7))->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
+        ];
     }
 
     public static function getRelations(): array

@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PatientResource\Pages;
-use App\Filament\Resources\PatientResource\RelationManagers;
-use App\Models\Patient;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Patient;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Resources\Pages\Page;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\PatientResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\PatientResource\RelationManagers;
 
 class PatientResource extends Resource
 {
@@ -20,6 +22,7 @@ class PatientResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
     protected static ?string $navigationLabel = '醫療規劃';
     // protected static ?string $navigationGroup = 'Website';
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     protected function getHeaderActions(): array
     {
@@ -134,6 +137,15 @@ class PatientResource extends Resource
         return [
             RelationManagers\TreatmentsRelationManager::class,
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\ListPatients::class,
+            Pages\EditPatient::class,
+        ]);
+
     }
 
     public static function getPages(): array

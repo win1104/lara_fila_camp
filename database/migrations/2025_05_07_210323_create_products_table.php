@@ -21,6 +21,7 @@ return new class extends Migration
             //     ->onDelete('cascade')
             //     ->onUpdate('cascade');
             $table->string('slug')->default('product');
+            $table->unique(['locale', 'slug']);
             $table->string('title');
             $table->string('tag')->nullable();
             $table->integer('order')->default('1');

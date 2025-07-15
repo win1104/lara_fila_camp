@@ -30,7 +30,8 @@
                                             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
                                                 @foreach($menu->children->where('display', 1) as $child)
                                                     <li>
-                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
+                                                        {{-- <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}"> --}}
+                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type ?? $menu->type, 'menu' => $child->slug]) }}">
                                                             {!! $child->title !!}
                                                         </a>
                                                     </li>
@@ -168,7 +169,7 @@
                         </button>
 
 
-                        <div class="dropdown dropdown-end hidden lg:inline-block">
+                        {{-- <div class="dropdown dropdown-end hidden lg:inline-block">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                                 <div class="indicator">
                                     <x-mary-icon name="o-shopping-cart"/>
@@ -186,7 +187,24 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> --}}
+                        <div class="dropdown dropdown-end hidden lg:inline-block ml-4">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                                🌐
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
+                                @foreach (['tw' => '繁體中文', 'en' => 'English'] as $code => $label)
+                                    <li>
+                                        {{-- <a href="/{{ $code }}{{ request()->getPathInfo() }}" --}}
+                                        <a href="{{ localized_url($code) }}"
+                                            class="{{ app()->getLocale() === $code ? 'font-bold text-primary' : '' }}">
+                                            {{ $label }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
+
 
                         <!-- user dropdown -->
                         @guest

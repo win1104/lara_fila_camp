@@ -81,9 +81,48 @@
 
         <!-- Livewire Scripts (必須在 Alpine 之前) -->
         @livewireScripts
-        <script src="{{ asset('js/app.js') }}"></script>
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
         <!-- Mary UI Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}
     </body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const counters = document.querySelectorAll('.counter');
+            let started = false; // 防止重複執行
+
+            const runCounter = () => {
+                counters.forEach(counter => {
+                    const updateCount = () => {
+                        const target = +counter.getAttribute('data-target');
+                        const count = +counter.innerText;
+                        const increment = Math.ceil(target / 100);
+
+                        if (count < target) {
+                            counter.innerText = count + increment;
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !started) {
+                        started = true;
+                        runCounter();
+                        observer.disconnect(); // 啟動後不再監聽
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            const section = document.querySelector("#counter-section");
+            if (section) observer.observe(section);
+        });
+    </script>
+
 </html>

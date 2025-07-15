@@ -18,7 +18,7 @@ class ProductCategoryResource extends Resource
 {
     protected static ?string $model = ProductCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
     protected static ?string $navigationLabel = '產品分類'; // 這將用於標題和側邊欄
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
     protected static ?string $label = '產品'; // 這將用於單數形式

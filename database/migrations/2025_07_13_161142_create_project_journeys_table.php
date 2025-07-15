@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->boolean('url_target')->nullable();
             $table->string('image')->nullable();
+            $table->integer('media_id')->nullable();
             $table->longText('info')->nullable();
             $table->longText('intro')->nullable();
             $table->longText('content')->nullable();

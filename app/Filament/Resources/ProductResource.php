@@ -61,8 +61,7 @@ class ProductResource extends Resource
                                     ->label('Slug')
                                     ->required(),
                                 Forms\Components\RichEditor::make('intro')
-                                    ->label('簡介')
-                                    ->required(),
+                                    ->label('簡介'),
                                 Forms\Components\DatePicker::make('date')
                                     ->label('Published At'),
                                 // Forms\Components\Textarea::make('intro')

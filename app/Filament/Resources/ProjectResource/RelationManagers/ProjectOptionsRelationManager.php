@@ -56,7 +56,8 @@ class ProjectOptionsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('新增自費項目'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

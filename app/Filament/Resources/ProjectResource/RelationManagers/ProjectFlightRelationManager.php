@@ -56,7 +56,8 @@ class ProjectFlightRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('新增航班資訊'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

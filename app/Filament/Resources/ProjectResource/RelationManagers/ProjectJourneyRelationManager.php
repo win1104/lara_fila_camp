@@ -19,20 +19,19 @@ use Filament\Resources\RelationManagers\RelationManager;
 
 class ProjectJourneyRelationManager extends RelationManager
 {
-
-
     protected static string $relationship = 'projectjourney';
+    protected static string $view = 'filament.resources.project-resource.relation-managers.project-journey-relation-manager';
+    protected static ?string $title = '每日行程';
+    protected static ?string $icon = 'heroicon-o-calendar-days';
 
-    // protected static string $view = 'filament.relation-managers.posts-relation-manager';
 
-    // public ?string $activeTab = 'all'; // 預設值
 
-    // protected static ?string $recordTitleAttribute = 'title';
+    public ?string $activeTab = 'all';
 
-    // public function setActiveTab($tabKey)
-    // {
-    //     $this->activeTab = $tabKey;
-    // }
+    public function setActiveTab($tabKey)
+    {
+        $this->activeTab = $tabKey;
+    }
 
     public function mount(): void
     {
@@ -86,11 +85,6 @@ class ProjectJourneyRelationManager extends RelationManager
                     ->required(),
                 CuratorPicker::make('media_id')
                     ->label('Media')
-                    // ->multiple() // 啟用多選模式，這是關鍵！
-                    // ->constrained(true) // 可選：限制圖片尺寸比例
-                    // ->columnSpanFull() // 讓圖片欄位佔滿整行
-                    // ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                    // ->orderColumn('order'), // 可選：指定中間表中的排序欄位
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('display')
                     ->label('Published'),
@@ -99,27 +93,9 @@ class ProjectJourneyRelationManager extends RelationManager
                 TiptapEditor::make('content')
                     ->label('Content')
                     ->columnSpan('full'),
-                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    // ->maxLength(65535),
                 Forms\Components\RichEditor::make('intro')
                     ->label('intro')
                     ->columnSpan('full'),
-                    // ->toolbarButtons([
-                    //     'blockquote',
-                    //     'bold',
-                    //     'bulletList',
-                    //     'codeBlock',
-                    //     'h2',
-                    //     'h3',
-                    //     'italic',
-                    //     'link',
-                    //     'orderedList',
-                    //     'redo',
-                    //     'strike',
-                    //     'undo',
-                    //     'html', // 啟用 HTML 編輯按鈕
-                    // ])
-                    // ->required(),
             ]);
     }
 
@@ -129,13 +105,8 @@ class ProjectJourneyRelationManager extends RelationManager
         $shouldShowCreateAction = true; // 總是顯示新增按鈕
 
         return $table
-            // ->heading('病患資料')
             ->recordTitleAttribute('title')
             ->columns([
-                // CuratorColumn::make('media_id')
-                //     ->label('Media')
-                //     ->size('40'),
-
                 Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\IconColumn::make('display')
                     ->label('上架')
@@ -159,8 +130,8 @@ class ProjectJourneyRelationManager extends RelationManager
                     ->date()
                     ->sortable(),
             ])
-            ->reorderable('order') // 啟用拖拉排序功能
-            ->defaultSort('order') // 預設按 sort_order 排序
+            ->reorderable('order')
+            ->defaultSort('order')
             ->filters([
                 //
             ])
@@ -179,29 +150,13 @@ class ProjectJourneyRelationManager extends RelationManager
             ]);
     }
 
-    public function getHeaderActions(): array
-    {
-        return [
-            // 將 tabs 作為 header actions
-            Action::make('tabs')
-                // ->view('filament.components.custom-tabs')
-                ->extraAttributes(['class' => 'w-full']),
-        ];
-
-        // return $this->table(new \Filament\Tables\Table($this))->getHeaderActions();
-    }
-
-
-    // public static function getTabs(): array
     public function getTabs(): array
     {
         $ownerRecord = $this->getOwnerRecord();
 
-        // 基於用戶權限的 Tab
         $tabs = [
             'all' => Tab::make('全部文章')
                 ->badge($ownerRecord->projectjourney()->count())
-                // ->badge(Post::count())
                 ->icon('heroicon-o-document-duplicate'),
             'published' => Tab::make('已發布')
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
@@ -215,50 +170,6 @@ class ProjectJourneyRelationManager extends RelationManager
                 ->icon('heroicon-o-x-circle'),
         ];
 
-        // if (auth()->user()->can('view_draft_projectjourney')) {
-        //     $tabs['recent'] = Tab::make('最近更新')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)))
-        //         ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
-        //         ->badgeColor('warning');
-        // }
-
-        // if (auth()->user()->can('view_archived_posts')) {
-        //     $tabs['this_month'] = Tab::make('本月發布')
-        //         ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month))
-        //         ->badge(Post::whereMonth('created_at', now()->month)->count())
-        //         ->badgeColor('warning');
-        // }
-
         return $tabs;
-    }
-
-    // 提供給視圖使用的資料
-    protected function getViewData(): array
-    {
-        return [
-            'tabs' => $this->getTabs(),
-            'activeTab' => $this->activeTab,
-            'relationship' => static::$relationship,
-            'ownerRecord' => $this->getOwnerRecord(),
-        ];
-    }
-
-    // 取得當前 tab 的計數
-    public function getCurrentTabCount(): int
-    {
-        $ownerRecord = $this->getOwnerRecord();
-
-        switch ($this->activeTab) {
-            case 'published':
-                return $ownerRecord->projectjourney()->where('display', '1')->count();
-            case 'unpublished':
-                return $ownerRecord->projectjourney()->where('display', '0')->count();
-            // case 'scheduled':
-            //     return $ownerRecord->projectjourney()->where('status', 'scheduled')->count();
-            // case 'archived':
-            //     return $ownerRecord->projectjourney()->where('status', 'archived')->count();
-            default:
-                return $ownerRecord->projectjourney()->count();
-        }
     }
 }

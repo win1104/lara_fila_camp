@@ -75,4 +75,9 @@ class ViewProduct extends ViewRecord
                 ),
         ];
     }
+
+    public function getTitle(): string
+    {
+        return '' . $this->record->title;
+    }
 }

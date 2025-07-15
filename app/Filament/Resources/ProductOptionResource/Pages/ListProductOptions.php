@@ -59,7 +59,7 @@ class ListProductOptions extends ListRecords
                 ->url(ProductResource\Pages\EditProduct::getUrl(['record' => $record]))
                 ->isActiveWhen(fn () => false),
 
-            NavigationItem::make('Product Options')
+            NavigationItem::make('產品規格')
                 ->icon('heroicon-o-rectangle-stack')
                 ->url(ProductOptionResource::getUrl('index', ['record' => $record]))
                 ->isActiveWhen(fn () => true),

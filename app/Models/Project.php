@@ -28,12 +28,18 @@ class Project extends Model
 
     public function projectsales(): BelongsTo
     {
-        return $this->belongsTo(ProjectSales::class);
+        return $this->belongsTo(ProjectSales::class, 'sales_id');
     }
 
     public function projectjourney(): HasMany
     {
         return $this->hasMany(ProjectJourney::class, 'project_slug', 'slug')
+            ->where('locale', $this->locale);
+    }
+
+    public function projectoptions(): HasMany
+    {
+        return $this->hasMany(ProjectOption::class, 'project_slug', 'slug')
             ->where('locale', $this->locale);
     }
 }

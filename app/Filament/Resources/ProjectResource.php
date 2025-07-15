@@ -2,14 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use App\Models\Project;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
-use App\Models\Project;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
 
 class ProjectResource extends Resource
 {
@@ -91,8 +93,11 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->heading('網站架構（表格模式）')
+            // ->heading('網站架構（表格模式）')
             ->columns([
+                Tables\Columns\TextColumn::make('order')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('locale'),
@@ -100,9 +105,6 @@ class ProjectResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('order')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projectsales.name')
@@ -118,10 +120,26 @@ class ProjectResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->reorderable('order') // 啟用拖拉排序功能
+            ->defaultSort('order', 'asc') // 預設按 sort_order 排序
+            ->filters([
+                SelectFilter::make('display')
+                    ->label('發布狀態')
+                    ->options([
+                        '1' => '已發布',
+                        '0' => '未發布',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return match ($data['value']) {
+                            '1' => $query->where('display', 1),
+                            '0' => $query->where('display', 0),
+                            default => $query,
+                        };
+                    }),
+            ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->url(fn (Project $record): string => route('filament.admin.resources.projects.edit', ['record' => $record->slug])),
+                // Tables\Actions\ViewAction::make()->url(fn (Project $record): string => static::getUrl('view', ['record' => $record->slug])),
+                Tables\Actions\EditAction::make()->url(fn (Project $record): string => static::getUrl('edit', ['record' => $record->slug])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -134,6 +152,7 @@ class ProjectResource extends Resource
     {
         return [
             RelationManagers\ProjectJourneyRelationManager::class,
+            RelationManagers\ProjectOptionsRelationManager::class,
         ];
     }
 
@@ -143,6 +162,7 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
+            // 'view' => Pages\ViewProject::route('/{record}'),
         ];
     }
 

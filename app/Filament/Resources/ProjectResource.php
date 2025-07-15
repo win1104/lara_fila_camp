@@ -39,8 +39,14 @@ class ProjectResource extends Resource
                             ->required(),
                         Forms\Components\TextInput::make('slug')
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('parent_slug')
-                            ->maxLength(255),
+                        Forms\Components\Select::make('parent_slug')
+                            ->label('區域')
+                            ->options(function () {
+                                return \App\Models\ProductCategory::where('parent_slug', 'tarvelgroups')
+                                    ->pluck('title', 'slug');
+                            })
+                            ->searchable()
+                            ->required(),
                         Forms\Components\TextInput::make('order')
                             ->required()
                             ->numeric()

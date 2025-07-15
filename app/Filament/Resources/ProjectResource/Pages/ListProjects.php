@@ -21,6 +21,13 @@ class ListProjects extends ListRecords
         ];
     }
 
+    public ?string $activeTab = 'all'; // 預設值
+
+    public function setActiveTab($tabKey)
+    {
+        $this->activeTab = $tabKey;
+        $this->resetPage(); // 切換時重置分頁
+    }
 
     public function getTabs(): array
     {
@@ -34,9 +41,7 @@ class ListProjects extends ListRecords
         foreach ($productCategories as $category) {
             $tabs[$category->slug] = Tab::make($category->title)
                 ->icon('heroicon-o-tag')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('product_category', function (Builder $query) use ($category) {
-                    $query->where('slug', $category->slug);
-                }));
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('parent_slug', $category->slug));
         }
 
         // $tabs['published'] = Tab::make('上架')

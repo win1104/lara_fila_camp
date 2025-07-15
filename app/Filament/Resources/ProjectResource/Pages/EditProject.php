@@ -24,6 +24,6 @@ class EditProject extends EditRecord
 
     public function getTitle(): string
     {
-        return '修改：' . $this->record->title;
+        return '' . $this->record->title;
     }
 }

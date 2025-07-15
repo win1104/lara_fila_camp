@@ -153,6 +153,7 @@ class ProjectResource extends Resource
         return [
             RelationManagers\ProjectJourneyRelationManager::class,
             RelationManagers\ProjectOptionsRelationManager::class,
+            RelationManagers\ProjectFlightRelationManager::class,
         ];
     }
 

@@ -42,4 +42,10 @@ class Project extends Model
         return $this->hasMany(ProjectOption::class, 'project_slug', 'slug')
             ->where('locale', $this->locale);
     }
+
+    public function projectflights(): HasMany
+    {
+        return $this->hasMany(ProjectFlight::class, 'project_slug', 'slug')
+            ->where('locale', $this->locale);
+    }
 }

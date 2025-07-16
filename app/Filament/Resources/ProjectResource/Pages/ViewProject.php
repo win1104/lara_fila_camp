@@ -4,22 +4,17 @@ namespace App\Filament\Resources\ProjectResource\Pages;
 
 use App\Filament\Resources\ProjectResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditProject extends EditRecord
+class ViewProject extends ViewRecord
 {
     protected static string $resource = ProjectResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make(),
         ];
-    }
-
-    protected function getFormActions(): array
-    {
-        return [];
     }
 
     public function getTitle(): string

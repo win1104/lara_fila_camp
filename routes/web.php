@@ -29,7 +29,6 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Models\Chat_assistant;
 
-
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 // Route::get("/", Home::class)->name('home');
 // Route::get('/', function ()

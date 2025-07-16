@@ -8,6 +8,7 @@ use App\Livewire\Pages\Post;
 use App\Livewire\Pages\Product;
 use App\Livewire\Pages\Article;
 use App\Livewire\Pages\Aiing;
+use App\Livewire\Pages\Contact;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\NoteController;
@@ -93,6 +94,8 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 
     Route::get("/{type}/{menu:slug}", Post::class)->name('post.show');
     Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
+
+    Route::get('contact', Contact::class)->name('contact.index');
 
 
 

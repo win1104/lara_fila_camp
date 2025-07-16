@@ -1,4 +1,6 @@
 <div>
+
+
     @if($isDetail)
                 {{-- 單一產品詳情頁面 --}}
                 <section class="text-gray-600 body-font overflow-hidden">
@@ -7,31 +9,6 @@
                         {{-- top --}}
                         <div class="lg:w-4/5 mx-auto flex flex-wrap">
 
-
-                            {{-- @php
-                                $slides = [
-                                    [
-                                        'id' => 'item1',
-                                        'image' => 'https://mary-ui.com/photos/photo-1494253109108-2e30c049369b.jpg',
-                                        'title' => '圖片 1',
-                                    ],
-                                    [
-                                        'id' => 'item2',
-                                        'image' => 'https://mary-ui.com/photos/photo-1565098772267-60af42b81ef2.jpg',
-                                        'title' => '圖片 2',
-                                    ],
-                                    [
-                                        'id' => 'item3',
-                                        'image' => 'https://mary-ui.com/photos/photo-1559703248-dcaaec9fab78.jpg',
-                                        'title' => '圖片 3',
-                                    ],
-                                    [
-                                        'id' => 'item4',
-                                        'image' => 'https://mary-ui.com/photos/photo-1572635148818-ef6fd45eb394.jpg',
-                                        'title' => '圖片 4',
-                                    ],
-                                ];
-                            @endphp --}}
 
                             <div x-data="productCarousel()" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded rounded-lg overflow-hidden">
 
@@ -427,6 +404,25 @@
         @if($products)
             <section class="text-gray-600 body-font">
                 <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+
+
+                    <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+                        <div class="mb-6 flex flex-wrap gap-2">
+                            <button wire:click="selectCategory(null)" class="px-4 py-2 rounded text-sm font-medium
+                                {{ $selectedCategory === null ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+                                全部
+                            </button>
+
+                            @foreach($categories as $category)
+                                <button wire:click="selectCategory('{{ $category->slug }}')"
+                                    class="px-4 py-2 rounded text-sm font-medium
+                                            {{ $selectedCategory === $category->slug ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+                                    {{ $category->title }}
+                                </button>
+                            @endforeach
+                        </div>
+                    </div>
+
                     {{-- <div class="flex flex-wrap -m-4"> --}}
                     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         @foreach($products as $product)
@@ -464,7 +460,7 @@
                                         <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
                                     @endif
                                     <div class="p-6">
-                                        <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">CATEGORY</p>
+                                        <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p>
                                         <h2 class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</h2>
                                         <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div>
                                         {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{{ Str::limit(strip_tags($product->content), 200) }}</div> --}}

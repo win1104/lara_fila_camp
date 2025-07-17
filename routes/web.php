@@ -28,6 +28,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Models\Chat_assistant;
+use Gregwar\Captcha\CaptchaBuilder;
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 // Route::get("/", Home::class)->name('home');
@@ -95,6 +96,14 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
     Route::get("/{type}/{menu:slug}/{post:slug}", Post::class)->name('post.detail');
 
     Route::get('contact', Contact::class)->name('contact.index');
+    Route::get('captcha', function () {
+        $builder = new CaptchaBuilder;
+        $builder->build();
+
+        session(['captcha' => $builder->getPhrase()]);
+
+        return response($builder->output())->header('Content-Type', 'image/jpeg');
+    });
 
 
 

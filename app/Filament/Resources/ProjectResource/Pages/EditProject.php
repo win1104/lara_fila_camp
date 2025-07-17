@@ -22,6 +22,11 @@ class EditProject extends EditRecord
         return [];
     }
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     public function getTitle(): string
     {
         return '' . $this->record->title;

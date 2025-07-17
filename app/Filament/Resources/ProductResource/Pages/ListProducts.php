@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProductResource\Pages;
 use Filament\Actions;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Support\Str;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\ProductResource;
@@ -27,29 +28,29 @@ class ListProducts extends ListRecords
     public function getTabs(): array
     {
         $tabs = [
-            'all' => Tab::make('全部產品')
+            'all' => Tab::make('全部')
                 ->icon('heroicon-o-shopping-bag'),
         ];
 
         $productCategories = ProductCategory::where('parent_slug', 'works')->get();
 
         foreach ($productCategories as $category) {
-            $tabs[$category->slug] = Tab::make($category->title)
+            $tabs[$category->slug] = Tab::make(mb_substr($category->title, 0, 2, 'UTF-8') )
                 ->icon('heroicon-o-tag')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('product_category', function (Builder $query) use ($category) {
                     $query->where('slug', $category->slug);
                 }));
         }
 
-        $tabs['published'] = Tab::make('上架')
-            ->icon('heroicon-o-check-circle')
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1));
-        $tabs['unpublished'] = Tab::make('下架')
-            ->icon('heroicon-o-x-circle')
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0));
-        $tabs['recent'] = Tab::make('最近更新')
-            ->icon('heroicon-o-clock')
-            ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)));
+        // $tabs['published'] = Tab::make('上架')
+        //     ->icon('heroicon-o-check-circle')
+        //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1));
+        // $tabs['unpublished'] = Tab::make('下架')
+        //     ->icon('heroicon-o-x-circle')
+        //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0));
+        // $tabs['recent'] = Tab::make('最近更新')
+        //     ->icon('heroicon-o-clock')
+        //     ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)));
 
         return $tabs;
     }

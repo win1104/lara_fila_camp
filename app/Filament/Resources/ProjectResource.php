@@ -33,56 +33,75 @@ class ProjectResource extends Resource
                     ->heading('選單資料')
                     ->icon('heroicon-m-bars-4')
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('locale')
-                            ->required(),
-                        Forms\Components\TextInput::make('slug')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('parent_slug')
-                            ->label('區域')
-                            ->options(function () {
-                                return \App\Models\ProductCategory::where('parent_slug', 'tarvelgroups')
-                                    ->pluck('title', 'slug');
-                            })
-                            ->searchable()
-                            ->required(),
-                        Forms\Components\TextInput::make('order')
-                            ->required()
-                            ->numeric()
-                            ->default(0),
-                        Forms\Components\Select::make('type')
-                            ->options([
-                                'posts' => 'Posts',
-                                'listS' => 'Lists',
-                                'tilelists' => 'Tilelists',
-                                'tabs' => 'Tabs',
-                                'collapses' => 'Collapses',
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('title')
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('slug')
+                                            ->maxLength(255)
+                                            ->unique(ignoreRecord: true),
+                                        Forms\Components\Select::make('parent_slug')
+                                            ->label('區域')
+                                            ->options(function () {
+                                                return \App\Models\ProductCategory::where('parent_slug', 'tarvelgroups')
+                                                    ->pluck('title', 'slug');
+                                            })
+                                            ->searchable()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('order')
+                                            ->required()
+                                            ->numeric()
+                                            ->default(0),
+                                        Forms\Components\Select::make('type')
+                                            ->options([
+                                                'posts' => 'Posts',
+                                                'listS' => 'Lists',
+                                                'tilelists' => 'Tilelists',
+                                                'tabs' => 'Tabs',
+                                                'collapses' => 'Collapses',
+                                            ])
+                                            ->required(),
+                                        Forms\Components\RichEditor::make('note')
+                                            ->label('Content'),
+                                    ]),
                             ])
-                            ->required(),
-                        Forms\Components\Select::make('sales_id')
-                            ->label('銷售人員')
-                            ->relationship('projectsales', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->label('姓名')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('email')
-                                    ->label('Email')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('phone')
-                                    ->label('電話')
-                                    ->tel()
-                                    ->required()
-                                    ->maxLength(255),
+                            ->columnSpan(['lg' => 2]),
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make(__(''))
+                                // Forms\Components\Section::make(__('設定'))
+                                    ->schema([
+                                        Forms\Components\TextInput::make('locale')
+                                            ->required(),
+                                        Forms\Components\Select::make('sales_id')
+                                            ->label('銷售人員')
+                                            ->relationship('projectsales', 'name')
+                                            ->searchable()
+                                            ->preload()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->label('姓名')
+                                                    ->required()
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('email')
+                                                    ->label('Email')
+                                                    ->email()
+                                                    ->required()
+                                                    ->maxLength(255),
+                                                Forms\Components\TextInput::make('phone')
+                                                    ->label('電話')
+                                                    ->tel()
+                                                    ->required()
+                                                    ->maxLength(255),
+                                            ])
+                                            ->nullable(),
+                                    ]),
                             ])
-                            ->nullable(),
+                            ->columnSpan(['lg' => 1]),
                     ])
+                    ->columns(3)
                     ->collapsible()
                     ->collapsed()
                     ->footerActions([
@@ -92,7 +111,6 @@ class ProjectResource extends Resource
                             ->color('primary'),
                     ]),
                 ])
-                ->columns(12)
                 ->live();
     }
 
@@ -144,8 +162,7 @@ class ProjectResource extends Resource
                     }),
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make()->url(fn (Project $record): string => static::getUrl('view', ['record' => $record->slug])),
-                Tables\Actions\EditAction::make()->url(fn (Project $record): string => static::getUrl('edit', ['record' => $record->slug])),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -169,18 +186,7 @@ class ProjectResource extends Resource
             'index' => Pages\ListProjects::route('/'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
-            // 'view' => Pages\ViewProject::route('/{record}'),
         ];
-    }
-
-    public static function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
-    public static function getRecordRouteKeyName(): string
-    {
-        return 'slug';
     }
 
     public static function getNavigationBadge(): ?string

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Carbon;
 use App\Mail\FormMailSend;
 use Illuminate\Support\Facades\Mail;
+use App\Services\ContactService;
 
 class Contact extends Component
 {
@@ -19,6 +20,7 @@ class Contact extends Component
     public $member_company = '';
     public $question_category = '';
     public $member_note = '';
+    public $captcha = '';
     public $code = '';
 
     public function submit()
@@ -26,11 +28,16 @@ class Contact extends Component
         $this->validate([
             'member_name' => 'required|string|max:255',
             'member_email' => 'required|email',
-            // 'captcha' => 'required|captcha'
+            'captcha' => ['required', function ($attribute, $value, $fail) {
+                if (strtolower($value) !== strtolower(session('captcha'))) {
+                    $fail('驗證碼錯誤');
+                }
+            }],
         ], [
             'member_name.required' => '請輸入姓名',
             'member_email.required' => '請輸入電子信箱',
             'member_email.email' => '請輸入正確的電子信箱格式',
+            'captcha' => '驗證碼不對喔',
         ]);
 
         $now = Carbon::now();
@@ -47,26 +54,7 @@ class Contact extends Component
             'mail_form_title' => '< 混合無限智慧科技（姓名：' . $this->member_name . '） >',
         ];
 
-        DB::table('mail_logs')->insert([
-            'type' => 'contact',
-            'title' => $this->member_name,
-            'slug' => $now->toDateString(),
-            'email' => $this->member_email,
-            'phone' => $this->member_phone,
-            'company' => $this->member_company,
-            'info' => $this->question_category,
-            'content' => $this->member_note,
-            'intro' => serialize((object) $form_data),
-            'send_ip' => request()->ip(),
-            'send_status' => 'success',
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
-        $bcc = '52sherry1123@gmail.com';
-
-        Mail::to($this->member_email)
-            ->bcc($bcc) // ← 加這行
-            ->send(new FormMailSend($form_data));
+        ContactService::handleContactForm($form_data);
 
 
         session()->flash('success', '表單送出成功！');
@@ -79,9 +67,25 @@ class Contact extends Component
             'member_company',
             'question_category',
             'member_note',
-            // 'captcha'
+            'captcha'
         );
     }
+
+    // public function resetForm()
+    // {
+    //     $this->reset(
+    //         'member_name',
+    //         'member_phone',
+    //         'member_email',
+    //         'member_company',
+    //         'question_category',
+    //         'member_note',
+    //         'captcha'
+    //     );
+
+    //     session()->flash('success', '已清空表單');
+
+    // }
 
     public function render()
     {

@@ -9,7 +9,7 @@
                     <label for="member_name" class="block text-sm font-medium text-gray-700">
                         <span class="text-red-500">*</span> 您的姓名
                     </label>
-                    <input type="text" id="member_name" wire:model.defer="member_name"
+                    <input type="text" id="member_name" wire:model="member_name"
                         class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
                     @error('member_name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
@@ -57,10 +57,15 @@
                         <span class="text-red-500">*</span> 驗證碼
                     </label>
                     <div class="flex items-center space-x-4 mt-1">
-                        {{-- <img src="{{ route('captcha') }}" alt="captcha" class="h-12 cursor-pointer" --}}
-                            {{-- onclick="this.src='{{ route('captcha') }}?'+Math.random();"> --}}
-                        <input type="text" id="captcha" wire:model="captcha"
-                            class="flex-1 border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <img src="{{ url(app()->getLocale() . '/captcha') }}" alt="驗證碼" class="cursor-pointer"
+                            onclick="this.src='{{ url(app()->getLocale() . '/captcha') }}?'+Math.random()">
+                        <input id="captcha" type="text" wire:model="captcha" placeholder="請輸入驗證碼">
+                        @if (session('success'))
+                            <div class="text-green-500 text-sm">{{ session('success') }}</div>
+                        @else
+                            @error('captcha') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
+                        @endif
+                        {{-- @error('captcha') <div class="text-red-600">{{ $message }}</div> @enderror --}}
                     </div>
                     <p class="text-sm text-gray-500 mt-1">(驗證碼不分大小寫)</p>
                 </div>
@@ -69,7 +74,10 @@
                     <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
                         確定送出
                     </button>
+                    <button type="button" wire:click="resetForm">清空</button>
                 </div>
+
+
             </form>
         </div>
     </div>

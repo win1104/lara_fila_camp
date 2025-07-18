@@ -40,7 +40,7 @@ class Post extends Model
      */
     public function getRouteKeyName(): string
     {
-        return 'menu_slug';
+        return 'slug';
     }
 
 

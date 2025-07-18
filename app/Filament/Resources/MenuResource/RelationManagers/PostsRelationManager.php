@@ -23,6 +23,15 @@ class PostsRelationManager extends RelationManager
 
     protected static string $relationship = 'posts';
 
+    // 覆寫基礎查詢，避免 Menu 模型中的語系過濾
+    protected function getTableQuery(): Builder
+    {
+        $menu = $this->getOwnerRecord();
+
+        // 直接查詢 Post 模型，不通過 Menu 關聯
+        return Post::query()->where('menu_slug', $menu->slug);
+    }
+
     // protected static string $view = 'filament.relation-managers.posts-relation-manager';
 
     // public ?string $activeTab = 'all'; // 預設值
@@ -53,19 +62,89 @@ class PostsRelationManager extends RelationManager
         return 'table';
     }
 
+    protected function getCurrentUrlLocale(): string
+    {
+        // 在 Livewire 請求中，我們需要從 HTTP_REFERER 或其他來源取得語系
+        $urlLocale = null;
+
+        // 方法1: 檢查 HTTP_REFERER 中的語系
+        if (request()->headers->has('referer')) {
+            $referer = request()->headers->get('referer');
+            if (preg_match('/\/([a-z]{2})\/admin\//', $referer, $matches)) {
+                $urlLocale = $matches[1];
+            }
+        }
+
+        // 方法2: 使用 app()->getLocale() 並轉換回 URL 語系
+        if (!$urlLocale) {
+            $systemLocale = app()->getLocale();
+            $systemToUrlMap = [
+                'zh_TW' => 'tw',
+                'en' => 'en',
+            ];
+            $urlLocale = $systemToUrlMap[$systemLocale] ?? 'tw';
+        }
+
+        // 方法3: 最後備援
+        if (!$urlLocale) {
+            $urlLocale = 'tw';
+        }
+
+        // 語系映射：URL 語系 -> 資料庫語系
+        $localeMap = [
+            'tw' => 'tw',
+            'en' => 'en',
+        ];
+
+        $result = $localeMap[$urlLocale] ?? 'tw';
+
+        // 調試用日誌
+        Log::info('PostsRelationManager getCurrentUrlLocale:', [
+            'urlLocale' => $urlLocale,
+            'result' => $result,
+            'app_locale' => app()->getLocale(),
+            'referer' => request()->headers->get('referer'),
+            'request_url' => request()->url(),
+            'request_path' => request()->path(),
+            'segments' => request()->segments(),
+        ]);
+
+        return $result;
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $menu = $this->getOwnerRecord();
+        $currentLocale = $this->getCurrentUrlLocale();
         $data['menu_slug'] = $menu->slug;
-        $data['locale'] = $menu->locale;
+        $data['locale'] = $currentLocale;
+
+        // 調試日誌
+        Log::info('PostsRelationManager mutateFormDataBeforeCreate:', [
+            'currentLocale' => $currentLocale,
+            'menu_slug' => $menu->slug,
+            'data_locale' => $data['locale'],
+            'original_data' => $data,
+        ]);
+
         return $data;
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $menu = $this->getOwnerRecord();
+        $currentLocale = $this->getCurrentUrlLocale();
         $data['menu_slug'] = $menu->slug;
-        $data['locale'] = $menu->locale;
+        $data['locale'] = $currentLocale;
+
+        // 調試日誌
+        Log::info('PostsRelationManager mutateFormDataBeforeSave:', [
+            'currentLocale' => $currentLocale,
+            'menu_slug' => $menu->slug,
+            'data_locale' => $data['locale'],
+            'original_data' => $data,
+        ]);
+
         return $data;
     }
 
@@ -74,7 +153,7 @@ class PostsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('locale')
-                    ->default(fn () => $this->getOwnerRecord()->locale)
+                    ->default(fn () => $this->getCurrentUrlLocale())
                     // ->disabled()
                     ->dehydrated(false),
                 Forms\Components\TextInput::make('title')
@@ -130,6 +209,23 @@ class PostsRelationManager extends RelationManager
         return $table
             // ->heading('病患資料')
             ->recordTitleAttribute('title')
+            ->modifyQueryUsing(function (Builder $query) use ($menu) {
+                // 根據 URL 的語系過濾資料
+                $currentLocale = $this->getCurrentUrlLocale();
+
+                // 記錄查詢資訊
+                Log::info('PostsRelationManager Query Debug:', [
+                    'currentLocale' => $currentLocale,
+                    'menu_slug' => $menu->slug,
+                    'menu_locale' => $menu->locale,
+                    'total_posts_in_menu' => Post::where('menu_slug', $menu->slug)->count(),
+                    'posts_with_current_locale' => Post::where('menu_slug', $menu->slug)->where('locale', $currentLocale)->count(),
+                    'all_posts_locales' => Post::where('menu_slug', $menu->slug)->pluck('locale')->toArray(),
+                ]);
+
+                // 只需要按語系過濾，menu_slug 已經在 getTableQuery 中處理
+                $query->where('locale', $currentLocale);
+            })
             ->columns([
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')
@@ -173,7 +269,10 @@ class PostsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->url(fn (Post $record): string => route('filament.admin.resources.posts.edit', $record)),
+                    ->url(fn (Post $record): string => route('filament.admin.resources.posts.edit', [
+                        'locale' => $this->getCurrentUrlLocale(),
+                        'record' => $record->slug
+                    ])),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -200,21 +299,24 @@ class PostsRelationManager extends RelationManager
     public function getTabs(): array
     {
         $ownerRecord = $this->getOwnerRecord();
+        $currentLocale = $this->getCurrentUrlLocale();
+
+        // 直接查詢 Post 模型，不通過 Menu 關聯
+        $baseQuery = Post::where('menu_slug', $ownerRecord->slug);
 
         // 基於用戶權限的 Tab
         $tabs = [
             'all' => Tab::make('全部文章')
-                ->badge($ownerRecord->posts()->count())
-                // ->badge(Post::count())
+                ->badge($baseQuery->where('locale', $currentLocale)->count())
                 ->icon('heroicon-o-document-duplicate'),
             'published' => Tab::make('已發布')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
-                ->badge($ownerRecord->posts()->where('display', 1)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)->where('locale', $currentLocale))
+                ->badge($baseQuery->where('display', 1)->where('locale', $currentLocale)->count())
                 ->badgeColor('success')
                 ->icon('heroicon-o-check-circle'),
             'unpublished' => Tab::make('未發布')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
-                ->badge($ownerRecord->posts()->where('display', 0)->count())
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)->where('locale', $currentLocale))
+                ->badge($baseQuery->where('display', 0)->where('locale', $currentLocale)->count())
                 ->badgeColor('gray')
                 ->icon('heroicon-o-x-circle'),
         ];
@@ -251,18 +353,22 @@ class PostsRelationManager extends RelationManager
     public function getCurrentTabCount(): int
     {
         $ownerRecord = $this->getOwnerRecord();
+        $currentLocale = $this->getCurrentUrlLocale();
+
+        // 直接查詢 Post 模型，不通過 Menu 關聯
+        $baseQuery = Post::where('menu_slug', $ownerRecord->slug);
 
         switch ($this->activeTab) {
             case 'published':
-                return $ownerRecord->posts()->where('display', '1')->count();
+                return $baseQuery->where('display', '1')->where('locale', $currentLocale)->count();
             case 'unpublished':
-                return $ownerRecord->posts()->where('display', '0')->count();
+                return $baseQuery->where('display', '0')->where('locale', $currentLocale)->count();
             // case 'scheduled':
-            //     return $ownerRecord->posts()->where('status', 'scheduled')->count();
+            //     return $baseQuery->where('status', 'scheduled')->count();
             // case 'archived':
-            //     return $ownerRecord->posts()->where('status', 'archived')->count();
+            //     return $baseQuery->where('status', 'archived')->count();
             default:
-                return $ownerRecord->posts()->count();
+                return $baseQuery->where('locale', $currentLocale)->count();
         }
     }
 }

@@ -30,6 +30,11 @@ class PostResource extends Resource
 
     protected static ?string $navigationParentItem = '內容管理';
     protected static ?string $navigationGroup = 'Website';
+    
+    public static function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
 
     public static function form(Form $form): Form

@@ -29,7 +29,7 @@ class ContactService
 
         try {
             Mail::to($data['member_email'])
-                ->bcc('52sherry1123@gmail.com') // 可自行更換
+                ->bcc('52sherry1123@gmail.com')
                 ->send(new FormMailSend($form_data));
         } catch (\Exception $e) {
             $sendStatus = 'failed';

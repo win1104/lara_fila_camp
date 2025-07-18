@@ -1,11 +1,11 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 h-24 fixed z-[90] w-full opacity-90" wire:id="header-component">
     <!-- Primary Navigation Menu -->
     <div class="max-w-[1600px] mx-auto">
         <div class="h-16 px-8 lg:px-32">
 
 
             <!-- maryUI -->
-            <div class="navbar bg-base-100 relative">
+            <div class="navbar bg-base-100 relative p-5">
 
                 <!-- Logo -->
                 <div class="shrink-0 items-center">

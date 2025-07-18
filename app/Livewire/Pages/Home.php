@@ -7,9 +7,10 @@ use Livewire\Attributes\Layout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
-use App\Models\Menu as MenuModel;
+use App\Models\ProductCategory as ProductCategoryModel;
 use App\Models\PostCategory as PostCategoryModel;
 use App\Models\Post as PostModel;
+use App\Models\Product as ProductModel;
 use Illuminate\Support\Facades\DB;
 
 class Home extends Component
@@ -24,7 +25,7 @@ class Home extends Component
 
     public function mount()
     {
-        $this->menus = MenuModel::where('locale', app()->getLocale())
+        $this->menus = ProductCategoryModel::where('locale', app()->getLocale())
             ->where('display', 1)
             ->where('parent_slug', 'works')
             ->orderBy('order', 'asc')
@@ -55,24 +56,28 @@ class Home extends Component
 
     protected function loadPosts()
     {
-        $query = PostModel::where('locale', app()->getLocale())
-            // ->where('slug', 'works')
+        $query = ProductModel::where('locale', app()->getLocale())
             ->where('display', 1)
-            ->orderBy('order', 'asc');
-            // ->limit(4);
+            ->orderBy('order', 'asc')
+            ->limit(6);
 
         if ($this->activeTab === 'all') {
             $menuSlugs = $this->menus->pluck('slug')->toArray();
-            $query->whereIn('menu_slug', $menuSlugs);
+            $relatedProductIds = DB::table('product_relation')
+                ->whereIn('product_category_slug', $menuSlugs)
+                ->pluck('product_slug');
+            $query->whereIn('slug', $relatedProductIds);
             $this->activeMenu = null;
         }else{
-            $query->where('menu_slug', $this->activeTab);
+            $relatedProductIds = DB::table('product_relation')
+                ->where('product_category_slug', $this->activeTab)
+                ->pluck('product_slug');
+            $query->whereIn('slug', $relatedProductIds);
             $this->activeMenu = $this->menus->firstWhere('slug', $this->activeTab);
         }
 
-        $this->works = $query->with('menu')->get();
+        $this->works = $query->with('product_category', 'images')->get();
 
-        // dd($this->menus);
     }
 
     protected function loadNews()

@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Config;
 class FilamentLocale
 {
     protected $localeMap = [
-        // 'tw' => 'tw',
-        'tw' => 'zh_TW',
+        'tw' => 'tw',
+        // 'tw' => 'zh_TW',
         'en' => 'en',
     ];
 

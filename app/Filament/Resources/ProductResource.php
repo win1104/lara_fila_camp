@@ -40,6 +40,20 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Pruoducts';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
+    public static function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
+    {
+        $locale = app()->getLocale();
+        
+        return static::getModel()::where('slug', $key)
+            ->where('locale', $locale)
+            ->first();
+    }
+
     public static function getPluralModelLabel(): string
     {
         return __('產品');
@@ -107,13 +121,15 @@ class ProductResource extends Resource
                                 Forms\Components\TextInput::make('locale')
                                     ->label('語系')
                                     ->required()
-                                    ->default(fn () => Request::route('locale')),
+                                    ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                                 SelectTree::make('product_categories')
                                     ->label('產品分類')
                                     ->placeholder('Select Category')
                                     ->parentNullValue('home')
                                     ->withKey('slug')
-                                    ->relationship('product_category', 'title', 'parent_slug')
+                                    ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
+                                        return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                    })
                                     ->withCount()
                                     ->expandSelected(true)
                                     // ->alwaysOpen()
@@ -137,6 +153,29 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function ($query) {
+                $locale = app()->getLocale();
+                $routeLocale = request()->route('locale');
+                
+                // 如果是 Livewire 請求，從 referer 中提取語言
+                if (!$routeLocale && request()->header('Referer')) {
+                    $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                    if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                        $routeLocale = $matches[1];
+                    }
+                }
+                
+                $actualLocale = $routeLocale ?: $locale;
+                
+                \Illuminate\Support\Facades\Log::info('ProductResource table query:', [
+                    'app_locale' => $locale,
+                    'route_locale' => $routeLocale,
+                    'actual_locale' => $actualLocale,
+                    'total_products' => \App\Models\Product::count(),
+                    'filtered_products' => \App\Models\Product::where('locale', $actualLocale)->count()
+                ]);
+                return $query->where('locale', $actualLocale);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('locale'),
                 Tables\Columns\IconColumn::make('display')

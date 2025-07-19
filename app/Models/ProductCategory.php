@@ -74,12 +74,15 @@ class ProductCategory extends Model
     public function children()
     {
         return $this->hasMany(static::class, 'parent_slug', 'slug')
+            ->where('locale', $this->locale)
             ->orderBy('order');
     }
 
     public function allChildren()
     {
-        return $this->children()->with('children');
+        return $this->children()->with(['children' => function($query) {
+            $query->where('locale', $this->locale);
+        }]);
     }
 
     public function isRoot(): bool

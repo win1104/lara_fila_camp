@@ -45,6 +45,23 @@ class Product extends Model
         return 'slug';
     }
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $locale = request()->route('locale') ?? app()->getLocale();
+
+        // 對於 Filament admin 路由，根據 locale 和 slug 查找
+        if (request()->route()->getName() && str_contains(request()->route()->getName(), 'filament.admin.resources.products')) {
+            return $this->where('slug', $value)
+                ->where('locale', $locale)
+                ->first();
+        }
+
+        // 對於前端路由，根據 locale 和 slug 查找
+        return $this->where('slug', $value)
+            ->where('locale', $locale)
+            ->first();
+    }
+
     // public function category():BelongsTo
     // {
     //     return $this->belongsTo(Category::class);

@@ -24,10 +24,6 @@ class MenuWidget extends BaseWidget
     protected ?string $treeTitle = '網站架構（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
-    protected $localeMap = [
-        'zh_TW' => 'tw',
-        'en' => 'en',
-    ];
 
     protected function getFormSchema(): array
     {
@@ -57,8 +53,8 @@ class MenuWidget extends BaseWidget
             Action::make('編輯網頁內容')
                 ->url(fn (?Menu $record) => $record
                     ? route('filament.admin.resources.menus.edit', [
-                        'locale' => $this->localeMap[app()->getLocale()],
-                        'record' => $record->slug, 
+                        'locale' => app()->getLocale(),
+                        'record' => $record->slug,
                         'code'=>'widget'
                     ])
                     : null,
@@ -116,8 +112,16 @@ class MenuWidget extends BaseWidget
 
     protected function getTreeQuery(): \Illuminate\Database\Eloquent\Builder
     {
+        $locale = app()->getLocale();
+
+        // \Illuminate\Support\Facades\Log::info('MenuWidget getTreeQuery:', [
+        //     'locale' => $locale,
+        //     'count' => static::getModel()::where('locale', $locale)->count(),
+        //     'sample_records' => static::getModel()::where('locale', $locale)->take(3)->get(['slug', 'title', 'locale'])->toArray()
+        // ]);
+
         return static::getModel()::query()
-            ->where('locale', $this->localeMap[app()->getLocale()])
+            ->where('locale', $locale)
             ->orderBy('order');
     }
 

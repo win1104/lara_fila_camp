@@ -31,7 +31,8 @@ class ProductCategoryResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('locale')
-                    ->required(),
+                    ->required()
+                    ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                 Forms\Components\TextInput::make('slug')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('parent_slug')
@@ -48,6 +49,7 @@ class ProductCategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
@@ -101,6 +103,15 @@ class ProductCategoryResource extends Resource
     public static function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
+    {
+        $locale = app()->getLocale();
+        
+        return static::getModel()::where('slug', $key)
+            ->where('locale', $locale)
+            ->first();
     }
 
     public static function getRecordRouteKeyName(): string

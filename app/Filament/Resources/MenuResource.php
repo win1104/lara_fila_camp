@@ -77,6 +77,7 @@ class MenuResource extends Resource
         return $table
             ->heading('網站架構（表格模式）')
             // ->defaultPaginationPageOptions([50])
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),

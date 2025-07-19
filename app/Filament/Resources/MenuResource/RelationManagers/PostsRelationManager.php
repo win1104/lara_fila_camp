@@ -53,7 +53,7 @@ class PostsRelationManager extends RelationManager
     {
         $url = url()->previous();
 
-        Log::info('PostsRelationManager URL:', ['url' => $url]);
+        // Log::info('PostsRelationManager URL:', ['url' => $url]);
 
         if (str_contains($url, 'widget')) {
             return 'widget';
@@ -99,15 +99,15 @@ class PostsRelationManager extends RelationManager
         $result = $localeMap[$urlLocale] ?? 'tw';
 
         // 調試用日誌
-        Log::info('PostsRelationManager getCurrentUrlLocale:', [
-            'urlLocale' => $urlLocale,
-            'result' => $result,
-            'app_locale' => app()->getLocale(),
-            'referer' => request()->headers->get('referer'),
-            'request_url' => request()->url(),
-            'request_path' => request()->path(),
-            'segments' => request()->segments(),
-        ]);
+        // Log::info('PostsRelationManager getCurrentUrlLocale:', [
+        //     'urlLocale' => $urlLocale,
+        //     'result' => $result,
+        //     'app_locale' => app()->getLocale(),
+        //     'referer' => request()->headers->get('referer'),
+        //     'request_url' => request()->url(),
+        //     'request_path' => request()->path(),
+        //     'segments' => request()->segments(),
+        // ]);
 
         return $result;
     }
@@ -120,12 +120,12 @@ class PostsRelationManager extends RelationManager
         $data['locale'] = $currentLocale;
 
         // 調試日誌
-        Log::info('PostsRelationManager mutateFormDataBeforeCreate:', [
-            'currentLocale' => $currentLocale,
-            'menu_slug' => $menu->slug,
-            'data_locale' => $data['locale'],
-            'original_data' => $data,
-        ]);
+        // Log::info('PostsRelationManager mutateFormDataBeforeCreate:', [
+        //     'currentLocale' => $currentLocale,
+        //     'menu_slug' => $menu->slug,
+        //     'data_locale' => $data['locale'],
+        //     'original_data' => $data,
+        // ]);
 
         return $data;
     }
@@ -138,12 +138,12 @@ class PostsRelationManager extends RelationManager
         $data['locale'] = $currentLocale;
 
         // 調試日誌
-        Log::info('PostsRelationManager mutateFormDataBeforeSave:', [
-            'currentLocale' => $currentLocale,
-            'menu_slug' => $menu->slug,
-            'data_locale' => $data['locale'],
-            'original_data' => $data,
-        ]);
+        // Log::info('PostsRelationManager mutateFormDataBeforeSave:', [
+        //     'currentLocale' => $currentLocale,
+        //     'menu_slug' => $menu->slug,
+        //     'data_locale' => $data['locale'],
+        //     'original_data' => $data,
+        // ]);
 
         return $data;
     }
@@ -214,14 +214,14 @@ class PostsRelationManager extends RelationManager
                 $currentLocale = $this->getCurrentUrlLocale();
 
                 // 記錄查詢資訊
-                Log::info('PostsRelationManager Query Debug:', [
-                    'currentLocale' => $currentLocale,
-                    'menu_slug' => $menu->slug,
-                    'menu_locale' => $menu->locale,
-                    'total_posts_in_menu' => Post::where('menu_slug', $menu->slug)->count(),
-                    'posts_with_current_locale' => Post::where('menu_slug', $menu->slug)->where('locale', $currentLocale)->count(),
-                    'all_posts_locales' => Post::where('menu_slug', $menu->slug)->pluck('locale')->toArray(),
-                ]);
+                // Log::info('PostsRelationManager Query Debug:', [
+                //     'currentLocale' => $currentLocale,
+                //     'menu_slug' => $menu->slug,
+                //     'menu_locale' => $menu->locale,
+                //     'total_posts_in_menu' => Post::where('menu_slug', $menu->slug)->count(),
+                //     'posts_with_current_locale' => Post::where('menu_slug', $menu->slug)->where('locale', $currentLocale)->count(),
+                //     'all_posts_locales' => Post::where('menu_slug', $menu->slug)->pluck('locale')->toArray(),
+                // ]);
 
                 // 只需要按語系過濾，menu_slug 已經在 getTableQuery 中處理
                 $query->where('locale', $currentLocale);

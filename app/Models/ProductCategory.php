@@ -87,6 +87,23 @@ class ProductCategory extends Model
         return $this->parent_slug === static::defaultParentKey();
     }
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $locale = request()->route('locale') ?? app()->getLocale();
+
+        // 對於 Filament admin 路由，根據 locale 和 slug 查找
+        if (request()->route()->getName() && str_contains(request()->route()->getName(), 'filament.admin.resources.product-categories')) {
+            return $this->where('slug', $value)
+                ->where('locale', $locale)
+                ->first();
+        }
+
+        // 對於前端路由，根據 locale 和 slug 查找
+        return $this->where('slug', $value)
+            ->where('locale', $locale)
+            ->first();
+    }
+
     protected static function boot()
     {
         parent::boot();

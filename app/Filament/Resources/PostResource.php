@@ -30,10 +30,30 @@ class PostResource extends Resource
 
     protected static ?string $navigationParentItem = '內容管理';
     protected static ?string $navigationGroup = 'Website';
-    
+
     public static function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
+    {
+        $locale = app()->getLocale();
+        
+        $result = static::getModel()::where('slug', $key)
+            ->where('locale', $locale)
+            ->first();
+            
+        \Illuminate\Support\Facades\Log::info('PostResource resolveRecordRouteBinding:', [
+            'key' => $key,
+            'locale' => $locale,
+            'route' => request()->route()->getName(),
+            'found_record_id' => $result?->id,
+            'found_record_locale' => $result?->locale,
+            'found_record_title' => $result?->title
+        ]);
+
+        return $result;
     }
 
 
@@ -42,11 +62,11 @@ class PostResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('locale')
-                    ->required()
-                    ->default(fn () => app()->getLocale()),
+                    ->required(),
+                    // ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                 Forms\Components\Select::make('menu_slug')
                     ->label('Menu')
-                    ->options(fn () => Menu::where('locale', app()->getLocale())
+                    ->options(fn ($record) => Menu::where('locale', $record?->locale ?? app()->getLocale())
                         ->pluck('title', 'slug'))
                     ->required()
                     ->searchable(),
@@ -92,6 +112,7 @@ class PostResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')

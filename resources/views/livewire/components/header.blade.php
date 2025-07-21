@@ -73,7 +73,7 @@
 
 
                             <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                {{ __('聯絡我們') }}
+                                {{ __('聯絡我們').__('frontend.article.label') }}
                             </x-mary-button>
 
                             <x-mary-button link="{{ route('openai.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">

@@ -16,12 +16,20 @@ use App\Filament\Resources\ProjectResource\RelationManagers;
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
-
-    protected static ?string $label = '專案'; // 這將用於單數形式
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $pluralLabel = '專案管理'; // 這將用於標題和側邊欄
-    protected static ?string $navigationLabel = '專案管理'; // 只有側邊欄
+
+    public static function getModelLabel(): string
+    {
+        return __('project.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('project.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('project.navigation');
+    }
     protected static ?string $navigationGroup = 'Project';
 
     public static function form(Form $form): Form

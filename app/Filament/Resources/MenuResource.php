@@ -14,12 +14,23 @@ use Filament\Tables\Table;
 class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
-
-    protected static ?string $label = '文章'; // 這將用於單數形式
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
-    protected static ?string $navigationLabel = '內容管理'; // 只有側邊欄
+
+    public static function getModelLabel(): string
+    {
+        return __('post.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('post.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('post.navigation');
+    }
+    // protected static ?string $label = '文章'; // 這將用於單數形式
+    // protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
+    // protected static ?string $navigationLabel = '內容管理'; // 只有側邊欄
     protected static ?string $navigationGroup = 'Website';
 
     public static function form(Form $form): Form

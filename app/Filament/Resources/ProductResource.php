@@ -34,10 +34,21 @@ use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
-    protected static ?string $navigationLabel = '產品';
-    protected static ?string $navigationGroup = 'Pruoducts';
+
+    public static function getModelLabel(): string
+    {
+        return __('backend.product.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backend.product.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backend.product.navigation');
+    }
+    protected static ?string $navigationGroup = 'Products';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function getRouteKeyName(): string
@@ -48,7 +59,7 @@ class ProductResource extends Resource
     public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
     {
         $locale = app()->getLocale();
-        
+
         return static::getModel()::where('slug', $key)
             ->where('locale', $locale)
             ->first();
@@ -156,7 +167,7 @@ class ProductResource extends Resource
             ->modifyQueryUsing(function ($query) {
                 $locale = app()->getLocale();
                 $routeLocale = request()->route('locale');
-                
+
                 // 如果是 Livewire 請求，從 referer 中提取語言
                 if (!$routeLocale && request()->header('Referer')) {
                     $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
@@ -164,9 +175,9 @@ class ProductResource extends Resource
                         $routeLocale = $matches[1];
                     }
                 }
-                
+
                 $actualLocale = $routeLocale ?: $locale;
-                
+
                 \Illuminate\Support\Facades\Log::info('ProductResource table query:', [
                     'app_locale' => $locale,
                     'route_locale' => $routeLocale,

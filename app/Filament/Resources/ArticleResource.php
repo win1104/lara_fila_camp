@@ -22,7 +22,19 @@ class ArticleResource extends Resource
     protected static ?string $model = Article::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-x-mark';
-    protected static ?string $navigationLabel = 'Article';
+
+    public static function getModelLabel(): string
+    {
+        return __('backend.article.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backend.article.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backend.article.navigation');
+    }
     protected static ?string $navigationGroup = 'Website';
 
     public static function form(Form $form): Form

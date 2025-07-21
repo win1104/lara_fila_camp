@@ -19,10 +19,22 @@ class ProductCategoryResource extends Resource
     protected static ?string $model = ProductCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
-    protected static ?string $navigationLabel = '產品分類'; // 這將用於標題和側邊欄
-    // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
-    protected static ?string $label = '產品'; // 這將用於單數形式
-    protected static ?string $navigationGroup = 'Pruoducts';
+
+    public static function getModelLabel(): string
+    {
+        return __('backend.product.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backend.product.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backend.product.category');
+    }
+    // protected static ?string $navigationLabel = '產品分類'; // 這將用於標題和側邊欄
+    // protected static ?string $label = '產品'; // 這將用於單數形式
+    protected static ?string $navigationGroup = 'Products';
 
     public static function form(Form $form): Form
     {
@@ -108,7 +120,7 @@ class ProductCategoryResource extends Resource
     public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
     {
         $locale = app()->getLocale();
-        
+
         return static::getModel()::where('slug', $key)
             ->where('locale', $locale)
             ->first();

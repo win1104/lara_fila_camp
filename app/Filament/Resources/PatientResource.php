@@ -19,8 +19,21 @@ class PatientResource extends Resource
 {
     protected static ?string $model = Patient::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
-    protected static ?string $navigationLabel = '醫療規劃';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getModelLabel(): string
+    {
+        return __('backend.patient.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backend.patient.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backend.patient.navigation');
+    }
+    // protected static ?string $navigationLabel = '醫療規劃';
     // protected static ?string $navigationGroup = 'Website';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
@@ -120,7 +133,8 @@ class PatientResource extends Resource
                 ]),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('新增Patient'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

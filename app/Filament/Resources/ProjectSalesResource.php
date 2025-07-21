@@ -16,9 +16,20 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProjectSalesResource extends Resource
 {
     protected static ?string $model = ProjectSales::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    protected static ?string $navigationLabel = '銷售人員';
+
+    public static function getModelLabel(): string
+    {
+        return __('backend.sales.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backend.sales.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backend.sales.navigation');
+    }
     protected static ?string $navigationGroup = 'Project';
 
     public static function form(Form $form): Form

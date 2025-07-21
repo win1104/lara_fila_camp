@@ -23,15 +23,15 @@ class PatientResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('backend.patient.label');
+        return __('patient.label');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('backend.patient.plural');
+        return __('patient.plural');
     }
     public static function getNavigationLabel(): string
     {
-        return __('backend.patient.navigation');
+        return __('patient.navigation');
     }
     // protected static ?string $navigationLabel = '醫療規劃';
     // protected static ?string $navigationGroup = 'Website';

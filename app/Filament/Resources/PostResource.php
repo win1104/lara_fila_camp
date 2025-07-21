@@ -24,11 +24,19 @@ class PostResource extends Resource
     protected static ?string $model = Post::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-x-mark';
-    protected static ?string $pluralLabel = 'Post'; // 這將用於標題和側邊欄
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
-    protected static ?string $label = '文章'; // 這將用於單數形式
-
-    protected static ?string $navigationParentItem = '內容管理';
+    public static function getModelLabel(): string
+    {
+        return __('post.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('post.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('post.navigation');
+    }
     protected static ?string $navigationGroup = 'Website';
 
     public static function getRouteKeyName(): string
@@ -39,11 +47,11 @@ class PostResource extends Resource
     public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
     {
         $locale = app()->getLocale();
-        
+
         $result = static::getModel()::where('slug', $key)
             ->where('locale', $locale)
             ->first();
-            
+
         \Illuminate\Support\Facades\Log::info('PostResource resolveRecordRouteBinding:', [
             'key' => $key,
             'locale' => $locale,

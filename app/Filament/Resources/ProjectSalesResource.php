@@ -20,15 +20,15 @@ class ProjectSalesResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('backend.sales.label');
+        return __('product.sales');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('backend.sales.plural');
+        return __('product.sales');
     }
     public static function getNavigationLabel(): string
     {
-        return __('backend.sales.navigation');
+        return __('product.sales');
     }
     protected static ?string $navigationGroup = 'Project';
 

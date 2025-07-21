@@ -38,15 +38,15 @@ class ProductResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('backend.product.label');
+        return __('product.label');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('backend.product.plural');
+        return __('product.plural');
     }
     public static function getNavigationLabel(): string
     {
-        return __('backend.product.navigation');
+        return __('product.navigation');
     }
     protected static ?string $navigationGroup = 'Products';
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;

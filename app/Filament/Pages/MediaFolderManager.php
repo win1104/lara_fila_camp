@@ -10,6 +10,18 @@ class MediaFolderManager extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static string $view = 'filament.pages.media-folder-manager';
+    public static function getModelLabel(): string
+    {
+        return __('backstage.media_folder_manage');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('backstage.media_folder_manage');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('backstage.media_folder_manage');
+    }
 
     // public string $newFolder = '';
     public string $renameTo = '';

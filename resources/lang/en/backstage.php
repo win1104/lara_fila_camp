@@ -3,6 +3,8 @@
 return [
     'mamage' => 'Manage',
     'category' => 'Category',
+    'media_manage' => 'Media Manage',
+    'media_folder_manage' => 'Media Folder Manage',
 
     // 'article' => [
     //     'label' => 'Article',

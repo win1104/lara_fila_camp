@@ -3,6 +3,8 @@
 return [
     'mamage' => '管理',
     'category' => '分類',
+    'media_manage' => '圖片管理',
+    'media_folder_manage' => '資料夾管理',
 
     // 'article' => [
     //     'label' => '文章',

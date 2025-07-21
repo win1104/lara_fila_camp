@@ -125,6 +125,7 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             // ->heading('網站架構（表格模式）')
             ->columns([
                 Tables\Columns\TextColumn::make('order')
@@ -197,8 +198,9 @@ class ProjectResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+    /* Navigation 的 label 旁有資料總筆數的數字 */
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
 }

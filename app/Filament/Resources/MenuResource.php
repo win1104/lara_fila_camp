@@ -26,11 +26,8 @@ class MenuResource extends Resource
     }
     public static function getNavigationLabel(): string
     {
-        return __('post.navigation');
+        return __('post.content_mana');
     }
-    // protected static ?string $label = '文章'; // 這將用於單數形式
-    // protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
-    // protected static ?string $navigationLabel = '內容管理'; // 只有側邊欄
     protected static ?string $navigationGroup = 'Website';
 
     public static function form(Form $form): Form
@@ -149,8 +146,9 @@ class MenuResource extends Resource
         return 'slug';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+    /* Navigation 的 label 旁有資料總筆數的數字 */
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
 }

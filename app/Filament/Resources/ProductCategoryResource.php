@@ -22,15 +22,15 @@ class ProductCategoryResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('backend.product.label');
+        return __('product.label');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('backend.product.plural');
+        return __('product.plural');
     }
     public static function getNavigationLabel(): string
     {
-        return __('backend.product.category');
+        return __('product.category');
     }
     // protected static ?string $navigationLabel = '產品分類'; // 這將用於標題和側邊欄
     // protected static ?string $label = '產品'; // 這將用於單數形式
@@ -131,10 +131,11 @@ class ProductCategoryResource extends Resource
         return 'slug';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+    /* Navigation 的 label 旁有資料總筆數的數字 */
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
 
     // public static function getWidgets(): array
     // {

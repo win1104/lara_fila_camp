@@ -25,15 +25,15 @@ class ArticleResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('backend.article.label');
+        return __('post.label');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('backend.article.plural');
+        return __('post.plural');
     }
     public static function getNavigationLabel(): string
     {
-        return __('backend.article.navigation');
+        return __('post.navigation');
     }
     protected static ?string $navigationGroup = 'Website';
 

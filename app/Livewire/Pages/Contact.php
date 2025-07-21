@@ -22,6 +22,12 @@ class Contact extends Component
     public $member_note = '';
     public $captcha = '';
     public $code = '';
+    public $formKey;
+
+    public function mount()
+    {
+        $this->formKey = rand();
+    }
 
     public function submit()
     {
@@ -59,20 +65,22 @@ class Contact extends Component
 
         session()->flash('success', '表單送出成功！');
 
-        // $this->reset(); // 清空表單
-        $this->reset(
-            'member_name',
-            'member_phone',
-            'member_email',
-            'member_company',
-            'question_category',
-            'member_note',
-            'captcha'
-        );
+        $this->reset();
+        // $this->reset(
+        //     'member_name',
+        //     'member_phone',
+        //     'member_email',
+        //     'member_company',
+        //     'question_category',
+        //     'member_note',
+        //     'captcha'
+        // );
+        $this->formKey = rand();
     }
 
     // public function resetForm()
     // {
+    //     $this->reset();
     //     $this->reset(
     //         'member_name',
     //         'member_phone',

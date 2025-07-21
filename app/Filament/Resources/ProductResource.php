@@ -153,6 +153,13 @@ class ProductResource extends Resource
                                             })
                                         );
                                     }),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('連結')
+                                    ->placeholder('https://example.com')
+                                    ->helperText('設定文章跳轉網址，留空則無跳轉'),
+                                Forms\Components\Toggle::make('url_target')
+                                    ->label('開新分頁')
+                                    ->helperText('勾選後，連結會在新分頁開啟'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

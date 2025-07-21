@@ -54,6 +54,11 @@ class Home extends Component
         $this->loadNews();
     }
 
+    public function openNewTab($work)
+    {
+        return $work->url_target == 1 ? '_blank' : '';
+    }
+
     protected function loadPosts()
     {
         $query = ProductModel::where('locale', app()->getLocale())

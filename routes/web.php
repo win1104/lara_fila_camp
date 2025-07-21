@@ -29,6 +29,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Models\Chat_assistant;
 use Gregwar\Captcha\CaptchaBuilder;
+use Gregwar\Captcha\PhraseBuilder;
 
 // Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 // Route::get("/", Home::class)->name('home');
@@ -97,7 +98,10 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 
     Route::get('contact', Contact::class)->name('contact.index');
     Route::get('captcha', function () {
-        $builder = new CaptchaBuilder;
+        $phraseBuilder = new PhraseBuilder(5, '0123456789');
+        $builder = new CaptchaBuilder(null, $phraseBuilder);
+        $builder->setScatterEffect(false);
+        $builder->setMaxFrontLines(0);
         $builder->build();
 
         session(['captcha' => $builder->getPhrase()]);

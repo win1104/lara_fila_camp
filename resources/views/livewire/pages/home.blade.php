@@ -177,7 +177,7 @@
     <section class="text-gray-600 body-font">
         <div class="max-w-[1280px] px-5 py-24 mx-auto flex flex-wrap flex-col">
             <h2 class="text-center title-font sm:text-4xl text-3xl mb-20 font-black text-gray-800 font-sans">近期作品</h2>
-            <div class="flex items-center justify-between mb-14">
+            <div class="flex items-center justify-center mb-14">
                 <div class="flex items-center text-lg">
                     @if($this->activeTab == 'all')
                     <button wire:click="switchTab('all')"
@@ -248,28 +248,29 @@
             </div> --}}
             <div class="flex flex-wrap -m-4 px-5">
                 @foreach ($works as $work)
-                                    <div class="p-2 md:w-1/3">
-                                        <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
-                                            @php
-    $image = $work->images->first(); // 取第一張圖片
-                                            @endphp
-                                            @if ($image)
-                                                <img class="h-72 w-full object-cover object-center" src="{{ $image->url }}" alt="blog">
-                                            @else
-                                                <img class="h-72 w-full object-cover object-center" src="{{ asset('storage/media/sidebar-links_3.png') }}" alt="blog">
-                                            @endif
-                                            <div class="p-6">
-                                                <p class="border-gray-400 text-center border rounded-md max-w-[46px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
-                                                    {{ $work->product_category->first()?->title }}</p>
-                                                    {{-- {{ $work->menu->title }}</p> --}}
-                                                <p class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</p>
-                                                <div class="flex items-center flex-wrap ">
-                                                    <a class=" inline-flex items-center md:mb-2 lg:mb-0">觀看網站 ➔
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                                                                    <div class="p-2 md:w-1/3">
+                                                                                                        <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
+                                                                                                            @php
+                    $image = $work->images->first(); // 取第一張圖片
+                                                                                                            @endphp
+                                                                                                            @if ($image)
+                                                                                                                <img class="h-72 w-full object-cover object-center" src="{{ $image->url }}" alt="blog">
+                                                                                                            @else
+                                                                                                                <img class="h-72 w-full object-cover object-center" src="{{ asset('storage/media/sidebar-links_3.png') }}" alt="blog">
+                                                                                                            @endif
+                                                                                                            <div class="p-6">
+                                                                                                                <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
+                                                                                                                    {{ $work->product_category->first()?->title }}</p>
+                                                                                                                    {{-- {{ $work->menu->title }}</p> --}}
+                                                                                                                <p class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</p>
+                                                                                                                <div class="flex items-center flex-wrap ">
+                                                                                                                    <a class=" inline-flex items-center md:mb-2 lg:mb-0" href="{{ $work->url }}" @if($this->openNewTab($work)) target="{{ $this->openNewTab($work) }}" @endif">
+                                                                                                                        觀看網站 ➔
+                                                                                                                    </a>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
                 @endforeach
                 {{-- <div class="p-2 md:w-1/3">
                     <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">

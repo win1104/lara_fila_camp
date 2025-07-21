@@ -48,7 +48,7 @@ class ProductResource extends Resource
     public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
     {
         $locale = app()->getLocale();
-        
+
         return static::getModel()::where('slug', $key)
             ->where('locale', $locale)
             ->first();
@@ -142,6 +142,13 @@ class ProductResource extends Resource
                                             })
                                         );
                                     }),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('連結')
+                                    ->placeholder('https://example.com')
+                                    ->helperText('設定文章跳轉網址，留空則無跳轉'),
+                                Forms\Components\Toggle::make('url_target')
+                                    ->label('開新分頁')
+                                    ->helperText('勾選後，連結會在新分頁開啟'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -156,7 +163,7 @@ class ProductResource extends Resource
             ->modifyQueryUsing(function ($query) {
                 $locale = app()->getLocale();
                 $routeLocale = request()->route('locale');
-                
+
                 // 如果是 Livewire 請求，從 referer 中提取語言
                 if (!$routeLocale && request()->header('Referer')) {
                     $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
@@ -164,9 +171,9 @@ class ProductResource extends Resource
                         $routeLocale = $matches[1];
                     }
                 }
-                
+
                 $actualLocale = $routeLocale ?: $locale;
-                
+
                 \Illuminate\Support\Facades\Log::info('ProductResource table query:', [
                     'app_locale' => $locale,
                     'route_locale' => $routeLocale,

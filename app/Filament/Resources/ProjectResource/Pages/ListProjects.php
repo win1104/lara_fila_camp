@@ -31,12 +31,16 @@ class ListProjects extends ListRecords
 
     public function getTabs(): array
     {
+        $locale = app()->getLocale();
+        
         $tabs = [
-            'all' => Tab::make('全部產品')
+            'all' => Tab::make($locale === 'tw' ? '全部產品' : 'All Products')
                 ->icon('heroicon-o-shopping-bag'),
         ];
 
-        $productCategories = ProductCategory::where('parent_slug', 'tarvelgroups')->get();
+        $productCategories = ProductCategory::where('parent_slug', 'tarvelgroups')
+            ->where('locale', $locale)
+            ->get();
 
         foreach ($productCategories as $category) {
             $tabs[$category->slug] = Tab::make($category->title)
@@ -50,7 +54,7 @@ class ListProjects extends ListRecords
         // $tabs['unpublished'] = Tab::make('下架')
         //     ->icon('heroicon-o-x-circle')
         //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0));
-        $tabs['recent'] = Tab::make('最近更新')
+        $tabs['recent'] = Tab::make($locale === 'tw' ? '最近更新' : 'Recently Updated')
             ->icon('heroicon-o-clock')
             ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7)));
 

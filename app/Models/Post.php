@@ -67,27 +67,27 @@ class Post extends Model
     }
 
 
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $locale = request()->route('locale') ?? app()->getLocale();
+    // public function resolveRouteBinding($value, $field = null)
+    // {
+    //     $locale = request()->route('locale') ?? app()->getLocale();
 
-        // 對於 Filament admin 路由，根據 locale 和 slug 查找
-        if (request()->route()->getName() && str_contains(request()->route()->getName(), 'filament.admin.resources.posts')) {
-            return $this->where('slug', $value)
-                ->where('locale', $locale)
-                ->first();
-        }
+    //     // 對於 Filament admin 路由，根據 locale 和 slug 查找
+    //     if (request()->route()->getName() && str_contains(request()->route()->getName(), 'filament.admin.resources.posts')) {
+    //         return $this->where('slug', $value)
+    //             ->where('locale', $locale)
+    //             ->first();
+    //     }
 
-        // 對於前端路由，保持原有邏輯
-        $post = $this->whereHas('menu', function ($query) use ($value, $locale) {
-            $query->where('slug', $value)
-                ->where('locale', $locale);
-        })
-        ->where('display', 1)
-        ->first();
+    //     // 對於前端路由，保持原有邏輯
+    //     $post = $this->whereHas('menu', function ($query) use ($value, $locale) {
+    //         $query->where('slug', $value)
+    //             ->where('locale', $locale);
+    //     })
+    //     ->where('display', 1)
+    //     ->first();
 
-        return $post;
-    }
+    //     return $post;
+    // }
 
 
     protected static function boot()

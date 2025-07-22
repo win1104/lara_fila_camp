@@ -93,7 +93,7 @@ return [
     */
 
     'tables' => [
-        'default_records_per_page' => 50,
+        'default_records_per_page' => 25,
     ],
 
 ];

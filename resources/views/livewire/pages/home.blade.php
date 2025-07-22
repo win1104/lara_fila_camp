@@ -440,7 +440,7 @@
 
             </div>
             <div class="text-center m-8">
-                <a href="{{ url(app()->getLocale() . '/tilelists/news') }}"
+                <a href="{{ url(app()->getLocale() . '/lists/news') }}"
                     class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">
                     更多消息
                 </a>

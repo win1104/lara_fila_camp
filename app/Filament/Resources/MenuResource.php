@@ -36,29 +36,36 @@ class MenuResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->key('patient-form-card')
-                    ->heading('選單資料')
+                    ->heading(__('backstage.menu_data'))
                     ->icon('heroicon-m-bars-4')
                     ->schema([
                         Forms\Components\TextInput::make('title')
+                            ->label(__('backstage.title'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('locale')
+                            ->label(__('backstage.locale'))
                             ->disabled()
-                            ->required(),
+                            ->required()
+                            ->default(fn ($record) => $record?->locale ?? (request()->route('locale') ?? app()->getLocale())),
                         Forms\Components\TextInput::make('slug')
+                            ->label(__('backstage.slug'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('parent_slug')
+                            ->label(__('backstage.parent_slug'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('order')
+                            ->label(__('backstage.order'))
                             ->required()
                             ->numeric()
                             ->default(0),
                         Forms\Components\Select::make('type')
+                            ->label(__('backstage.type'))
                             ->options([
-                                'posts' => 'Posts',
-                                'listS' => 'Lists',
-                                'tilelists' => 'Tilelists',
-                                'tabs' => 'Tabs',
-                                'collapses' => 'Collapses',
+                                'posts' => __('backstage.type_posts'),
+                                'listS' => __('backstage.type_lists'),
+                                'tilelists' => __('backstage.type_tilelists'),
+                                'tabs' => __('backstage.type_tabs'),
+                                'collapses' => __('backstage.type_collapses'),
                             ])
                             ->required(),
                     ])
@@ -88,22 +95,30 @@ class MenuResource extends Resource
             ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('backstage.title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('backstage.slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
+                    ->label(__('backstage.parent_slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order')
+                    ->label(__('backstage.order'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('backstage.type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('backstage.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('backstage.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

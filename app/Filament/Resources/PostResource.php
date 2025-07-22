@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use App\Models\Menu;
+use App\Models\PostCategory;
 use App\Models\Post;
 use Filament\Tables;
 use Filament\Infolists;
@@ -70,22 +70,30 @@ class PostResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('locale')
+                    ->label(__('backstage.locale'))
                     ->required(),
                     // ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
-                Forms\Components\Select::make('menu_slug')
-                    ->label('Menu')
-                    ->options(fn ($record) => Menu::where('locale', $record?->locale ?? app()->getLocale())
-                        ->pluck('title', 'slug'))
-                    ->required()
+                // Forms\Components\Select::make('menu_slug')
+                //     ->label(__('backstage.menu'))
+                //     // ->options(fn ($record) => Menu::where('locale', $record?->locale ?? app()->getLocale())
+                //     ->options(fn ($record) => PostCategory::where('locale', $record?->locale ?? app()->getLocale())
+                //         ->pluck('title', 'slug'))
+                //     ->required()
+                //     ->searchable(),
+                Forms\Components\Select::make('categories')
+                    ->label(__('backstage.category'))
+                    ->relationship('categories', 'title')
+                    ->multiple()
+                    ->preload()
                     ->searchable(),
                 Forms\Components\TextInput::make('title')
-                    ->label('Title')
+                    ->label(__('backstage.title'))
                     ->required(),
                 Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
+                    ->label(__('backstage.slug'))
                     ->required(),
                 Forms\Components\RichEditor::make('content')
-                    ->label('Content')
+                    ->label(__('backstage.content'))
                     // ->toolbarButtons([
                     //     'blockquote',
                     //     'bold',
@@ -106,11 +114,11 @@ class PostResource extends Resource
                 //     ->label('Media'),
                     // ->required(),
                 Forms\Components\Toggle::make('display')
-                    ->label('Published'),
+                    ->label(__('backstage.published')),
                 Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
+                    ->label(__('backstage.published_at')),
                 Forms\Components\Textarea::make('intro')
-                    ->label('Intro')
+                    ->label(__('backstage.intro'))
                     ->columnSpan('full')
                     // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
                     ->maxLength(65535),
@@ -126,24 +134,25 @@ class PostResource extends Resource
                 //     ->label('Media')
                 //     ->size('40'),
 
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\IconColumn::make('display')
-                    ->label('Published')
+                    ->label(__('backstage.published'))
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Order')
+                    ->label(__('backstage.order'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
+                    ->label(__('backstage.title'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
-                    ->label('Slug')
+                    ->label(__('backstage.slug'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->label('Published At')
+                    ->label(__('backstage.published_at'))
                     ->date()
                     ->sortable(),
             ])
@@ -151,10 +160,10 @@ class PostResource extends Resource
             ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
                 SelectFilter::make('display')
-                    ->label('發布狀態')
+                    ->label(__('backstage.display_status'))
                     ->options([
-                        '1' => '已發布',
-                        '0' => '未發布',
+                        '1' => __('backstage.published'),
+                        '0' => __('backstage.unpublished'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return match ($data['value']) {

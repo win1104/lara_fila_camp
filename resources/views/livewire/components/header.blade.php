@@ -15,9 +15,6 @@
                     </a>
                 </div>
 
-
-
-
                 <div class="navbar-start">
                     <div class="navbar-center hidden lg:flex relative">
 
@@ -43,7 +40,6 @@
                                             {!! $menu->title !!}
                                         </x-mary-button>
                                     @endif
-
                                 @elseif($menu->type == 'products')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
@@ -63,17 +59,11 @@
                                             {!! $menu->title !!}
                                         </x-mary-button>
                                     @endif
-
-
-
                                 @endif
-
                             @endforeach
 
-
-
                             <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                {{ __('聯絡我們').__('frontend.article.label') }}
+                                {{ __('聯絡我們').__('global.hoho.label') }}
                             </x-mary-button>
 
                             <x-mary-button link="{{ route('openai.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
@@ -85,16 +75,9 @@
                             <x-mary-button link="{{ route('mobile.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
                                 {{ __('Chat Bot') }}
                             </x-mary-button>
-
                         @endif
                     </div>
                 </div>
-
-
-
-
-
-
 
 
 
@@ -116,9 +99,6 @@
                         <x-nav-link :href="route('mobile.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('mobile.index')">
                             {{ __('Mobile') }}
                         </x-nav-link> --}}
-
-
-
 
 
 

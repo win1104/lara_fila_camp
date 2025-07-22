@@ -27,15 +27,21 @@ class ListProducts extends ListRecords
 
     public function getTabs(): array
     {
+        $locale = app()->getLocale();
+        // dd($locale);
+
         $tabs = [
-            'all' => Tab::make('全部')
+            'all' => Tab::make($locale === 'tw' ? '全部' : 'All')
                 ->icon('heroicon-o-shopping-bag'),
         ];
 
-        $productCategories = ProductCategory::where('parent_slug', 'works')->get();
+        $productCategories = ProductCategory::where('parent_slug', 'works')
+            ->where('locale', $locale)
+            ->get();
 
         foreach ($productCategories as $category) {
-            $tabs[$category->slug] = Tab::make(mb_substr($category->title, 0, 2, 'UTF-8') )
+            /* 繁中字太多，所以只取前二個字 */
+            $tabs[$category->slug] = Tab::make($locale === 'tw' ? mb_substr($category->title, 0, 2, 'UTF-8') : $category->title )
                 ->icon('heroicon-o-tag')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('product_category', function (Builder $query) use ($category) {
                     $query->where('slug', $category->slug);
@@ -57,8 +63,9 @@ class ListProducts extends ListRecords
 
     public function getCurrentTabLabel(): string
     {
+        $locale = app()->getLocale();
         $tabs = $this->getTabs();
-        return $tabs[$this->activeTab]->getLabel() ?? '全部產品';
+        return $tabs[$this->activeTab]->getLabel() ?? ($locale === 'tw' ? '全部產品' : 'All Products');
     }
 
     protected function getHeaderActions(): array

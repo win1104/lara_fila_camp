@@ -3,21 +3,22 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use App\Models\PostCategory;
 use App\Models\Post;
 use Filament\Tables;
 use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PostCategory;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Tables\Columns\DateTimeColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PostResource\Pages;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
-use Filament\Tables\Filters\SelectFilter;
 
 class PostResource extends Resource
 {
@@ -69,60 +70,92 @@ class PostResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('locale')
-                    ->label(__('backstage.locale'))
-                    ->required(),
-                    // ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
-                // Forms\Components\Select::make('menu_slug')
-                //     ->label(__('backstage.menu'))
-                //     // ->options(fn ($record) => Menu::where('locale', $record?->locale ?? app()->getLocale())
-                //     ->options(fn ($record) => PostCategory::where('locale', $record?->locale ?? app()->getLocale())
-                //         ->pluck('title', 'slug'))
-                //     ->required()
-                //     ->searchable(),
-                Forms\Components\Select::make('categories')
-                    ->label(__('backstage.category'))
-                    ->relationship('categories', 'title')
-                    ->multiple()
-                    ->preload()
-                    ->searchable(),
-                Forms\Components\TextInput::make('title')
-                    ->label(__('backstage.title'))
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->label(__('backstage.slug'))
-                    ->required(),
-                Forms\Components\RichEditor::make('content')
-                    ->label(__('backstage.content'))
-                    // ->toolbarButtons([
-                    //     'blockquote',
-                    //     'bold',
-                    //     'bulletList',
-                    //     'codeBlock',
-                    //     'h2',
-                    //     'h3',
-                    //     'italic',
-                    //     'link',
-                    //     'orderedList',
-                    //     'redo',
-                    //     'strike',
-                    //     'undo',
-                    //     'html', // 啟用 HTML 編輯按鈕
-                    // ])
-                    ->required(),
-                // CuratorPicker::make('media_id')
-                //     ->label('Media'),
-                    // ->required(),
-                Forms\Components\Toggle::make('display')
-                    ->label(__('backstage.published')),
-                Forms\Components\DatePicker::make('date')
-                    ->label(__('backstage.published_at')),
-                Forms\Components\Textarea::make('intro')
-                    ->label(__('backstage.intro'))
-                    ->columnSpan('full')
-                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    ->maxLength(65535),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label(__('backstage.title'))
+                                    ->required(),
+                                Forms\Components\TextInput::make('slug')
+                                    ->label(__('backstage.slug'))
+                                    ->required(),
+                                Forms\Components\RichEditor::make('intro')
+                                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                                    ->label(__('backstage.intro')),
+                            ]),
+
+                        Forms\Components\Section::make(__('backstage.content'))
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->label(__('backstage.content'))
+                                    ->required(),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('backstage.setting'))
+                            ->schema([
+                                Forms\Components\Toggle::make('display')
+                                    ->label(__('backstage.published')),
+                                Forms\Components\Hidden::make('locale')
+                                    ->label(__('backstage.locale'))
+                                    ->required()
+                                    ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
+                                Forms\Components\DatePicker::make('date')
+                                    ->label(__('backstage.published_at')),
+                                Forms\Components\Select::make('categories')
+                                    ->label(__('backstage.category'))
+                                    ->relationship('categories', 'title')
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable(),
+                                // SelectTree::make('product_categories')
+                                //     ->label(__('backstage.product_category'))
+                                //     ->placeholder(__('backstage.select_category'))
+                                //     ->parentNullValue('home')
+                                //     ->withKey('slug')
+                                //     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
+                                //         return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                //     })
+                                //     ->withCount()
+                                //     ->expandSelected(true)
+                                //     // ->alwaysOpen()
+                                //     ->multiple(true)
+                                //     ->searchable()
+                                //     ->saveRelationshipsUsing(function (Product $record, $state) {
+                                //         $record->product_category()->sync(
+                                //             collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                //                 return [$slug => ['product_slug' => $record->slug]];
+                                //             })
+                                //         );
+                                //     }),
+                                Forms\Components\TextInput::make('url')
+                                    ->label(__('backstage.url'))
+                                    ->placeholder('https://example.com')
+                                    ->helperText(__('backstage.url_helper')),
+                                Forms\Components\Toggle::make('url_target')
+                                    ->label(__('backstage.url_target'))
+                                    ->helperText(__('backstage.url_target_helper')),
+                            ]),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                                    ->label(__('backstage.images'))
+                                    ->multiple() // 啟用多選模式，這是關鍵！
+                                    ->constrained(true) // 可選：限制圖片尺寸比例
+                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                                    ->orderColumn('order')
+                                    ->buttonLabel('Closure')
+                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

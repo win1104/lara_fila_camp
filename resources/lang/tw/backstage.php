@@ -11,7 +11,7 @@ return [
     'title' => '標題',
     'slug' => '代稱',
     'intro' => '簡介',
-    'imgaes' => '圖片',
+    'images' => '圖片',
     'published_at' => '發佈日期',
     'stock' => '庫存',
     'content' => '說明',

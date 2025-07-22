@@ -11,7 +11,7 @@ return [
     'title' => 'Title',
     'slug' => 'Slug',
     'intro' => 'Intro',
-    'imgaes' => 'Imgaes',
+    'images' => 'Imgaes',
     'published_at' => 'Published At',
     'stock' => 'Stock',
     'content' => 'Content',

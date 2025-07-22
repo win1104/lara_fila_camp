@@ -16,7 +16,7 @@ use App\Filament\Resources\ProjectResource\RelationManagers;
 class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-asia-australia';
 
     public static function getModelLabel(): string
     {
@@ -38,7 +38,7 @@ class ProjectResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->key('project-form-card')
-                    ->heading('選單資料')
+                    ->heading(__('backstage.menu_data'))
                     ->icon('heroicon-m-bars-4')
                     ->schema([
                         Forms\Components\Group::make()
@@ -46,12 +46,14 @@ class ProjectResource extends Resource
                                 Forms\Components\Section::make()
                                     ->schema([
                                         Forms\Components\TextInput::make('title')
+                                            ->label(__('backstage.title'))
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('slug')
+                                            ->label(__('backstage.slug'))
                                             ->maxLength(255)
                                             ->unique(ignoreRecord: true),
                                         Forms\Components\Select::make('parent_slug')
-                                            ->label('區域')
+                                            ->label(__('backstage.area'))
                                             ->options(function () {
                                                 return \App\Models\ProductCategory::where('parent_slug', 'tarvelgroups')
                                                     ->pluck('title', 'slug');
@@ -59,38 +61,40 @@ class ProjectResource extends Resource
                                             ->searchable()
                                             ->required(),
                                         Forms\Components\TextInput::make('order')
+                                            ->label(__('backstage.order'))
                                             ->required()
                                             ->numeric()
                                             ->default(0),
                                         Forms\Components\Select::make('type')
+                                            ->label(__('backstage.type'))
                                             ->options([
-                                                'posts' => 'Posts',
-                                                'listS' => 'Lists',
-                                                'tilelists' => 'Tilelists',
-                                                'tabs' => 'Tabs',
-                                                'collapses' => 'Collapses',
+                                                'posts' => __('backstage.type_posts'),
+                                                'listS' => __('backstage.type_lists'),
+                                                'tilelists' => __('backstage.type_tilelists'),
+                                                'tabs' => __('backstage.type_tabs'),
+                                                'collapses' => __('backstage.type_collapses'),
                                             ])
                                             ->required(),
                                         Forms\Components\RichEditor::make('note')
-                                            ->label('Content'),
+                                            ->label(__('backstage.content')),
                                     ]),
                             ])
                             ->columnSpan(['lg' => 2]),
                         Forms\Components\Group::make()
                             ->schema([
-                                Forms\Components\Section::make(__(''))
-                                // Forms\Components\Section::make(__('設定'))
+                                Forms\Components\Section::make(__('backstage.setting'))
                                     ->schema([
                                         Forms\Components\TextInput::make('locale')
+                                            ->label(__('backstage.locale'))
                                             ->required(),
                                         Forms\Components\Select::make('sales_id')
-                                            ->label('銷售人員')
+                                            ->label(__('backstage.sales'))
                                             ->relationship('projectsales', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->createOptionForm([
                                                 Forms\Components\TextInput::make('name')
-                                                    ->label('姓名')
+                                                    ->label(__('backstage.name'))
                                                     ->required()
                                                     ->maxLength(255),
                                                 Forms\Components\TextInput::make('email')
@@ -99,7 +103,7 @@ class ProjectResource extends Resource
                                                     ->required()
                                                     ->maxLength(255),
                                                 Forms\Components\TextInput::make('phone')
-                                                    ->label('電話')
+                                                    ->label(__('backstage.phone'))
                                                     ->tel()
                                                     ->required()
                                                     ->maxLength(255),
@@ -129,26 +133,34 @@ class ProjectResource extends Resource
             // ->heading('網站架構（表格模式）')
             ->columns([
                 Tables\Columns\TextColumn::make('order')
+                    ->label(__('backstage.order'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('backstage.title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('backstage.slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
+                    ->label(__('backstage.area'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('backstage.type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('projectsales.name')
-                    ->label('銷售人員')
+                    ->label(__('backstage.sales'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('backstage.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('backstage.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -157,10 +169,10 @@ class ProjectResource extends Resource
             ->defaultSort('order', 'asc') // 預設按 sort_order 排序
             ->filters([
                 SelectFilter::make('display')
-                    ->label('發布狀態')
+                    ->label(__('backstage.display_status'))
                     ->options([
-                        '1' => '已發布',
-                        '0' => '未發布',
+                        '1' => __('backstage.published'),
+                        '0' => __('backstage.unpublished'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return match ($data['value']) {

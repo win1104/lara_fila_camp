@@ -26,28 +26,7 @@ class Post extends Component
         //     'parameters' => request()->route()->parameters()
         // ]);
 
-        if ($type === 'posts')
-        {
-            // 如果提供了 posts 參數，直接使用它，for post detail
-            if ($post instanceof PostModel) {
-                $this->post = $post;
-            }
-            else
-            {
-                // 否則通過 menu_slug 查詢，for post by menu slug
-                $this->post = PostModel::where('menu_slug', $menu)
-                    ->where('locale', app()->getLocale())
-                    ->where('display', 1)
-                    ->limit(1)
-                    ->first();
-            }
-
-            // 如果找不到文章，返回 404
-            if (!$this->post) {
-                abort(404);
-            }
-        }
-        else
+        if ($type != 'posts')
         {
             // 如果是列表模式，獲取該分類下的所有文章
             $this->posts = PostModel::where('menu_slug', $menu)
@@ -66,6 +45,27 @@ class Post extends Component
             //         $post->content = Str::limit(strip_tags($post->content), 100);
             //         return $post;
             // });
+        }
+        else
+        {
+            // 如果提供了 posts 參數，直接使用它，for post detail
+            if ($post instanceof PostModel) {
+                $this->post = $post;
+            }
+            else
+            {
+                // 否則通過 menu_slug 查詢，for post by menu slug
+                $this->post = PostModel::where('menu_slug', $menu)
+                    ->where('locale', app()->getLocale())
+                    ->where('display', 1)
+                    ->limit(1)
+                    ->first();
+            }
+
+            // 如果找不到文章，返回 404
+            if (!$this->post) {
+                abort(404);
+            }# code...}
         }
 
         $this->slug = $menu;

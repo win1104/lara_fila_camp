@@ -23,6 +23,8 @@ class Header extends Component
             ->orderBy('order', 'asc')
             ->get();
 
+
+
         // $this->productCategory = ProductCategory::where('locale', app()->getLocale())
         //     ->where('parent_slug', 'home')
         //     ->where('display', 1)

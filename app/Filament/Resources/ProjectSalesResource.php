@@ -37,7 +37,7 @@ class ProjectSalesResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('姓名')
+                    ->label(__('backstage.name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
@@ -46,7 +46,7 @@ class ProjectSalesResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
-                    ->label('電話')
+                    ->label(__('backstage.phone'))
                     ->tel()
                     ->required()
                     ->maxLength(255),
@@ -58,16 +58,16 @@ class ProjectSalesResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('姓名')
+                    ->label(__('backstage.name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
-                    ->label('電話')
+                    ->label(__('backstage.phone'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('建立時間')
+                    ->label(__('backstage.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

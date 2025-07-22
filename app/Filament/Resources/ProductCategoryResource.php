@@ -41,20 +41,25 @@ class ProductCategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title')
+                    ->label(__('backstage.title'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('locale')
+                    ->label(__('backstage.locale'))
                     ->required()
                     ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                 Forms\Components\TextInput::make('slug')
+                    ->label(__('backstage.slug'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('parent_slug')
+                    ->label(__('backstage.parent_slug'))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('order')
+                    ->label(__('backstage.order'))
                     ->required()
                     ->numeric()
                     ->default(0),
                 Forms\Components\Toggle::make('display')
-                    ->label('Published'),
+                    ->label(__('backstage.published')),
             ]);
     }
 
@@ -64,20 +69,27 @@ class ProductCategoryResource extends Resource
             ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('backstage.title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('backstage.slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
+                    ->label(__('backstage.parent_slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order')
+                    ->label(__('backstage.order'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('backstage.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('backstage.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

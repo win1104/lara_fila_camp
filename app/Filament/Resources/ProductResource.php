@@ -34,7 +34,7 @@ use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-    protected static ?string $navigationIcon = 'heroicon-o-square-2-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function getModelLabel(): string
     {
@@ -56,19 +56,15 @@ class ProductResource extends Resource
         return 'slug';
     }
 
-    public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
-    {
-        $locale = app()->getLocale();
+    // public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
+    // {
+    //     $locale = app()->getLocale();
 
-        return static::getModel()::where('slug', $key)
-            ->where('locale', $locale)
-            ->first();
-    }
+    //     return static::getModel()::where('slug', $key)
+    //         ->where('locale', $locale)
+    //         ->first();
+    // }
 
-    public static function getPluralModelLabel(): string
-    {
-        return __('產品');
-    }
 
     public static function form(Form $form): Form
     {
@@ -80,15 +76,15 @@ class ProductResource extends Resource
                             ->schema([
 
                                 Forms\Components\TextInput::make('title')
-                                    ->label('Title')
+                                    ->label(__('backstage.title'))
                                     ->required(),
                                 Forms\Components\TextInput::make('slug')
-                                    ->label('Slug')
+                                    ->label(__('backstage.slug'))
                                     ->required(),
                                 Forms\Components\RichEditor::make('intro')
-                                    ->label('簡介'),
+                                    ->label(__('backstage.intro')),
                                 Forms\Components\DatePicker::make('date')
-                                    ->label('Published At'),
+                                    ->label(__('backstage.published_at')),
                                 // Forms\Components\Textarea::make('intro')
                                 //     ->label('Intro')
                                 //     ->columnSpan('full')
@@ -105,7 +101,7 @@ class ProductResource extends Resource
                                 //     ->relationship('product', 'image')
                                 //     ->orderColumn('order'),
                                 CuratorPicker::make('images') // 這是你的模型關聯名稱
-                                    ->label('產品圖片')
+                                    ->label(__('backstage.images'))
                                     ->multiple() // 啟用多選模式，這是關鍵！
                                     ->constrained(true) // 可選：限制圖片尺寸比例
                                     ->columnSpanFull() // 讓圖片欄位佔滿整行
@@ -114,10 +110,10 @@ class ProductResource extends Resource
                                     ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
                             ]),
 
-                        Forms\Components\Section::make('庫存')
+                        Forms\Components\Section::make(__('backstage.stock'))
                             ->schema([
                                 Forms\Components\RichEditor::make('content')
-                                    ->label('說明')
+                                    ->label(__('backstage.content'))
                                     ->required(),
                             ]),
                     ])
@@ -125,17 +121,17 @@ class ProductResource extends Resource
 
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('設定'))
+                        Forms\Components\Section::make(__('backstage.setting'))
                             ->schema([
                                 Forms\Components\Toggle::make('display')
-                                    ->label('上架'),
+                                    ->label(__('backstage.published')),
                                 Forms\Components\TextInput::make('locale')
-                                    ->label('語系')
+                                    ->label(__('backstage.locale'))
                                     ->required()
                                     ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                                 SelectTree::make('product_categories')
-                                    ->label('產品分類')
-                                    ->placeholder('Select Category')
+                                    ->label(__('backstage.product_category'))
+                                    ->placeholder(__('backstage.select_category'))
                                     ->parentNullValue('home')
                                     ->withKey('slug')
                                     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
@@ -154,12 +150,12 @@ class ProductResource extends Resource
                                         );
                                     }),
                                 Forms\Components\TextInput::make('url')
-                                    ->label('連結')
+                                    ->label(__('backstage.url'))
                                     ->placeholder('https://example.com')
-                                    ->helperText('設定文章跳轉網址，留空則無跳轉'),
+                                    ->helperText(__('backstage.url_helper')),
                                 Forms\Components\Toggle::make('url_target')
-                                    ->label('開新分頁')
-                                    ->helperText('勾選後，連結會在新分頁開啟'),
+                                    ->label(__('backstage.url_target'))
+                                    ->helperText(__('backstage.url_target_helper')),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -195,13 +191,14 @@ class ProductResource extends Resource
                 return $query->where('locale', $actualLocale);
             })
             ->columns([
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\IconColumn::make('display')
-                    ->label('Published')
+                    ->label(__('backstage.published'))
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Order')
+                    ->label(__('backstage.order'))
                     ->sortable(),
                 CuratorColumn::make('images') // 這裡也是你的模型關聯名稱
                     ->size(40) // 可選：圖片寬度
@@ -210,29 +207,29 @@ class ProductResource extends Resource
                     ->limit(3) // 可選：限制只顯示前3張，然後顯示 +N
                     ->limitedRemainingText(), // 可選：顯示剩餘圖片數量
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
+                    ->label(__('backstage.title'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
-                    ->label('Slug')
+                    ->label(__('backstage.slug'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->label('Published At')
+                    ->label(__('backstage.published_at'))
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product_category.title')
-                    ->label('產品分類')
+                    ->label(__('backstage.product_category'))
                     ->searchable(),
             ])
             ->reorderable('order') // 啟用拖拉排序功能
             ->defaultSort('order', 'asc') // 預設按 sort_order 排序
             ->filters([
                 SelectFilter::make('display')
-                    ->label('發布狀態')
+                    ->label(__('backstage.display_status'))
                     ->options([
-                        '1' => '已發布',
-                        '0' => '未發布',
+                        '1' => __('backstage.published'),
+                        '0' => __('backstage.unpublished'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return match ($data['value']) {

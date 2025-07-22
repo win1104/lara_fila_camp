@@ -67,7 +67,6 @@ class Post extends Component
             //         return $post;
             // });
         }
-
         $this->slug = $menu;
         $this->type = $type;
     }

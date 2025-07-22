@@ -1,7 +1,7 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 h-24 fixed z-[90] w-full opacity-90" wire:id="header-component">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed z-[90] w-full opacity-90" wire:id="header-component">
     <!-- Primary Navigation Menu -->
     <div class="max-w-[1600px] mx-auto">
-        <div class="h-16 px-8 lg:px-32">
+        <div class="px-8 lg:px-32">
 
 
             <!-- maryUI -->
@@ -23,7 +23,7 @@
 
                         @if ($menus->count() > 0)
                             @foreach ($menus as $menu)
-                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'grid' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses')
+                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'grid' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses' || $menu->type === 'tilelists')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>

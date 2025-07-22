@@ -166,8 +166,12 @@
                 </br>
 
                 <div class="flex justify-start">
-                    <button
-                        class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">更多訊息</button>
+                    <a href="{{ url('/aiing') }}"
+                        class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">
+                        更多消息
+                    </a>
+                    {{-- <button
+                        class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">更多訊息</button> --}}
                 </div>
             </div>
         </div>
@@ -248,29 +252,29 @@
             </div> --}}
             <div class="flex flex-wrap -m-4 px-5">
                 @foreach ($works as $work)
-                                                                                                    <div class="p-2 md:w-1/3">
-                                                                                                        <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
-                                                                                                            @php
-                    $image = $work->images->first(); // 取第一張圖片
-                                                                                                            @endphp
-                                                                                                            @if ($image)
-                                                                                                                <img class="h-72 w-full object-cover object-center" src="{{ $image->url }}" alt="blog">
-                                                                                                            @else
-                                                                                                                <img class="h-72 w-full object-cover object-center" src="{{ asset('storage/media/sidebar-links_3.png') }}" alt="blog">
-                                                                                                            @endif
-                                                                                                            <div class="p-6">
-                                                                                                                <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
-                                                                                                                    {{ $work->product_category->first()?->title }}</p>
-                                                                                                                    {{-- {{ $work->menu->title }}</p> --}}
-                                                                                                                <p class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</p>
-                                                                                                                <div class="flex items-center flex-wrap ">
-                                                                                                                    <a class=" inline-flex items-center md:mb-2 lg:mb-0" href="{{ $work->url }}" @if($this->openNewTab($work)) target="{{ $this->openNewTab($work) }}" @endif">
-                                                                                                                        觀看網站 ➔
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
+                    <div class="p-2 md:w-1/3">
+                        <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
+                            @php
+    $image = $work->images->first(); // 取第一張圖片
+                            @endphp
+                            @if ($image)
+                                <img class="h-72 w-full object-cover object-center" src="{{ $image->url }}" alt="blog">
+                            @else
+                                <img class="h-72 w-full object-cover object-center" src="{{ asset('storage/media/sidebar-links_3.png') }}" alt="blog">
+                            @endif
+                            <div class="p-6">
+                                <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">
+                                    {{ $work->product_category->first()?->title }}</p>
+                                    {{-- {{ $work->menu->title }}</p> --}}
+                                <p class="title-font text-lg font-extrabold text-gray-900 mt-3 mb-7">{{ $work->title }}</p>
+                                <div class="flex items-center flex-wrap ">
+                                    <a class=" inline-flex items-center md:mb-2 lg:mb-0" href="{{ $work->url }}" @if($this->openNewTab($work)) target="{{ $this->openNewTab($work) }}" @endif">
+                                        觀看網站 ➔
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
                 {{-- <div class="p-2 md:w-1/3">
                     <div class="h-full shadow-md border-2 border-gray-200 border-opacity-60 rounded-2xl overflow-hidden">
@@ -389,8 +393,9 @@
                             <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->categories->first()?->title ?? '未分類' }}</span>
                         </div>
                         <div class="md:flex-grow">
-                            <h2 class="text-xl font-black text-gray-900 title-font mb-2">{{ $news->title }}</h2>
-                            <p class="leading-relaxed">{{ $news->content }}</p>
+                            <p class="text-xl font-black text-gray-900 title-font mb-2">{{ $news->title }}</p>
+                            {{-- <p class="leading-relaxed">{{ $news->content }}</p> --}}
+                            <p class="leading-relaxed">{!! Str::limit(strip_tags($news->content), 300) !!}</p>
 
                         </div>
                     </div>
@@ -434,6 +439,12 @@
                 </div> --}}
 
             </div>
+            <div class="text-center m-8">
+                <a href="{{ url(app()->getLocale() . '/tilelists/news') }}"
+                    class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">
+                    更多消息
+                </a>
+            </div>
         </div>
     </section>
 
@@ -451,8 +462,10 @@
 
                 <div class="flex justify-between items-end flex-wrap md:flex-nowrap gap-8">
                     <p class="leading-relaxed text-white">請將您的想法、疑問、需求與我們分享，也許我們能給您一些意見、咨詢或協助</p>
-                    <button
-                        class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">更多訊息</button>
+                    <a href="{{ url(app()->getLocale() . '/contact') }}"
+                        class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">
+                        更多訊息
+                    </a>
                 </div>
             </div>
         </div>

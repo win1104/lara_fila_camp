@@ -1,4 +1,4 @@
-<div>
+<div class="pt-24">
     @if($menuType == 'lists')
         {{-- <div class="container mx-auto px-4 py-8"> --}}
         <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
@@ -15,7 +15,8 @@
                                     </div>
                                     <div class="md:flex-grow">
                                         <h2 class="text-2xl font-medium text-gray-900 title-font mb-2">{{ $post->title }}</h2>
-                                        <p class="leading-relaxed">{!! $post->content !!}</p>
+                                        {{-- <p class="leading-relaxed">{!! $post->content !!}</p> --}}
+                                        <p class="leading-relaxed">{!! Str::limit($post->content, 300) !!}</p>
                                         <a class="text-indigo-500 inline-flex items-center mt-4">Learn More
                                             <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M5 12h14"></path>
@@ -192,21 +193,24 @@
 
         </div>
     @else
-        {{-- <div class="container mx-auto px-4 py-8"> --}}
-        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-            <article class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-3xl font-bold mb-4">{{ $post->title }}</h2>
-                @if($post->intro)
-                    <div class="text-gray-600 mb-6">{!! $post->intro !!}</div>
-                @endif
-                <div class="prose max-w-none">
-                    {{-- {!! Str::limit($post->content, 100) !!} --}}
-                    {{-- {!! $post->content !!} --}}
-                    {{-- {!! tiptap_converter()->asHTML($post->content) !!} --}}
-                    {!! tiptap_converter()->asHTML($post?->content ?? '', toc: true, maxDepth: 4) !!}
-                </div>
-            </article>
-        </div>
+
+        @foreach($posts as $post)
+            {{-- <div class="container mx-auto px-4 py-8"> --}}
+            <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+                <article class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-3xl font-bold mb-4">{{ $post->title ?? '文章列表'}}</h2>
+                    @if($post->intro)
+                        <div class="text-gray-600 mb-6">{!! $post->intro !!}</div>
+                    @endif
+                    <div class="prose max-w-none">
+                        {{-- {!! Str::limit($post->content, 300) !!} --}}
+                        {{-- {!! $post->content !!} --}}
+                        {{-- {!! tiptap_converter()->asHTML($post->content) !!} --}}
+                        {!! tiptap_converter()->asHTML($post?->content ?? '', toc: true, maxDepth: 4) !!}
+                    </div>
+                </article>
+            </div>
+        @endforeach
 
 
         {{-- <div class="container mx-auto px-4 py-8">

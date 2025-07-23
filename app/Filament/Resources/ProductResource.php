@@ -92,24 +92,6 @@ class ProductResource extends Resource
                                 //     ->maxLength(65535),
                             ]),
 
-                        Forms\Components\Section::make('圖片')
-                            ->schema([
-
-                                // CuratorPicker::make('media_id')
-                                //     ->label('Media')
-                                //     ->multiple()
-                                //     ->relationship('product', 'image')
-                                //     ->orderColumn('order'),
-                                CuratorPicker::make('images') // 這是你的模型關聯名稱
-                                    ->label(__('backstage.images'))
-                                    ->multiple() // 啟用多選模式，這是關鍵！
-                                    ->constrained(true) // 可選：限制圖片尺寸比例
-                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
-                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                                    ->orderColumn('order')
-                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
-                            ]),
-
                         Forms\Components\Section::make(__('backstage.stock'))
                             ->schema([
                                 Forms\Components\RichEditor::make('content')
@@ -156,6 +138,23 @@ class ProductResource extends Resource
                                 Forms\Components\Toggle::make('url_target')
                                     ->label(__('backstage.url_target'))
                                     ->helperText(__('backstage.url_target_helper')),
+                            ]),
+                        Forms\Components\Section::make('圖片')
+                            ->schema([
+
+                                // CuratorPicker::make('media_id')
+                                //     ->label('Media')
+                                //     ->multiple()
+                                //     ->relationship('product', 'image')
+                                //     ->orderColumn('order'),
+                                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                                    ->label(__('backstage.images'))
+                                    ->multiple() // 啟用多選模式，這是關鍵！
+                                    ->constrained(true) // 可選：限制圖片尺寸比例
+                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                                    ->orderColumn('order')
+                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

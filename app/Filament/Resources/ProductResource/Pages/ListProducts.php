@@ -24,6 +24,14 @@ class ListProducts extends ListRecords
         $this->activeTab = $tabKey;
     }
 
+    public function mount(): void
+    {
+        // 保存當前頁次到 session
+        if (request()->has('page')) {
+            session(['products_list_page' => request('page')]);
+        }
+    }
+
 
     public function getTabs(): array
     {

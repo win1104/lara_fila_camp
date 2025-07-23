@@ -138,10 +138,12 @@ class ProjectJourneyRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('新增每日行程')
-                    ->visible($shouldShowCreateAction),
+                    ->visible($shouldShowCreateAction)
+                    ->closeModalByClickingAway(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

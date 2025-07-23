@@ -22,6 +22,14 @@ class ListPosts extends ListRecords
         $this->activeTab = $tabKey;
     }
 
+    public function mount(): void
+    {
+        // 保存當前頁次到 session
+        if (request()->has('page')) {
+            session(['posts_list_page' => request('page')]);
+        }
+    }
+
     // public static function getTabs(): array
     public function getTabs(): array
     {

@@ -152,53 +152,105 @@ class PostsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('locale')
-                    ->default(fn () => $this->getCurrentUrlLocale())
-                    // ->disabled()
-                    ->dehydrated(false),
-                Forms\Components\TextInput::make('title')
-                    ->label('Title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
-                CuratorPicker::make('media_id')
-                    ->label('Media')
-                    ->multiple() // 啟用多選模式，這是關鍵！
-                    ->constrained(true) // 可選：限制圖片尺寸比例
-                    ->columnSpanFull() // 讓圖片欄位佔滿整行
-                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
-                    ->orderColumn('order'), // 可選：指定中間表中的排序欄位
-                Forms\Components\Toggle::make('display')
-                    ->label('Published'),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
-                TiptapEditor::make('content')
-                    ->label('Content')
-                    ->columnSpan('full'),
-                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    // ->maxLength(65535),
-                Forms\Components\RichEditor::make('intro')
-                    ->label('intro')
-                    ->columnSpan('full'),
-                    // ->toolbarButtons([
-                    //     'blockquote',
-                    //     'bold',
-                    //     'bulletList',
-                    //     'codeBlock',
-                    //     'h2',
-                    //     'h3',
-                    //     'italic',
-                    //     'link',
-                    //     'orderedList',
-                    //     'redo',
-                    //     'strike',
-                    //     'undo',
-                    //     'html', // 啟用 HTML 編輯按鈕
-                    // ])
-                    // ->required(),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label(__('backstage.title'))
+                                    ->required(),
+                                Forms\Components\TextInput::make('slug')
+                                    ->label(__('backstage.slug'))
+                                    ->required(),
+                                Forms\Components\RichEditor::make('intro')
+                                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                                    ->label(__('backstage.intro')),
+                            ]),
+                        Forms\Components\Section::make(__('backstage.content'))
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->label(__('backstage.content'))
+                                    ->columnSpan('full'),
+                                    // ->toolbarButtons([
+                                    //     'blockquote',
+                                    //     'bold',
+                                    //     'bulletList',
+                                    //     'codeBlock',
+                                    //     'h2',
+                                    //     'h3',
+                                    //     'italic',
+                                    //     'link',
+                                    //     'orderedList',
+                                    //     'redo',
+                                    //     'strike',
+                                    //     'undo',
+                                    //     'html', // 啟用 HTML 編輯按鈕
+                                    // ]),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 3]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('backstage.setting'))
+                            ->schema([
+                                Forms\Components\Toggle::make('display')
+                                    ->label(__('backstage.published')),
+                                Forms\Components\Hidden::make('locale')
+                                    ->label(__('backstage.locale'))
+                                    ->required()
+                                    ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
+                                Forms\Components\DatePicker::make('date')
+                                    ->label(__('backstage.published_at')),
+                                Forms\Components\Select::make('categories')
+                                    ->label(__('backstage.category'))
+                                    ->relationship('categories', 'title')
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable(),
+                                // SelectTree::make('product_categories')
+                                //     ->label(__('backstage.product_category'))
+                                //     ->placeholder(__('backstage.select_category'))
+                                //     ->parentNullValue('home')
+                                //     ->withKey('slug')
+                                //     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
+                                //         return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                //     })
+                                //     ->withCount()
+                                //     ->expandSelected(true)
+                                //     // ->alwaysOpen()
+                                //     ->multiple(true)
+                                //     ->searchable()
+                                //     ->saveRelationshipsUsing(function (Product $record, $state) {
+                                //         $record->product_category()->sync(
+                                //             collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                //                 return [$slug => ['product_slug' => $record->slug]];
+                                //             })
+                                //         );
+                                //     }),
+                                Forms\Components\TextInput::make('url')
+                                    ->label(__('backstage.url'))
+                                    ->placeholder('https://example.com')
+                                    ->helperText(__('backstage.url_helper')),
+                                Forms\Components\Toggle::make('url_target')
+                                    ->label(__('backstage.url_target'))
+                                    ->helperText(__('backstage.url_target_helper')),
+                            ]),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                                    ->label(__('backstage.images'))
+                                    ->multiple() // 啟用多選模式，這是關鍵！
+                                    ->constrained(true) // 可選：限制圖片尺寸比例
+                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
+                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                                    ->orderColumn('order')
+                                    ->buttonLabel('Closure')
+                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(4);
     }
 
     public function table(Table $table): Table
@@ -265,14 +317,20 @@ class PostsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->visible($shouldShowCreateAction),
+                    ->visible($shouldShowCreateAction)
+                    ->closeModalByClickingAway(false)
+                    ->modalWidth('7xl'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->url(fn (Post $record): string => route('filament.admin.resources.posts.edit', [
-                        'locale' => $this->getCurrentUrlLocale(),
-                        'record' => $record->slug
-                    ])),
+                    ->closeModalByClickingAway(false)
+                    ->modalWidth('8xl'),
+                /* 另開新獨立頁面 */
+                // Tables\Actions\EditAction::make()
+                //     ->url(fn (Post $record): string => route('filament.admin.resources.posts.edit', [
+                //         'locale' => $this->getCurrentUrlLocale(),
+                //         'record' => $record->slug
+                //     ])),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

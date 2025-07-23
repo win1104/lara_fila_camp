@@ -166,7 +166,6 @@ class PostResource extends Resource
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')
                 //     ->size('40'),
-
                 Tables\Columns\TextColumn::make('locale')
                     ->label(__('backstage.locale')),
                 Tables\Columns\IconColumn::make('display')

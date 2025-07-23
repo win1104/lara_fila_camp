@@ -77,6 +77,9 @@ class ProjectSalesResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                    // ->modalHeading('編輯資料')
+                    // ->modalSubheading('請修改需要的欄位')
+                    // ->modalButton('儲存變更'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -97,8 +100,8 @@ class ProjectSalesResource extends Resource
     {
         return [
             'index' => Pages\ListProjectSales::route('/'),
-            'create' => Pages\CreateProjectSales::route('/create'),
-            'edit' => Pages\EditProjectSales::route('/{record}/edit'),
+            // 'create' => Pages\CreateProjectSales::route('/create'),
+            // 'edit' => Pages\EditProjectSales::route('/{record}/edit'),
         ];
     }
 }

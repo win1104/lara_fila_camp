@@ -36,6 +36,7 @@ class ArticleResource extends Resource
         return __('post.navigation');
     }
     protected static ?string $navigationGroup = 'Website';
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {

@@ -8,6 +8,7 @@ use App\Models\Project;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProjectResource\Pages;
@@ -168,11 +169,18 @@ class ProjectResource extends Resource
             ->reorderable('order') // 啟用拖拉排序功能
             ->defaultSort('order', 'asc') // 預設按 sort_order 排序
             ->filters([
-                SelectFilter::make('display')
-                    ->label(__('backstage.display_status'))
+                Filter::make(__('product.phase_out'))
+                    ->query(fn (Builder $query) => $query->where('check', 1)),
+                SelectFilter::make(__('backstage.status'))
                     ->options([
-                        '1' => __('backstage.published'),
-                        '0' => __('backstage.unpublished'),
+                        'draft' => __('backstage.draft'),
+                        'reviewing' => __('backstage.reviewing'),
+                        'published' => __('backstage.published'),
+                    ]),
+                SelectFilter::make(__('backstage.display'))
+                    ->options([
+                        '1' => __('backstage.display'),
+                        '0' => __('backstage.undisplay'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return match ($data['value']) {

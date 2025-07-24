@@ -31,3 +31,13 @@ span,
 .filament-dropdown-list-item {
     font-size: var(--font-size-base) !important;
 }
+
+/* 調整 Filament 主要內容區域寬度 */
+.fi-main {
+    max-width: 100% !important;
+}
+
+.fi-main .fi-main-content {
+    max-width: 95% !important;
+    margin: 0 auto;
+}

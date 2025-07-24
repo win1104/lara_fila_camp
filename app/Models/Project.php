@@ -20,8 +20,9 @@ class Project extends Model
         'order',
         'display',
         'note',
-        'fixuser',
+        'status',
         'sales_id',
+        'fixuser',
     ];
 
     protected $table = 'projects';

@@ -6,4 +6,5 @@ return [
     'navigation' => 'Product Manage',
     'category' => 'Product Category',
     'sales' => 'Sales',
+    'phase_out' => 'phase out',
 ];

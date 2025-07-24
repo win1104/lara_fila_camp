@@ -36,9 +36,15 @@
                                             </ul>
                                         </div>
                                     @else
-                                        <x-mary-button link="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}" class="btn-ghost text-base">
-                                            {!! $menu->title !!}
-                                        </x-mary-button>
+                                        @if($menu->slug === 'contact')
+                                            <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                                {!! $menu->title !!}
+                                            </x-mary-button>
+                                        @else
+                                            <x-mary-button link="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}" class="btn-ghost text-base">
+                                                {!! $menu->title !!}
+                                            </x-mary-button>
+                                        @endif
                                     @endif
                                 @elseif($menu->type === 'url' && $menu->slug === 'products')
                                     @if($menu->children->count() > 0)

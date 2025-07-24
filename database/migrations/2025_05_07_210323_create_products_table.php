@@ -34,6 +34,7 @@ return new class extends Migration
             $table->longText('intro')->nullable();
             $table->longText('content')->nullable();
             $table->boolean('check')->default('0')->nullable();
+            $table->string('status')->nullable();
             $table->string('fixuser')->nullable();
             $table->timestamps();
         });

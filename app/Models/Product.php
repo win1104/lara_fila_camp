@@ -34,6 +34,7 @@ class Product extends Model
         'intro',
         'content',
         'check',
+        'status',
         'fixuser',
     ];
 

@@ -62,7 +62,6 @@ class Contact extends Component
 
         ContactService::handleContactForm($form_data);
 
-
         session()->flash('success', '表單送出成功！');
 
         $this->reset();

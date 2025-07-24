@@ -213,11 +213,12 @@ class PostsRelationManager extends RelationManager
                                     ->label(__('backstage.published_at')),
                                 Forms\Components\Select::make('categories')
                                     ->label(__('backstage.category'))
-                                    ->options(
-                                        PostCategory::where('locale', app()->getLocale())
-                                            ->pluck('title', 'id')
-                                            ->toArray()
-                                    )
+                                    // ->options(
+                                    //     PostCategory::where('locale', app()->getLocale())
+                                    //         ->pluck('title', 'id')
+                                    //         ->toArray()
+                                    // )
+                                    ->relationship('categories', 'title',fn (Builder $query) => $query->where('locale', app()->getLocale()))
                                     ->multiple()
                                     ->preload()
                                     ->searchable(),

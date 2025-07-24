@@ -19,10 +19,9 @@ return new class extends Migration
             $table->string('type')->default('post');
             $table->string('title', 2048);
             $table->integer('order')->default(1);
-            // $table->string('title', 2048);
-            // $table->string('parent_id', 255)->nullable();
-            // $table->integer('order')->default('1');
             $table->boolean('display')->default('0');
+            $table->string('url')->nullable();
+            $table->boolean('url_target')->default('0');
             $table->text('note')->nullable();
             $table->string('fixuser')->nullable();
             $table->timestamps();

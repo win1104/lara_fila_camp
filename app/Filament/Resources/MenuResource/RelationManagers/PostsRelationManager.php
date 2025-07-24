@@ -16,12 +16,28 @@ use App\Filament\Resources\PostResource\Pages;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
+use App\Models\PostCategory;
 
 class PostsRelationManager extends RelationManager
 {
-
-
     protected static string $relationship = 'posts';
+
+    protected bool $isUrlType = false;
+
+    public function mount(): void
+    {
+        $menu = $this->getOwnerRecord();
+        if ($menu->type === 'url') {
+            $this->isUrlType = true;
+        }
+
+
+
+        //     redirect('http://127.0.0.1:8000/tw/admin/products')->send();
+        //     exit; // 防止後續執行
+        // dd($this->getSource());
+        // $this->loadDefaultActiveTab();
+    }
 
     // 覆寫基礎查詢，避免 Menu 模型中的語系過濾
     protected function getTableQuery(): Builder
@@ -42,12 +58,6 @@ class PostsRelationManager extends RelationManager
     // {
     //     $this->activeTab = $tabKey;
     // }
-
-    public function mount(): void
-    {
-        // dd($this->getSource());
-        // $this->loadDefaultActiveTab();
-    }
 
     protected function getSource(): string
     {
@@ -203,7 +213,11 @@ class PostsRelationManager extends RelationManager
                                     ->label(__('backstage.published_at')),
                                 Forms\Components\Select::make('categories')
                                     ->label(__('backstage.category'))
-                                    ->relationship('categories', 'title')
+                                    ->options(
+                                        PostCategory::where('locale', app()->getLocale())
+                                            ->pluck('title', 'id')
+                                            ->toArray()
+                                    )
                                     ->multiple()
                                     ->preload()
                                     ->searchable(),
@@ -255,6 +269,14 @@ class PostsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        /* 如果 menu 的 type 為 url 表示不會有資料，因此不需顯示 */
+        if ($this->isUrlType) {
+            // 回傳一個空白 view
+            return $table->view('filament.pages.blank');
+        }
+
+
+
         $menu = $this->getOwnerRecord();
         $shouldShowCreateAction = $menu->type !== 'posts';
 
@@ -356,6 +378,13 @@ class PostsRelationManager extends RelationManager
     // public static function getTabs(): array
     public function getTabs(): array
     {
+        /* 如果 menu 的 type 為 url 表示不會有資料，因此不需顯示 */
+        if ($this->isUrlType) {
+            return array();
+        }
+
+
+
         $ownerRecord = $this->getOwnerRecord();
         $currentLocale = $this->getCurrentUrlLocale();
 

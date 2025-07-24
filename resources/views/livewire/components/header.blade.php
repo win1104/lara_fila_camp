@@ -40,7 +40,7 @@
                                             {!! $menu->title !!}
                                         </x-mary-button>
                                     @endif
-                                @elseif($menu->type == 'products')
+                                @elseif($menu->type === 'url' && $menu->slug === 'products')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
@@ -62,12 +62,12 @@
                                 @endif
                             @endforeach
 
-                            <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                {{ __('聯絡我們').__('global.hoho.label') }}
-                            </x-mary-button>
+                            {{-- <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                {{ __('聯絡我們') }}
+                            </x-mary-button> --}}
 
                             <x-mary-button link="{{ route('openai.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                {{ __('OPEN AI') }}
+                                {{ __('OPEN AI').__('global.hoho.label') }}
                             </x-mary-button>
                             <x-mary-button link="{{ route('gpt.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
                                 {{ __('Chat GTP') }}

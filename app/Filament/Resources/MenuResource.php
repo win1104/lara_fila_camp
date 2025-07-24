@@ -39,36 +39,62 @@ class MenuResource extends Resource
                     ->heading(__('backstage.menu_data'))
                     ->icon('heroicon-m-bars-4')
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->label(__('backstage.title'))
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('locale')
-                            ->label(__('backstage.locale'))
-                            ->disabled()
-                            ->required()
-                            ->default(fn ($record) => $record?->locale ?? (request()->route('locale') ?? app()->getLocale())),
-                        Forms\Components\TextInput::make('slug')
-                            ->label(__('backstage.slug'))
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('parent_slug')
-                            ->label(__('backstage.parent_slug'))
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('order')
-                            ->label(__('backstage.order'))
-                            ->required()
-                            ->numeric()
-                            ->default(0),
-                        Forms\Components\Select::make('type')
-                            ->label(__('backstage.type'))
-                            ->options([
-                                'posts' => __('backstage.type_posts'),
-                                'listS' => __('backstage.type_lists'),
-                                'tilelists' => __('backstage.type_tilelists'),
-                                'tabs' => __('backstage.type_tabs'),
-                                'collapses' => __('backstage.type_collapses'),
-                            ])
-                            ->required(),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\TextInput::make('title')
+                                                ->label(__('backstage.title'))
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('slug')
+                                                ->label(__('backstage.slug'))
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('parent_slug')
+                                                ->label(__('backstage.parent_slug'))
+                                                ->maxLength(255),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 2]),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\Toggle::make('display')
+                                                ->label(__('backstage.published')),
+                                            Forms\Components\Hidden::make('locale')
+                                                ->label(__('backstage.locale'))
+                                                ->disabled()
+                                                ->required()
+                                                ->default(fn ($record) => $record?->locale ?? (request()->route('locale') ?? app()->getLocale())),
+                                            Forms\Components\Select::make('type')
+                                                ->label(__('backstage.type'))
+                                                ->options([
+                                                    'url' => __('backstage.type_url'),
+                                                    'posts' => __('backstage.type_posts'),
+                                                    'listS' => __('backstage.type_lists'),
+                                                    'tilelists' => __('backstage.type_tilelists'),
+                                                    'tabs' => __('backstage.type_tabs'),
+                                                    'collapses' => __('backstage.type_collapses'),
+                                                    'timeline' => __('backstage.type_timeline'),
+                                                ])
+                                                ->required(),
+                                            Forms\Components\Hidden::make('order')
+                                                ->label(__('backstage.order'))
+                                                ->required()
+                                                // ->numeric()
+                                                ->default(0),
+                                            Forms\Components\TextInput::make('url')
+                                                ->label(__('backstage.url'))
+                                                ->placeholder('https://example.com')
+                                                ->helperText(__('backstage.url_helper')),
+                                            Forms\Components\Toggle::make('url_target')
+                                                ->label(__('backstage.url_target'))
+                                                ->helperText(__('backstage.url_target_helper')),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 1]),
                     ])
+                    ->columns(3)
                     ->collapsible()
                     ->collapsed()
                     ->footerActions([

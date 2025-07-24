@@ -55,40 +55,62 @@ class PatientResource extends Resource
                     ->key('patient-form-card')
                     ->heading('病患資料')
                     ->icon('heroicon-m-bars-4')
+
+
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Select::make('type')
-                            ->options([
-                                'cat' => 'Cat',
-                                'dog' => 'Dog',
-                                'rabbit' => 'Rabbit',
-                            ])
-                            ->required(),
-                        Forms\Components\DatePicker::make('date_of_birth')
-                            ->required()
-                            ->maxDate(now()),
-                        Forms\Components\Select::make('owner_id')
-                            ->relationship('owner', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('email')
-                                    ->label('Email address')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('phone')
-                                    ->label('Phone number')
-                                    ->tel()
-                                    ->required(),
-                            ])
-                            ->required(),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\TextInput::make('name')
+                                                ->required()
+                                                ->maxLength(255),
+                                            Forms\Components\DatePicker::make('date_of_birth')
+                                                ->required()
+                                                ->maxDate(now()),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 2]),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\Select::make('type')
+                                                ->options([
+                                                    'cat' => 'Cat',
+                                                    'dog' => 'Dog',
+                                                    'rabbit' => 'Rabbit',
+                                                ])
+                                                ->required(),
+                                            Forms\Components\Select::make('owner_id')
+                                                ->relationship('owner', 'name')
+                                                ->searchable()
+                                                ->preload()
+                                                ->createOptionForm([
+                                                    Forms\Components\TextInput::make('name')
+                                                        ->required()
+                                                        ->maxLength(255),
+                                                    Forms\Components\TextInput::make('email')
+                                                        ->label('Email address')
+                                                        ->email()
+                                                        ->required()
+                                                        ->maxLength(255),
+                                                    Forms\Components\TextInput::make('phone')
+                                                        ->label('Phone number')
+                                                        ->tel()
+                                                        ->required(),
+                                                ])
+                                                ->required(),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 1]),
                     ])
+                    ->columns(3)
+
+
+
+
+
                     ->collapsible()
                     ->collapsed()
                     ->footerActions([

@@ -21,9 +21,20 @@ class MenuWidget extends BaseWidget
 
     protected static int $maxDepth = 2;
 
-    protected ?string $treeTitle = '網站架構（樹狀模式）';
+    protected ?string $treeTitle = null;
+
+    public function getTreeTitle(): ?string
+    {
+        return __('backstage.web_structure_tree_mode');
+    }
 
     protected bool $enableTreeTitle = true;
+
+    /* 預設為 collapse all */
+    public function getNodeCollapsedState(?Model $record = null): bool
+    {
+        return true;
+    }
 
     protected function getFormSchema(): array
     {
@@ -49,18 +60,38 @@ class MenuWidget extends BaseWidget
 
     protected function getActions(): array
     {
+
         return [
-            Action::make('編輯網頁內容')
+            Action::make(__('backstage.editing_web_content'))
+                ->icon('heroicon-o-bars-4')
                 ->url(fn (?Menu $record) => $record
+                    /* 因為 */
                     ? route('filament.admin.resources.menus.edit', [
                         'locale' => app()->getLocale(),
                         'record' => $record->slug,
                         'code'=>'widget'
                     ])
+                    /* 如果 */
+                    // ? ($record->slug === 'products'
+                    //     ? 'http://127.0.0.1:8000/tw/admin/products'
+                    //     : route('filament.admin.resources.menus.edit', [
+                    //         'locale' => app()->getLocale(),
+                    //         'record' => $record->slug,
+                    //         'code' => 'widget'
+                    //     ])
+                    // )
                     : null,
                     shouldOpenInNewTab: false)
-                ->defaultView(Action::LINK_VIEW)
-                ->icon('heroicon-o-bars-4'),
+                // ->visible(fn (?Menu $record) => $record && $record->children->isEmpty())
+                ->defaultView(Action::LINK_VIEW),
+
+
+
+
+
+
+
+
             // LinkAction::make(),
             // DeleteAction::make(),
             // EditAction::make()->color('gray'),

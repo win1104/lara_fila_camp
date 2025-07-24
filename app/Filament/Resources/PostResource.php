@@ -108,7 +108,7 @@ class PostResource extends Resource
                                     ->label(__('backstage.published_at')),
                                 Forms\Components\Select::make('categories')
                                     ->label(__('backstage.category'))
-                                    ->relationship('categories', 'title')
+                                    ->relationship('categories', 'title', fn(Builder $query) => $query->where('locale', app()->getLocale()))
                                     ->multiple()
                                     ->preload()
                                     ->searchable(),

@@ -1,4 +1,4 @@
-<div>
+<div class="pt-24">
 
 
     @if($isDetail)

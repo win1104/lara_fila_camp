@@ -50,6 +50,7 @@ span,
     overflow: hidden !important;
 }
 
+/* 亮色模式的 User Menu 圖示 */
 .fi-topbar button[type="button"]:has(.fi-avatar)::after,
 .fi-topbar .fi-dropdown-trigger:has(.fi-avatar)::after,
 .fi-topbar [x-data*="dropdown"]:has(.fi-avatar) button::after {
@@ -59,11 +60,18 @@ span,
     transform: translate(-50%, -50%) !important;
     width: 24px !important;
     height: 24px !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z' clip-rule='evenodd'/%3E%3C/svg%3E") !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E") !important;
     background-size: contain !important;
     background-repeat: no-repeat !important;
     background-position: center !important;
     z-index: 10 !important;
+}
+
+/* 深色模式的 User Menu 圖示 */
+:is(.dark *) .fi-topbar button[type="button"]:has(.fi-avatar)::after,
+:is(.dark *) .fi-topbar .fi-dropdown-trigger:has(.fi-avatar)::after,
+:is(.dark *) .fi-topbar [x-data*="dropdown"]:has(.fi-avatar) button::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E") !important;
 }
 
 .fi-topbar .fi-avatar {
@@ -78,23 +86,37 @@ span,
 }
 
 
-/* 語系切換按鈕白色樣式 */
-.fi-topbar .fi-topbar-item {
+/* 語系切換按鈕響應式顏色樣式 */
+/* 深色模式 */
+:is(.dark *) .fi-topbar .fi-topbar-item {
     color: white !important;
+}
+
+:is(.dark *) .fi-topbar .fi-topbar-item svg {
+    color: white !important;
+}
+
+:is(.dark *) .fi-topbar .fi-icon-btn {
+    color: white !important;
+}
+
+:is(.dark *) .fi-topbar .fi-icon-btn svg {
+    color: white !important;
+}
+
+/* 亮色模式 */
+.fi-topbar .fi-topbar-item {
+    color: rgba(var(--gray-700), 1) !important;
 }
 
 .fi-topbar .fi-topbar-item svg {
-    color: white !important;
-    /* fill: currentColor !important;
-    stroke: currentColor !important; */
+    color: rgba(var(--gray-700), 1) !important;
 }
 
 .fi-topbar .fi-icon-btn {
-    color: white !important;
+    color: rgba(var(--gray-700), 1) !important;
 }
 
 .fi-topbar .fi-icon-btn svg {
-    color: white !important;
-    /* fill: currentColor !important;
-    stroke: currentColor !important; */
+    color: rgba(var(--gray-700), 1) !important;
 }

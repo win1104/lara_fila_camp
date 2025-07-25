@@ -96,6 +96,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // === 計數器功能 ===
             const counters = document.querySelectorAll('.counter');
             let started = false; // 防止重複執行
 

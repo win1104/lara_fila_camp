@@ -20,7 +20,7 @@
                     </p>
                 </div>
                 <div class="grid gap-7 row-gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-sm h-60"
+                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-[3px_6px_9px_rgb(0,0,0,16%)] h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
                             <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
@@ -32,7 +32,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-sm h-60"
+                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-[3px_6px_9px_rgb(0,0,0,16%)] h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
                             <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
@@ -44,7 +44,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-sm h-60"
+                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-[3px_6px_9px_rgb(0,0,0,16%)] h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
                             <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
@@ -56,7 +56,7 @@
                             </p>
                         </div>
                     </div>
-                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-sm h-60"
+                    <div class="flex flex-col justify-between py-6 px-8 rounded-3xl shadow-[3px_6px_9px_rgb(0,0,0,16%)] h-60"
                         style="background-color:hsl(0deg 0% 98% / 86%);">
                         <div>
                             <div class="flex items-center justify-center w-11 h-11 mb-5 rounded-full" style="background-color: #9BBF3E; ">
@@ -146,7 +146,7 @@
     </section>
 
     {{-- AI浪潮 --}}
-    <section class="relative bg-gray-100 py-16 overflow-hidden">
+    <section class="relative bg-gray-100 overflow-hidden">
         <!-- 背景圖 -->
         <div class="absolute inset-0 bg-cover bg-fixed bg-center" style="background-image:url('/bg_keybord2.png');"></div>
 

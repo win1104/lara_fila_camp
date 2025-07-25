@@ -6,4 +6,5 @@ return [
     'navigation' => '文章管理',
     'content_mana' => '內容管理',
     'category' => '內容分類',
+    'c_label' => '文章分類',
 ];

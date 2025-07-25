@@ -46,7 +46,7 @@
                 </div>
                 @break
 
-            @case('grid')
+            @case('tilelists')
                 <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
                     <section class="text-gray-600 body-font overflow-hidden">
                         <div class=" py-24 grid  gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

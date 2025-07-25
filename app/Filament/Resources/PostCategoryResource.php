@@ -23,7 +23,7 @@ class PostCategoryResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('post.label');
+        return __('post.c_label');
     }
 
     public static function getModelPluralLabel(): string

@@ -172,7 +172,9 @@
                                         </a>
                                     </span>
                                 </div>
-                                <p class="leading-relaxed">{!! $product->content !!}</p>
+                                <div class="prose dark:prose-invert max-w-none">
+            <p class="leading-relaxed">{!! $product->content !!}</p>
+        </div>
                                 <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-300 mb-5">
                                     <div class="flex">
                                         <span class="mr-3">Color</span>

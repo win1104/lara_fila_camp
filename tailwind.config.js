@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import colors from 'tailwindcss/colors';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -40,7 +41,12 @@ export default {
             //     'base-100': '#ccc', // 這是示例值，您可以根據需要修改
             //     'cursor-pointer': 'pointer',
             // },
-
+            colors: {
+                danger: colors.rose,
+                primary: colors.sky,
+                success: colors.green,
+                warning: colors.yellow,
+            },
         },
     },
 

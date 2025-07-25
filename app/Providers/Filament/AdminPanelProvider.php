@@ -82,6 +82,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->profile()
+            ->darkMode()
             ->userMenuItems([
                 // MenuItem::make()
                 //     ->label('繁體中文')
@@ -100,6 +101,10 @@ class AdminPanelProvider extends PanelProvider
                 // PanelsRenderHook::TOPBAR_END,
                 PanelsRenderHook::USER_MENU_BEFORE,
                 fn (): string => Livewire::mount('components.language-switcher')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => view('filament.pages.theme-switcher')->render()
             )
             ->plugins([
                 CuratorPlugin::make()

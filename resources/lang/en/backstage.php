@@ -5,6 +5,7 @@ return [
     'web_structure_table_mode' => 'Web Structure (Table Mode)',
     'editing_web_content' => 'Editing web content',
     'mamage' => 'Manage',
+    'menu' => 'Menu',
     'category' => 'Category',
     'type' => 'Type',
     'type_posts' => 'Posts',
@@ -43,9 +44,11 @@ return [
     'sales' => 'Sales',
     'name' => 'Name',
     'phone' => 'Phone',
+    'create' => 'Created',
+    'updated' => 'Updated',
+    'save' => 'Save',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
-    'menu' => 'Menu',
     'parent_slug' => 'Parent Slug',
 
     // 'project' => [

@@ -119,7 +119,7 @@ class ProjectResource extends Resource
                     ->collapsed()
                     ->footerActions([
                         Forms\Components\Actions\Action::make('save')
-                            ->label('儲存資料')
+                            ->label(__('backstage.save'))
                             ->submit('project-form-card')
                             ->color('primary'),
                     ]),

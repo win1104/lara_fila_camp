@@ -5,6 +5,7 @@ return [
     'web_structure_table_mode' => '網站架構（表格模式）',
     'editing_web_content' => '編輯網頁內容',
     'mamage' => '管理',
+    'menu' => '選單',
     'category' => '分類',
     'type' => '類型',
     'type_posts' => '文章',
@@ -43,9 +44,11 @@ return [
     'sales' => '銷售人員',
     'name' => '姓名',
     'phone' => '電話',
+    'create' => '新增',
+    'updated' => '修改',
+    'save' => '儲存',
     'created_at' => '建立時間',
     'updated_at' => '更新時間',
-    'menu' => '選單',
     'parent_slug' => '上層代稱',
 
     // 'project' => [

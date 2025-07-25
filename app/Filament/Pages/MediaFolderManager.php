@@ -34,7 +34,7 @@ class MediaFolderManager extends Page
     public bool $delSubFolderModal = false;
     // public string $confirmingFolder = '';
     public string|null $confirmingDeleteFolder = null;
-    protected static ?string $navigationGroup = 'Content';
+    protected static ?string $navigationGroup = 'Website';
 
     // protected static bool $shouldRegisterNavigation = false;
 

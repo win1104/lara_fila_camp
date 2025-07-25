@@ -24,7 +24,6 @@ use App\Filament\Resources\PostResource\RelationManagers;
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-x-mark';
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
     public static function getModelLabel(): string
@@ -47,6 +46,33 @@ class PostResource extends Resource
         return 'slug';
     }
 
+    /* 全文檢索 start */
+    protected static int $globalSearchResultsLimit = 10;
+    public static function getGlobalSearchResultTitle($record): string
+    {
+        return $record->title;
+    }
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'Slug' => $record->slug,
+            // 移除 Category 以避免 N+1 查詢問題
+        ];
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->select(['id', 'title', 'slug', 'display', 'locale']) // 只選擇需要的欄位
+            ->where('locale', app()->getLocale())
+            ->where('display', 1) // 只搜尋已發布的內容
+            ->orderBy('title'); // 加入排序提升使用者體驗
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug']; // 移除 content 和 intro 以提升效能
+    }
+    /* 全文檢索 end */
+
     public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
     {
         $locale = app()->getLocale();
@@ -55,14 +81,14 @@ class PostResource extends Resource
             ->where('locale', $locale)
             ->first();
 
-        \Illuminate\Support\Facades\Log::info('PostResource resolveRecordRouteBinding:', [
-            'key' => $key,
-            'locale' => $locale,
-            'route' => request()->route()->getName(),
-            'found_record_id' => $result?->id,
-            'found_record_locale' => $result?->locale,
-            'found_record_title' => $result?->title
-        ]);
+        // \Illuminate\Support\Facades\Log::info('PostResource resolveRecordRouteBinding:', [
+        //     'key' => $key,
+        //     'locale' => $locale,
+        //     'route' => request()->route()->getName(),
+        //     'found_record_id' => $result?->id,
+        //     'found_record_locale' => $result?->locale,
+        //     'found_record_title' => $result?->title
+        // ]);
 
         return $result;
     }

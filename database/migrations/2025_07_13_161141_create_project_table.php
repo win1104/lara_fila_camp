@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('locale')->default('tw');
             $table->string('parent_slug')->default('home');
-            $table->string('title', 2048);
+            $table->string('title')->nullable();
             $table->string('slug')->default('home');
             $table->string('type')->default('post');
             $table->integer('order')->default(1);

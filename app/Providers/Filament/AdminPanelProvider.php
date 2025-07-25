@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             // ->login(Login::class)
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Violet,
                 // 'primary' => Color::Lime,
                 // 'primary' => Color::Amber,
                 // 'gray' => Color::Slate, // 這會影響背景色調

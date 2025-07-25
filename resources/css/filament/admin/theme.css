@@ -71,7 +71,7 @@ span,
 :is(.dark *) .fi-topbar button[type="button"]:has(.fi-avatar)::after,
 :is(.dark *) .fi-topbar .fi-dropdown-trigger:has(.fi-avatar)::after,
 :is(.dark *) .fi-topbar [x-data*="dropdown"]:has(.fi-avatar) button::after {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E") !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='gray'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'/%3E%3C/svg%3E") !important;
 }
 
 .fi-topbar .fi-avatar {
@@ -89,21 +89,21 @@ span,
 /* 語系切換按鈕響應式顏色樣式 */
 /* 深色模式 */
 :is(.dark *) .fi-topbar .fi-topbar-item {
-    color: white !important;
+    color: gray !important;
 }
 
 :is(.dark *) .fi-topbar .fi-topbar-item svg {
-    color: white !important;
+    color: gray !important;
     height: 1.5rem !important;
     width: 1.5rem !important;
 }
 
 :is(.dark *) .fi-topbar .fi-icon-btn {
-    color: white !important;
+    color: gray !important;
 }
 
 :is(.dark *) .fi-topbar .fi-icon-btn svg {
-    color: white !important;
+    color: gray !important;
 }
 
 /* 亮色模式 */
@@ -113,6 +113,8 @@ span,
 
 .fi-topbar .fi-topbar-item svg {
     color: rgba(var(--gray-700), 1) !important;
+    height: 1.5rem !important;
+    width: 1.5rem !important;
 }
 
 .fi-topbar .fi-icon-btn {
@@ -122,3 +124,23 @@ span,
 .fi-topbar .fi-icon-btn svg {
     color: rgba(var(--gray-700), 1) !important;
 }
+
+/* Filament Table 陰影效果 */
+/* .filament-tables-table,
+.fi-ta-table,
+.fi-table,
+table[class*="fi-ta"],
+.fi-ta-content > div {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    border-radius: 0.5rem !important;
+    overflow: hidden !important;
+} */
+
+/* 深色模式下的 Table 陰影 */
+/* :is(.dark *) .filament-tables-table,
+:is(.dark *) .fi-ta-table,
+:is(.dark *) .fi-table,
+:is(.dark *) table[class*="fi-ta"],
+:is(.dark *) .fi-ta-content > div {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+} */

@@ -2,10 +2,16 @@
     <x-filament::dropdown>
         <x-slot name="trigger">
             <x-filament::icon-button
-                icon="heroicon-o-language"
+                icon="heroicon-o-globe-alt"
                 tooltip="切換語系 / Switch Language"
                 class="fi-topbar-item"
             />
+
+            {{-- <x-filament::icon-button tooltip="切換語系 / Switch Language" class="fi-topbar-item">
+                <x-heroicon-o-globe-alt class="h-6 w-6" />
+            </x-filament::icon-button> --}}
+
+
         </x-slot>
 
         <x-filament::dropdown.list>

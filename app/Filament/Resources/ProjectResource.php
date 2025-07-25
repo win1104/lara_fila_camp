@@ -33,6 +33,33 @@ class ProjectResource extends Resource
     }
     protected static ?string $navigationGroup = 'Project';
 
+    /* 全文檢索 start */
+    protected static int $globalSearchResultsLimit = 10;
+    public static function getGlobalSearchResultTitle($record): string
+    {
+        return $record->title;
+    }
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'Slug' => $record->slug,
+            // 移除 Category 以避免 N+1 查詢問題
+        ];
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->select(['id', 'title', 'slug', 'display', 'locale']) // 只選擇需要的欄位
+            ->where('locale', app()->getLocale())
+            ->where('display', 1) // 只搜尋已發布的內容
+            ->orderBy('title'); // 加入排序提升使用者體驗
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug']; // 移除 content 和 intro 以提升效能
+    }
+    /* 全文檢索 end */
+
     public static function form(Form $form): Form
     {
         return $form

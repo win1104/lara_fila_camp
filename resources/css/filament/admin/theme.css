@@ -94,6 +94,8 @@ span,
 
 :is(.dark *) .fi-topbar .fi-topbar-item svg {
     color: white !important;
+    height: 1.5rem !important;
+    width: 1.5rem !important;
 }
 
 :is(.dark *) .fi-topbar .fi-icon-btn {

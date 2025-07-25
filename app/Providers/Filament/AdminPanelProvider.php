@@ -26,6 +26,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Datlechin\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
 use Datlechin\FilamentMenuBuilder\MenuPanel\StaticMenuPanel;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\View\PanelsRenderHook;
+use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -79,20 +81,26 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->profile()
             ->userMenuItems([
-                MenuItem::make()
-                    ->label('繁體中文')
-                    ->url('/tw/admin')
-                    ->color('success')
-                    ->icon('heroicon-o-language'),
-                MenuItem::make()
-                    ->label('English')
-                    ->color('info')
-                    ->url('/en/admin')
-                    ->icon('heroicon-o-language'),
+                // MenuItem::make()
+                //     ->label('繁體中文')
+                //     ->url('/tw/admin')
+                //     ->color('success')
+                //     ->icon('heroicon-o-language'),
+                // MenuItem::make()
+                //     ->label('English')
+                //     ->color('info')
+                //     ->url('/en/admin')
+                //     ->icon('heroicon-o-language'),
                 'logout' => MenuItem::make()->url(fn () => route('filament.admin.auth.logout', ['locale' => app()->getLocale()])
                 ),
             ])
+            ->renderHook(
+                // PanelsRenderHook::TOPBAR_END,
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): string => Livewire::mount('components.language-switcher')
+            )
             ->plugins([
                 CuratorPlugin::make()
                     ->label('Media')

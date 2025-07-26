@@ -195,24 +195,24 @@ class ProductCategoryWidget extends BaseWidget
             ->orderBy('order')
             ->get();
 
-        \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getRootLayerRecords:', [
-            'app_locale' => $locale,
-            'route_locale' => $routeLocale,
-            'actual_locale' => $actualLocale,
-            'request_url' => request()->url(),
-            'referer' => request()->header('Referer'),
-            'route_parameters' => request()->route() ? request()->route()->parameters() : null,
-            'default_parent_key' => ProductCategory::defaultParentKey(),
-            'count' => $records->count(),
-            'records' => $records->map(function($item) {
-                return [
-                    'slug' => $item->slug,
-                    'title' => $item->title,
-                    'locale' => $item->locale,
-                    'parent_slug' => $item->parent_slug
-                ];
-            })->toArray()
-        ]);
+        // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getRootLayerRecords:', [
+        //     'app_locale' => $locale,
+        //     'route_locale' => $routeLocale,
+        //     'actual_locale' => $actualLocale,
+        //     'request_url' => request()->url(),
+        //     'referer' => request()->header('Referer'),
+        //     'route_parameters' => request()->route() ? request()->route()->parameters() : null,
+        //     'default_parent_key' => ProductCategory::defaultParentKey(),
+        //     'count' => $records->count(),
+        //     'records' => $records->map(function($item) {
+        //         return [
+        //             'slug' => $item->slug,
+        //             'title' => $item->title,
+        //             'locale' => $item->locale,
+        //             'parent_slug' => $item->parent_slug
+        //         ];
+        //     })->toArray()
+        // ]);
 
         return $records;
     }
@@ -293,18 +293,18 @@ class ProductCategoryWidget extends BaseWidget
     {
         $items = $this->getRootLayerRecords();
 
-        \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getTreeData:', [
-            'locale' => app()->getLocale(),
-            'root_items_count' => $items->count(),
-            'root_items' => $items->map(function($item) {
-                return [
-                    'slug' => $item->slug,
-                    'title' => $item->title,
-                    'locale' => $item->locale,
-                    'parent_slug' => $item->parent_slug
-                ];
-            })->toArray()
-        ]);
+        // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getTreeData:', [
+        //     'locale' => app()->getLocale(),
+        //     'root_items_count' => $items->count(),
+        //     'root_items' => $items->map(function($item) {
+        //         return [
+        //             'slug' => $item->slug,
+        //             'title' => $item->title,
+        //             'locale' => $item->locale,
+        //             'parent_slug' => $item->parent_slug
+        //         ];
+        //     })->toArray()
+        // ]);
 
         return $this->transformItems($items);
     }
@@ -316,20 +316,20 @@ class ProductCategoryWidget extends BaseWidget
             // 現在可以直接使用 model 的 children 關聯，因為已經包含語言過濾
             $children = $item->children;
 
-            \Illuminate\Support\Facades\Log::info('ProductCategoryWidget transformItems:', [
-                'parent_slug' => $item->slug,
-                'parent_title' => $item->title,
-                'parent_locale' => $item->locale,
-                'children_count' => $children->count(),
-                'children' => $children->map(function($child) {
-                    return [
-                        'slug' => $child->slug,
-                        'title' => $child->title,
-                        'locale' => $child->locale,
-                        'parent_slug' => $child->parent_slug
-                    ];
-                })->toArray()
-            ]);
+            // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget transformItems:', [
+            //     'parent_slug' => $item->slug,
+            //     'parent_title' => $item->title,
+            //     'parent_locale' => $item->locale,
+            //     'children_count' => $children->count(),
+            //     'children' => $children->map(function($child) {
+            //         return [
+            //             'slug' => $child->slug,
+            //             'title' => $child->title,
+            //             'locale' => $child->locale,
+            //             'parent_slug' => $child->parent_slug
+            //         ];
+            //     })->toArray()
+            // ]);
 
             $result[] = [
                 'id' => $item->slug,

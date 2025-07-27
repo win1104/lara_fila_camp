@@ -136,7 +136,8 @@ class ProductResource extends Resource
                                     ->parentNullValue('home')
                                     ->withKey('slug')
                                     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
-                                        return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                        $locale = $record?->locale ?? app()->getLocale();
+                                        return $query->where('locale', $locale);
                                     })
                                     ->withCount()
                                     ->expandSelected(true)
@@ -145,6 +146,26 @@ class ProductResource extends Resource
                                     ->searchable()
                                     ->saveRelationshipsUsing(function (Product $record, $state) {
                                         $record->product_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                                return [$slug => ['product_slug' => $record->slug]];
+                                            })
+                                        );
+                                    }),
+                                SelectTree::make('product_downloads')
+                                    ->label(__('backstage.product_download'))
+                                    ->placeholder(__('backstage.select_category'))
+                                    ->parentNullValue('home')
+                                    ->withKey('slug')
+                                    ->relationship('product_download', 'title', 'parent_slug', function ($query, $record) {
+                                        return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                    })
+                                    ->withCount()
+                                    ->expandSelected(true)
+                                    // ->alwaysOpen()
+                                    ->multiple(true)
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                                        $record->product_download()->sync(
                                             collect($state)->mapWithKeys(function ($slug) use ($record) {
                                                 return [$slug => ['product_slug' => $record->slug]];
                                             })

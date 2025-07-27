@@ -11,7 +11,9 @@
                     <small>{{ $article->image->caption }}</small>
                 @endif
                 <div class="">
-                    {!! $article?->content !!}
+                    <div class="prose dark:prose-invert max-w-none">
+        {!! $article?->content !!}
+    </div>
                 </div>
             </article>
         </div>

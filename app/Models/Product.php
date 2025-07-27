@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\ProductOption;
 use App\Models\ProductCategory;
+use App\Models\ProductDownload;
 use Awcodes\Curator\Models\Media;
 use Illuminate\Support\Facades\Log;
 // use App\Models\Category;
@@ -72,6 +73,12 @@ class Product extends Model
     {
         return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_slug', 'product_category_slug', 'slug', 'slug')
             // ->where('locale', app()->getLocale());
+            ->withTimestamps();
+    }
+
+    public function product_download():BelongsToMany
+    {
+        return $this->BelongsToMany(ProductDownload::class, 'product_download_relation', 'product_slug', 'product_download_slug', 'slug', 'slug')
             ->withTimestamps();
     }
 

@@ -9,7 +9,9 @@
                     <div class="text-gray-600 mb-6">{!! $post->intro !!}</div>
                 @endif
                 <div class="prose max-w-none">
-                    {!! tiptap_converter()->asHTML($post->content ?? '', toc: true, maxDepth: 4) !!}
+                    <div class="prose dark:prose-invert max-w-none">
+        {!! tiptap_converter()->asHTML($post->content ?? '', toc: true, maxDepth: 4) !!}
+    </div>
                 </div>
             </article>
         </div>
@@ -134,7 +136,9 @@
                             {{ $post_item->title }}
                         </x-slot:heading>
                         <x-slot:content>
-                            {!! tiptap_converter()->asHTML($post_item?->content ?? '', toc: true, maxDepth: 4) !!}
+                            <div class="prose dark:prose-invert max-w-none">
+                {!! tiptap_converter()->asHTML($post_item?->content ?? '', toc: true, maxDepth: 4) !!}
+            </div>
                         </x-slot:content>
                     </x-mary-collapse>
                     @endforeach

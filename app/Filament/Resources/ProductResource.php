@@ -22,6 +22,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Resources\Pages\CreateRecord;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
@@ -100,8 +101,11 @@ class ProductResource extends Resource
                                 Forms\Components\TextInput::make('slug')
                                     ->label(__('backstage.slug'))
                                     ->required(),
-                                Forms\Components\RichEditor::make('intro')
+                                // Forms\Components\RichEditor::make('intro')
+                                //     ->label(__('backstage.intro')),
+                                TiptapEditor::make('intro')
                                     ->label(__('backstage.intro')),
+                                    // ->columnSpan('full'),
                                 Forms\Components\DatePicker::make('date')
                                     ->label(__('backstage.published_at')),
                                 // Forms\Components\Textarea::make('intro')
@@ -113,9 +117,13 @@ class ProductResource extends Resource
 
                         Forms\Components\Section::make(__('backstage.stock'))
                             ->schema([
-                                Forms\Components\RichEditor::make('content')
+                                // Forms\Components\RichEditor::make('content')
+                                //     ->label(__('backstage.content'))
+                                //     ->required(),
+                                TiptapEditor::make('content')
                                     ->label(__('backstage.content'))
                                     ->required(),
+                                // ->columnSpan('full'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 2]),

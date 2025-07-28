@@ -14,7 +14,7 @@ class ProductDownloadResource extends Resource
 {
     protected static ?string $model = ProductDownload::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';
 
     public static function getModelLabel(): string
     {

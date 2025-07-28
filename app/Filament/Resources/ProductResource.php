@@ -136,14 +136,26 @@ class ProductResource extends Resource
                                     ->parentNullValue('home')
                                     ->withKey('slug')
                                     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
-                                        $locale = $record?->locale ?? app()->getLocale();
-                                        return $query->where('locale', $locale);
+                                        // 取得當前語系
+                                        $locale = app()->getLocale();
+                                        $routeLocale = request()->route('locale');
+                                        
+                                        // 如果是 Livewire 請求，從 referer 中提取語言
+                                        if (!$routeLocale && request()->header('Referer')) {
+                                            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                                            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                                                $routeLocale = $matches[1];
+                                            }
+                                        }
+                                        
+                                        $actualLocale = $routeLocale ?: $locale;
+                                        return $query->where('locale', $actualLocale);
                                     })
                                     ->withCount()
                                     ->expandSelected(true)
                                     // ->alwaysOpen()
                                     ->multiple(true)
-                                    ->searchable()
+                                    // ->searchable()
                                     ->saveRelationshipsUsing(function (Product $record, $state) {
                                         $record->product_category()->sync(
                                             collect($state)->mapWithKeys(function ($slug) use ($record) {
@@ -157,13 +169,26 @@ class ProductResource extends Resource
                                     ->parentNullValue('home')
                                     ->withKey('slug')
                                     ->relationship('product_download', 'title', 'parent_slug', function ($query, $record) {
-                                        return $query->where('locale', $record?->locale ?? app()->getLocale());
+                                        // 取得當前語系
+                                        $locale = app()->getLocale();
+                                        $routeLocale = request()->route('locale');
+                                        
+                                        // 如果是 Livewire 請求，從 referer 中提取語言
+                                        if (!$routeLocale && request()->header('Referer')) {
+                                            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                                            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                                                $routeLocale = $matches[1];
+                                            }
+                                        }
+                                        
+                                        $actualLocale = $routeLocale ?: $locale;
+                                        return $query->where('locale', $actualLocale);
                                     })
                                     ->withCount()
                                     ->expandSelected(true)
                                     // ->alwaysOpen()
                                     ->multiple(true)
-                                    ->searchable()
+                                    // ->searchable()
                                     ->saveRelationshipsUsing(function (Product $record, $state) {
                                         $record->product_download()->sync(
                                             collect($state)->mapWithKeys(function ($slug) use ($record) {

@@ -45,7 +45,7 @@ class Header extends Component
     //     $this->responsiveMenu = !$this->responsiveMenu;
     // }
 
-    public function render()
+        public function render()
     {
         return view('livewire.components.header');
     }

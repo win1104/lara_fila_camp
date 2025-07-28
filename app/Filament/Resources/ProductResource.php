@@ -163,7 +163,7 @@ class ProductResource extends Resource
                                     ->expandSelected(true)
                                     // ->alwaysOpen()
                                     ->multiple(true)
-                                    // ->searchable()
+                                    ->searchable()
                                     ->saveRelationshipsUsing(function (Product $record, $state) {
                                         $record->product_category()->sync(
                                             collect($state)->mapWithKeys(function ($slug) use ($record) {
@@ -171,6 +171,21 @@ class ProductResource extends Resource
                                             })
                                         );
                                     }),
+                                //    ->saveRelationshipsUsing(function (Product $record, $state) {
+                                //         $locale = app()->getLocale(); // 或使用 request()->route('locale') 更嚴謹
+
+                                //         $categories = \App\Models\ProductCategory::whereIn('slug', $state)
+                                //             ->where('locale', $locale)
+                                //             ->get();
+
+                                //         $record->product_category()->sync(
+                                //             $categories->mapWithKeys(function ($category) use ($record) {
+                                //                 return [$category->id => ['product_slug' => $record->slug]];
+                                //             })
+                                //         );
+                                //     }),
+
+
                                 SelectTree::make('product_downloads')
                                     ->label(__('backstage.product_download'))
                                     ->placeholder(__('backstage.select_category'))

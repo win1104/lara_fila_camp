@@ -18,6 +18,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PostResource\Pages;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
 
@@ -81,15 +82,6 @@ class PostResource extends Resource
             ->where('locale', $locale)
             ->first();
 
-        // \Illuminate\Support\Facades\Log::info('PostResource resolveRecordRouteBinding:', [
-        //     'key' => $key,
-        //     'locale' => $locale,
-        //     'route' => request()->route()->getName(),
-        //     'found_record_id' => $result?->id,
-        //     'found_record_locale' => $result?->locale,
-        //     'found_record_title' => $result?->title
-        // ]);
-
         return $result;
     }
 
@@ -109,7 +101,6 @@ class PostResource extends Resource
                                     ->label(__('backstage.slug'))
                                     ->required(),
                                 Forms\Components\RichEditor::make('intro')
-                                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
                                     ->label(__('backstage.intro')),
                             ]),
 
@@ -134,32 +125,22 @@ class PostResource extends Resource
                                     ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                                 Forms\Components\DatePicker::make('date')
                                     ->label(__('backstage.published_at')),
-                                Forms\Components\Select::make('categories')
+                                Forms\Components\Select::make('post_categories')
                                     ->label(__('backstage.category'))
-                                    ->relationship('categories', 'title', fn(Builder $query) => $query->where('locale', app()->getLocale()))
+                                    ->relationship('post_category_for_filament', 'title', fn(Builder $query) => $query->where('post_categories.locale', app()->getLocale()))
                                     ->multiple()
                                     ->preload()
-                                    ->searchable(),
-                                // SelectTree::make('product_categories')
-                                //     ->label(__('backstage.product_category'))
-                                //     ->placeholder(__('backstage.select_category'))
-                                //     ->parentNullValue('home')
-                                //     ->withKey('slug')
-                                //     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
-                                //         return $query->where('locale', $record?->locale ?? app()->getLocale());
-                                //     })
-                                //     ->withCount()
-                                //     ->expandSelected(true)
-                                //     // ->alwaysOpen()
-                                //     ->multiple(true)
-                                //     ->searchable()
-                                //     ->saveRelationshipsUsing(function (Product $record, $state) {
-                                //         $record->product_category()->sync(
-                                //             collect($state)->mapWithKeys(function ($slug) use ($record) {
-                                //                 return [$slug => ['product_slug' => $record->slug]];
-                                //             })
-                                //         );
-                                //     }),
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Post $record, $state) {
+                                        $record->post_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                                return [$slug => [
+                                                    'post_slug' => $record->slug,
+                                                    'locale' => $record->locale ?? app()->getLocale()
+                                                ]];
+                                            })
+                                        );
+                                    }),
                                 Forms\Components\TextInput::make('url')
                                     ->label(__('backstage.url'))
                                     ->placeholder('https://example.com')
@@ -168,17 +149,16 @@ class PostResource extends Resource
                                     ->label(__('backstage.url_target'))
                                     ->helperText(__('backstage.url_target_helper')),
                             ]),
-                        Forms\Components\Section::make()
+                        Forms\Components\Section::make('圖片')
                             ->schema([
-                                CuratorPicker::make('images') // 這是你的模型關聯名稱
+                                CuratorPicker::make('images')
                                     ->label(__('backstage.images'))
-                                    ->multiple() // 啟用多選模式，這是關鍵！
-                                    ->constrained(true) // 可選：限制圖片尺寸比例
-                                    ->columnSpanFull() // 讓圖片欄位佔滿整行
-                                    ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
+                                    ->multiple()
+                                    ->constrained(true)
+                                    ->columnSpanFull()
+                                    ->relationship('images', 'id')
                                     ->orderColumn('order')
-                                    ->buttonLabel('Closure')
-                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
+                                    ->pathGenerator(CustomPathGenerator::class),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

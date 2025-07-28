@@ -139,7 +139,7 @@ class ProductResource extends Resource
                                         // 取得當前語系
                                         $locale = app()->getLocale();
                                         $routeLocale = request()->route('locale');
-                                        
+
                                         // 如果是 Livewire 請求，從 referer 中提取語言
                                         if (!$routeLocale && request()->header('Referer')) {
                                             $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
@@ -147,7 +147,7 @@ class ProductResource extends Resource
                                                 $routeLocale = $matches[1];
                                             }
                                         }
-                                        
+
                                         $actualLocale = $routeLocale ?: $locale;
                                         return $query->where('locale', $actualLocale);
                                     })
@@ -172,7 +172,7 @@ class ProductResource extends Resource
                                         // 取得當前語系
                                         $locale = app()->getLocale();
                                         $routeLocale = request()->route('locale');
-                                        
+
                                         // 如果是 Livewire 請求，從 referer 中提取語言
                                         if (!$routeLocale && request()->header('Referer')) {
                                             $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
@@ -180,7 +180,7 @@ class ProductResource extends Resource
                                                 $routeLocale = $matches[1];
                                             }
                                         }
-                                        
+
                                         $actualLocale = $routeLocale ?: $locale;
                                         return $query->where('locale', $actualLocale);
                                     })
@@ -242,16 +242,7 @@ class ProductResource extends Resource
                         $routeLocale = $matches[1];
                     }
                 }
-
                 $actualLocale = $routeLocale ?: $locale;
-
-                \Illuminate\Support\Facades\Log::info('ProductResource table query:', [
-                    'app_locale' => $locale,
-                    'route_locale' => $routeLocale,
-                    'actual_locale' => $actualLocale,
-                    'total_products' => \App\Models\Product::count(),
-                    'filtered_products' => \App\Models\Product::where('locale', $actualLocale)->count()
-                ]);
                 return $query->where('locale', $actualLocale);
             })
             ->columns([

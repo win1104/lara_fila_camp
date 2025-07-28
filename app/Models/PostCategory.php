@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PostCategory extends Model
 {
     protected $fillable = [
-        'id',
         'locale',
         'slug',
         'title',
@@ -30,9 +31,15 @@ class PostCategory extends Model
         return 'slug';
     }
 
-    public function posts()
+    public function posts():HasMany
     {
-        return $this->belongsToMany(Post::class, 'post_relation', 'post_category_id', 'post_id');
+        // return $this->hasMany(Product::class, 'product_category_id', 'id')
+        return $this->hasMany(Post::class, 'post_category_slug', 'slug')
+            ->where('locale', $this->locale);
+
+
+        // return $this->belongsToMany(Post::class, 'post_relation', 'post_category_slug', 'post_slug', 'slug', 'slug')
+        //     ->withTimestamps();
     }
 
     protected static function boot()

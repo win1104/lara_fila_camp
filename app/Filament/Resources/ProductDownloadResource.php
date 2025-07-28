@@ -26,7 +26,7 @@ class ProductDownloadResource extends Resource
     }
     public static function getNavigationLabel(): string
     {
-        return __('product.download');
+        return __('product.download_navigation');
     }
     protected static ?string $navigationGroup = 'Products';
 

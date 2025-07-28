@@ -211,17 +211,23 @@ class PostsRelationManager extends RelationManager
                                     ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                                 Forms\Components\DatePicker::make('date')
                                     ->label(__('backstage.published_at')),
-                                Forms\Components\Select::make('categories')
+                                Forms\Components\Select::make('post_categories')
                                     ->label(__('backstage.category'))
-                                    // ->options(
-                                    //     PostCategory::where('locale', app()->getLocale())
-                                    //         ->pluck('title', 'id')
-                                    //         ->toArray()
-                                    // )
-                                    ->relationship('categories', 'title',fn (Builder $query) => $query->where('locale', app()->getLocale()))
+                                    ->relationship('post_category_for_filament', 'title',fn (Builder $query) => $query->where('post_categories.locale', app()->getLocale()))
                                     ->multiple()
                                     ->preload()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Post $record, $state) {
+                                        $currentLocale = $this->getCurrentUrlLocale();
+                                        $record->post_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record, $currentLocale) {
+                                                return [$slug => [
+                                                    'post_slug' => $record->slug,
+                                                    'locale' => $currentLocale
+                                                ]];
+                                            })
+                                        );
+                                    }),
                                 // SelectTree::make('product_categories')
                                 //     ->label(__('backstage.product_category'))
                                 //     ->placeholder(__('backstage.select_category'))
@@ -314,12 +320,26 @@ class PostsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('order')
                     ->label('Order')
                     ->sortable(),
-                CuratorColumn::make('images') // 這裡也是你的模型關聯名稱
-                    ->size(40) // 可選：圖片寬度
-                    ->circular() // 可選：顯示為圓形圖片
-                    ->stacked() // 可選：多張圖片疊加顯示
-                    ->limit(3) // 可選：限制只顯示前3張，然後顯示 +N
-                    ->limitedRemainingText(), // 可選：顯示剩餘圖片數量
+                Tables\Columns\TextColumn::make('post_category_titles')
+                    ->label(__('post.category'))
+                    ->getStateUsing(function ($record) {
+                        $currentLocale = $this->getCurrentUrlLocale();
+                        return $record->post_category()
+                            ->wherePivot('locale', $currentLocale)
+                            ->where('post_categories.locale', $currentLocale)
+                            ->pluck('title')
+                            ->join(', ');
+                    })
+                    ->searchable(false),
+
+
+
+                // CuratorColumn::make('images') // 這裡也是你的模型關聯名稱
+                //     ->size(40) // 可選：圖片寬度
+                //     ->circular() // 可選：顯示為圓形圖片
+                //     ->stacked() // 可選：多張圖片疊加顯示
+                //     ->limit(3) // 可選：限制只顯示前3張，然後顯示 +N
+                //     ->limitedRemainingText(), // 可選：顯示剩餘圖片數量
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->searchable()

@@ -17,6 +17,7 @@ class Post extends Model
 
     //
     protected $fillable = [
+        'locale',
         'menu_slug',
         'slug',
         'title',
@@ -61,9 +62,18 @@ class Post extends Model
                     ->orderBy('order'); // 依據排序欄位排序
     }
 
-    public function categories()
+    public function post_category():BelongsToMany
     {
-        return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_id', 'post_category_id');
+        // 暫時使用最基本的關聯，不加任何條件
+        return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_slug', 'post_category_slug', 'slug', 'slug')
+            ->withTimestamps();
+    }
+    
+    // 建立一個專門用於 Filament 的關聯方法
+    public function post_category_for_filament():BelongsToMany
+    {
+        return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_slug', 'post_category_slug', 'slug', 'slug')
+            ->withTimestamps();
     }
 
 
@@ -95,12 +105,12 @@ class Post extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            // if (empty($model->locale)) {
+            if (empty($model->locale)) {
                 // $model->locale = 'tw';
-                // $model->locale = app()->getLocale();
+                $model->locale = app()->getLocale();
                 // $model->locale = config('app.locale');
                 // $data['locale'] = App::getLocale();
-            // }
+            }
         });
 
         static::created(function ($model) {

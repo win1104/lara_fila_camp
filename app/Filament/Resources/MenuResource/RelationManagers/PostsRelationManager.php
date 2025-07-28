@@ -172,15 +172,21 @@ class PostsRelationManager extends RelationManager
                                 Forms\Components\TextInput::make('slug')
                                     ->label(__('backstage.slug'))
                                     ->required(),
-                                Forms\Components\RichEditor::make('intro')
-                                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                                    ->label(__('backstage.intro')),
+                                // Forms\Components\RichEditor::make('intro')
+                                //     // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
+                                //     ->label(__('backstage.intro')),
+                                TiptapEditor::make('intro')
+                                    ->label(__('backstage.intro'))
+                                    ->columnSpan('full'),
                             ]),
                         Forms\Components\Section::make(__('backstage.content'))
                             ->schema([
-                                Forms\Components\RichEditor::make('content')
+                                TiptapEditor::make('content')
                                     ->label(__('backstage.content'))
                                     ->columnSpan('full'),
+                                // Forms\Components\RichEditor::make('content')
+                                //     ->label(__('backstage.content'))
+                                //     ->columnSpan('full'),
                                     // ->toolbarButtons([
                                     //     'blockquote',
                                     //     'bold',

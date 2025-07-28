@@ -9,6 +9,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Tables\Filters\Filter;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ProjectResource\Pages;
@@ -103,7 +104,9 @@ class ProjectResource extends Resource
                                                 'collapses' => __('backstage.type_collapses'),
                                             ])
                                             ->required(),
-                                        Forms\Components\RichEditor::make('note')
+                                        // Forms\Components\RichEditor::make('note')
+                                        //     ->label(__('backstage.content')),
+                                        TiptapEditor::make('note')
                                             ->label(__('backstage.content')),
                                     ]),
                             ])

@@ -27,10 +27,18 @@
                                             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
                                                 @foreach($menu->children->where('display', 1) as $child)
                                                     <li>
-                                                        {{-- <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}"> --}}
-                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type ?? $menu->type, 'menu' => $child->slug]) }}">
-                                                            {!! $child->title !!}
-                                                        </a>
+                                                        @if($child->type === 'url')
+                                                            <a href="javascript:void(0)"
+                                                                onclick="handleUrlMenuClick('{{ $child->url }}', {{ $child->url_target }})"
+                                                                >
+                                                                {!! $child->title !!}
+                                                            </a>
+                                                        @else
+                                                            {{-- <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}"> --}}
+                                                            <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type ?? $menu->type, 'menu' => $child->slug]) }}">
+                                                                {!! $child->title !!}
+                                                            </a>
+                                                        @endif
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -46,6 +54,12 @@
                                             </x-mary-button>
                                         @endif
                                     @endif
+                                @elseif($menu->type === 'url' && $menu->slug != 'products')
+                                    <a href="javascript:void(0)"
+                                        onclick="handleUrlMenuClick('{{ $menu->url }}', {{ $menu->url_target }})"
+                                        >
+                                        {!! $menu->title !!}
+                                    </a>
                                 @elseif($menu->type === 'url' && $menu->slug === 'products')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
@@ -258,46 +272,16 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    {{-- <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
-                {{ __('Chirps') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('note.index')" :active="request()->routeIs('note.index')">
-                {{ __('Note') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
-                {{ __('OPEN AI') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div> --}}
+    <script>
+        function handleUrlMenuClick(url, target)
+        {
+            if (target == 1) {
+                window.open(url, '_blank');
+            } else {
+                window.location.href = url;
+            }
+        }
+        // 確保函數在全局範圍內可用
+        window.handleUrlMenuClick = handleUrlMenuClick;
+    </script>
 </nav>

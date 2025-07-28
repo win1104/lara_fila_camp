@@ -240,10 +240,10 @@ class ProductCategoryWidget extends BaseWidget
             return $this->getTreeData();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Tree Update Failed:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            // Log::error('Tree Update Failed:', [
+            //     'error' => $e->getMessage(),
+            //     'trace' => $e->getTraceAsString()
+            // ]);
 
             Notification::make()
                 ->title('更新失敗')
@@ -268,10 +268,28 @@ class ProductCategoryWidget extends BaseWidget
     protected function processTreeItem(array $item, $parentSlug = null, int $order = 1): void
     {
         $slug = $item['id'];
-        $record = static::getModel()::where('slug', $slug)->first();
+
+        // 取得當前語系
+        $locale = app()->getLocale();
+        $routeLocale = request()->route('locale');
+
+        // 如果是 Livewire 請求，從 referer 中提取語言
+        if (!$routeLocale && request()->header('Referer')) {
+            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                $routeLocale = $matches[1];
+            }
+        }
+
+        $actualLocale = $routeLocale ?: $locale;
+
+        // 加上語系條件查找記錄
+        $record = static::getModel()::where('slug', $slug)
+            ->where('locale', $actualLocale)
+            ->first();
 
         if (!$record) {
-            Log::warning('Record not found:', ['slug' => $slug]);
+            Log::warning('Record not found:', ['slug' => $slug, 'locale' => $actualLocale]);
             return;
         }
 
@@ -281,11 +299,12 @@ class ProductCategoryWidget extends BaseWidget
             'updated_at' => now(),
         ])->save();
 
-        Log::info('Processed tree item:', [
-            'slug' => $slug,
-            'parent_slug' => $record->parent_slug,
-            'order' => $order
-        ]);
+        // Log::info('Processed tree item:', [
+        //     'slug' => $slug,
+        //     'locale' => $actualLocale,
+        //     'parent_slug' => $record->parent_slug,
+        //     'order' => $order
+        // ]);
     }
 
     //排序儲存後重新抓資料

@@ -10,8 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 // use Filament\Widgets\Widget;
 
 class ProductCategoryResource extends Resource
@@ -32,8 +30,6 @@ class ProductCategoryResource extends Resource
     {
         return __('product.category');
     }
-    // protected static ?string $navigationLabel = '產品分類'; // 這將用於標題和側邊欄
-    // protected static ?string $label = '產品'; // 這將用於單數形式
     protected static ?string $navigationGroup = 'Products';
 
     public static function form(Form $form): Form

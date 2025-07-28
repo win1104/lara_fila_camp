@@ -9,8 +9,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductDownloadResource extends Resource
 {
@@ -20,11 +18,11 @@ class ProductDownloadResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('product.label');
+        return __('product.download');
     }
     public static function getModelPluralLabel(): string
     {
-        return __('product.plural');
+        return __('product.download');
     }
     public static function getNavigationLabel(): string
     {
@@ -95,7 +93,8 @@ class ProductDownloadResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->url(fn (ProductDownload $record): string => route('filament.admin.resources.product-downloads.edit', ['record' => $record->slug])),
+                // Tables\Actions\EditAction::make()
+                //     ->url(fn (ProductDownload $record): string => route('filament.admin.resources.product-downloads.edit', ['record' => $record->slug])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

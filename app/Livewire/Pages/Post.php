@@ -27,7 +27,7 @@ class Post extends Component
         } else {
             // 列表頁：沒有 post 物件，我們需要查詢該分類下的所有文章
             // 注意：這裡的 $menu 是從 URL 傳入的 slug 字串，不是物件
-            $this->posts = PostModel::with('categories')
+            $this->posts = PostModel::with('post_category')
                 ->where('menu_slug', $menu)
                 ->where('locale', app()->getLocale())
                 ->where('display', 1)

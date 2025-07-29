@@ -95,19 +95,22 @@ class Home extends Component
 
         if ($this->changeTab !== 'all') {
             $postIds = DB::table('post_relation')
-                ->where('post_category_id', $this->changeTab)
-                ->pluck('post_id')
+                // ->where('post_category_id', $this->changeTab)
+                ->where('post_category_slug', $this->changeTab)
+                // ->pluck('post_id')
+                ->pluck('post_slug')
                 ->toArray();
             // 如果有符合的 post_id，再加條件
             if (!empty($postIds)) {
-                $query->whereIn('id', $postIds);
+                $query->whereIn('slug', $postIds);
             } else {
                 // 沒有對應文章，直接設空集合
                 $this->news_post = collect();
                 return;
             }
         }
-        $this->news_post = $query->with('categories')->get();
+        // $this->news_post = $query->with('categories')->get();
+        $this->news_post = $query->with('post_category')->get();
     }
 
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局

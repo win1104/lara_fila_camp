@@ -27,7 +27,7 @@
                                 @foreach($posts as $post_item)
                                     <div class="py-8 flex flex-wrap md:flex-nowrap">
                                         <div class="md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
-                                            <span class="font-semibold title-font text-gray-700">{{ $post_item->categories->first()?->title ?? '未分類' }}</span>
+                                            <span class="font-semibold title-font text-gray-700">{{ $post_item->post_category->first()?->title ?? '未分類' }}</span>
                                             <span class="text-sm text-gray-500">{{ $post_item->date }}</span>
                                         </div>
                                         <div class="md:flex-grow">

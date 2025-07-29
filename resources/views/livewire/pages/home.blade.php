@@ -373,7 +373,7 @@
                     @endif
                     @foreach ($news_cate as $n_cate)
 
-                        <button wire:click="newsTab('{{ $n_cate->id }}')" class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none {{ $changeTab == $n_cate->id ? 'text-[#9BBF3E] border-b border-[#9BBF3E]' : 'text-gray-600 hover:text-gray-900 hover:border-b hover:border-gray-950' }}">{{$n_cate->title}}</button>
+                        <button wire:click="newsTab('{{ $n_cate->slug }}')" class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none {{ $changeTab == $n_cate->id ? 'text-[#9BBF3E] border-b border-[#9BBF3E]' : 'text-gray-600 hover:text-gray-900 hover:border-b hover:border-gray-950' }}">{{$n_cate->title}}</button>
                         {{-- <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">科技</a>
                         <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none tracking-wider rounded-t" style="color:#9BBF3E;">教育</a>
                         <a class="sm:px-6 py-4 w-1/2 sm:w-auto justify-center sm:justify-start title-font font-medium inline-flex items-center leading-none  hover:text-gray-900 tracking-wider">資安</a>
@@ -390,7 +390,7 @@
                     <div class="py-8 flex flex-wrap md:flex-nowrap">
                         <div class="pl-8 md:w-64 md:mb-0 mb-6 flex-shrink-0 flex flex-col">
                             <span class="font-semibold title-font text-gray-700 mt-1.5">{{ $news->date }}</span>
-                            <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->categories->first()?->title ?? '未分類' }}</span>
+                            <span class="border-gray-400 text-center border rounded-md max-w-[46px] mt-4 text-gray-500 text-sm">{{ $news->post_category->first()?->title ?? '未分類' }}</span>
                         </div>
                         <div class="md:flex-grow">
                             <p class="text-xl font-black text-gray-900 title-font mb-2">{{ $news->title }}</p>

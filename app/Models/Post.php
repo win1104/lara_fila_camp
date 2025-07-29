@@ -68,7 +68,7 @@ class Post extends Model
         return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_slug', 'post_category_slug', 'slug', 'slug')
             ->withTimestamps();
     }
-    
+
     // 建立一個專門用於 Filament 的關聯方法
     public function post_category_for_filament():BelongsToMany
     {

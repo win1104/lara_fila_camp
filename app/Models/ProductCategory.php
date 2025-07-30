@@ -63,7 +63,9 @@ class ProductCategory extends Model
     {
         // return $this->hasMany(Product::class, 'product_category_id', 'id')
         return $this->hasMany(Product::class, 'product_category_slug', 'slug')
-            ->where('locale', $this->locale);
+            ->where('product.locale', app()->getLocale());
+            // ->where('product.locale', $this->locale);
+            // ->where('locale', $this->locale);
     }
 
     public function parent()

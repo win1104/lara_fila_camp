@@ -12,6 +12,19 @@ class CreateProduct extends CreateRecord
 {
     protected static string $resource = ProductResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        // 從 URL 中提取語系
+        $path = request()->getPathInfo();
+        $locale = 'tw'; // 預設值
+        if (preg_match('#^/([a-z]{2})/#', $path, $matches)) {
+            $locale = $matches[1];
+        }
+
+        // 保持語系重定向到列表頁
+        return "/{$locale}/admin/products";
+    }
+
     // public static function afterCreate(CreateRecord $livewire, Product $record): void
     protected function afterCreate(): void
     {

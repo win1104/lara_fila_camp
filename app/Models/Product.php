@@ -39,6 +39,11 @@ class Product extends Model
         'fixuser',
     ];
 
+    protected $casts = [
+        'display' => 'boolean',
+        'url_target' => 'boolean',
+    ];
+
     /**
      * Get the route key for the model.
      */
@@ -49,29 +54,27 @@ class Product extends Model
 
     public function resolveRouteBinding($value, $field = null)
     {
-        $locale = request()->route('locale') ?? app()->getLocale();
-
-        // 對於 Filament admin 路由，根據 locale 和 slug 查找
-        if (request()->route()->getName() && str_contains(request()->route()->getName(), 'filament.admin.resources.products')) {
-            return $this->where('slug', $value)
-                ->where('locale', $locale)
-                ->first();
+        // 從 URL 路徑中提取語系
+        $path = request()->getPathInfo();
+        if (preg_match('#^/([a-z]{2})/#', $path, $matches)) {
+            $locale = $matches[1];
+        } else {
+            $locale = app()->getLocale();
         }
 
-        // 對於前端路由，根據 locale 和 slug 查找
+        // 根據 locale 和 slug 查找
         return $this->where('slug', $value)
             ->where('locale', $locale)
-            ->first();
+            ->first() ?? $this->where('slug', $value)->first();
     }
-
-    // public function category():BelongsTo
-    // {
-    //     return $this->belongsTo(Category::class);
-    // }
 
     public function product_category():BelongsToMany
     {
         return $this->BelongsToMany(ProductCategory::class, 'product_relation', 'product_slug', 'product_category_slug', 'slug', 'slug')
+            // ->where('product_categories.locale', $this->locale ?? app()->getLocale())
+            // ->where('product_relation.locale', $this->locale ?? app()->getLocale())
+            ->where('product_relation.locale', app()->getLocale())
+            // ->where('product_relation.locale', $this->locale)
             ->withTimestamps();
     }
 

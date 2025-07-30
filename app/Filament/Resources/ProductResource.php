@@ -30,7 +30,7 @@ use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms\Components\Select;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
-use Awcodes\Curator\PathGenerators\CustomPathGenerator;
+use Awcodes\Curator\PathGenerators\DefaultPathGenerator;
 // use App\Filament\Resources\ProductResource\RelationManagers;
 
 
@@ -59,6 +59,20 @@ class ProductResource extends Resource
     {
         return 'slug';
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $path = request()->getPathInfo();
+        if (preg_match('#^/([a-z]{2})/#', $path, $matches)) {
+            $locale = $matches[1];
+        } else {
+            $locale = app()->getLocale();
+        }
+        return parent::getEloquentQuery()->where('locale', $locale);
+    }
+
+
+
 
     /* 全文檢索 start */
     protected static int $globalSearchResultsLimit = 10;
@@ -142,116 +156,83 @@ class ProductResource extends Resource
                                     ->required()
                                     ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
                                 // SelectTree::make('product_categories')
-                                Select::make('product_categories')
-                                    ->label(__('backstage.product_category'))
-                                    ->placeholder(__('backstage.select_category'))
-                                    // ->parentNullValue('home')
-                                    // ->withKey('slug')
-                                    // ->relationship('product_category', 'title', 'parent_slug', function ($query, ?Product $record) {
-                                    //     // If editing an existing product, use its locale to filter categories.
-                                    //     if ($record?->locale) {
-                                    //         return $query->where('locale', $record->locale);
-                                    //     }
-
-                                    //     // When creating a new product, determine the locale from the request context.
-                                    //     $locale = app()->getLocale();
-                                    //     $routeLocale = request()->route('locale');
-
-                                    //     // For Livewire requests, the locale might be in the referer URL.
-                                    //     // The regex is improved to handle locales like 'zh-TW'.
-                                    //     if (!$routeLocale && request()->header('Referer')) {
-                                    //         $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
-                                    //         if (preg_match('#/(?P<locale>[a-z]{2}(?:-[A-Z]{2})?)/#', $refererPath, $matches)) {
-                                    //             $routeLocale = $matches['locale'];
-                                    //         }
-                                    //     }
-
-                                    //     $actualLocale = $routeLocale ?: $locale;
-                                    //     return $query->where('locale', $actualLocale);
-                                    // })
-                                    // ->withCount()
-                                    // ->expandSelected(true)
-                                    // // ->alwaysOpen()
-                                    // ->multiple(true)
-                                    // ->searchable()
-                                    ->multiple()
-                                    ->searchable()
-                                    ->options(function (Get $get, ?Product $record) {
-                                        // First, try to get the locale from the live form state, for when the user types manually.
-                                        $locale = $get('locale');
-
-                                        // If the form state is not available (e.g., on initial page load), determine the locale from the context.
-                                        if (!$locale) {
-                                            if ($record) {
-                                                // On the EDIT page, the record's own locale is the source of truth.
-                                                $locale = $record->locale;
-                                            } else {
-                                                // On the CREATE page, the URL segment (`/en/` or `/tw/`) is the source of truth.
-                                                $locale = request()->route('locale') ?? app()->getLocale();
-                                            }
-                                        }
-
-                                        if (!$locale) {
-                                            return []; // Cannot determine locale, so return empty options.
-                                        }
-
-                                        $categories = \App\Models\ProductCategory::where('locale', $locale)->get();
-                                        $grouped = $categories->groupBy('parent_slug');
-
-                                        $buildOptions = function ($parentSlug = 'home') use (&$buildOptions, $grouped) {
-                                            if (!$grouped->has($parentSlug)) {
-                                                return [];
-                                            }
-
-                                            $options = [];
-                                            foreach ($grouped[$parentSlug] as $item) {
-                                                $children = $buildOptions($item->slug);
-                                                if (!empty($children)) {
-                                                    // This is a parent category, so it becomes an optgroup.
-                                                    $options[$item->title] = $children;
-                                                } else {
-                                                    // This is a selectable child category.
-                                                    $options[$item->slug] = $item->title;
-                                                }
-                                            }
-                                            return $options;
-                                        };
-
-                                        return $buildOptions();
-                                    })
-                                    ->saveRelationshipsUsing(function (Product $record, $state) {
-                                        $record->product_category()->sync(
-                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
-                                                return [$slug => ['product_slug' => $record->slug]];
-                                            })
-                                        );
-                                    }),
-                                // SelectTree::make('product_categories')
+                                // Select::make('product_categories')
                                 //     ->label(__('backstage.product_category'))
                                 //     ->placeholder(__('backstage.select_category'))
-                                //     ->parentNullValue('home')
-                                //     ->withKey('slug')
-                                //     ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
-                                //         // 取得當前語系
-                                //         $locale = app()->getLocale();
-                                //         $routeLocale = request()->route('locale');
+                                //     // ->parentNullValue('home')
+                                //     // ->withKey('slug')
+                                //     // ->relationship('product_category', 'title', 'parent_slug', function ($query, ?Product $record) {
+                                //     //     // If editing an existing product, use its locale to filter categories.
+                                //     //     if ($record?->locale) {
+                                //     //         return $query->where('locale', $record->locale);
+                                //     //     }
 
-                                //         // 如果是 Livewire 請求，從 referer 中提取語言
-                                //         if (!$routeLocale && request()->header('Referer')) {
-                                //             $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
-                                //             if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
-                                //                 $routeLocale = $matches[1];
+                                //     //     // When creating a new product, determine the locale from the request context.
+                                //     //     $locale = app()->getLocale();
+                                //     //     $routeLocale = request()->route('locale');
+
+                                //     //     // For Livewire requests, the locale might be in the referer URL.
+                                //     //     // The regex is improved to handle locales like 'zh-TW'.
+                                //     //     if (!$routeLocale && request()->header('Referer')) {
+                                //     //         $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                                //     //         if (preg_match('#/(?P<locale>[a-z]{2}(?:-[A-Z]{2})?)/#', $refererPath, $matches)) {
+                                //     //             $routeLocale = $matches['locale'];
+                                //     //         }
+                                //     //     }
+
+                                //     //     $actualLocale = $routeLocale ?: $locale;
+                                //     //     return $query->where('locale', $actualLocale);
+                                //     // })
+                                //     // ->withCount()
+                                //     // ->expandSelected(true)
+                                //     // // ->alwaysOpen()
+                                //     // ->multiple(true)
+                                //     // ->searchable()
+                                //     ->multiple()
+                                //     ->searchable()
+                                //     ->options(function (Get $get, ?Product $record) {
+                                //         // First, try to get the locale from the live form state, for when the user types manually.
+                                //         $locale = $get('locale');
+
+                                //         // If the form state is not available (e.g., on initial page load), determine the locale from the context.
+                                //         if (!$locale) {
+                                //             if ($record) {
+                                //                 // On the EDIT page, the record's own locale is the source of truth.
+                                //                 $locale = $record->locale;
+                                //             } else {
+                                //                 // On the CREATE page, the URL segment (`/en/` or `/tw/`) is the source of truth.
+                                //                 $locale = request()->route('locale') ?? app()->getLocale();
                                 //             }
                                 //         }
 
-                                //         $actualLocale = $routeLocale ?: $locale;
-                                //         return $query->where('locale', $actualLocale);
+                                //         if (!$locale) {
+                                //             return []; // Cannot determine locale, so return empty options.
+                                //         }
+
+                                //         $categories = \App\Models\ProductCategory::where('locale', $locale)->get();
+                                //         $grouped = $categories->groupBy('parent_slug');
+
+                                //         $buildOptions = function ($parentSlug = 'home') use (&$buildOptions, $grouped) {
+                                //             if (!$grouped->has($parentSlug)) {
+                                //                 return [];
+                                //             }
+
+                                //             $options = [];
+                                //             foreach ($grouped[$parentSlug] as $item) {
+                                //                 $children = $buildOptions($item->slug);
+                                //                 if (!empty($children)) {
+                                //                     // This is a parent category, so it becomes an optgroup.
+                                //                     $options[$item->title] = $children;
+                                //                 } else {
+                                //                     // This is a selectable child category.
+                                //                     $options[$item->slug] = $item->title;
+                                //                 }
+                                //             }
+                                //             return $options;
+                                //         };
+
+                                //         return $buildOptions();
                                 //     })
-                                //     ->withCount()
-                                //     ->expandSelected(true)
-                                //     // ->alwaysOpen()
-                                //     ->multiple(true)
-                                //     ->searchable()
                                 //     ->saveRelationshipsUsing(function (Product $record, $state) {
                                 //         $record->product_category()->sync(
                                 //             collect($state)->mapWithKeys(function ($slug) use ($record) {
@@ -259,6 +240,65 @@ class ProductResource extends Resource
                                 //             })
                                 //         );
                                 //     }),
+                                SelectTree::make('product_categories')
+                                    ->label(__('backstage.product_category'))
+                                    ->placeholder(__('backstage.select_category'))
+                                    ->parentNullValue('home')
+                                    ->withKey('slug')
+                                    ->relationship('product_category', 'title', 'parent_slug', function ($query, $record) {
+                                        // 編輯模式時使用記錄的語系，新增模式時使用當前語系
+                                        $locale = app()->getLocale();
+                                        // $locale = $record ? $record->locale : app()->getLocale();
+
+                                        // 使用更明確的查詢方式
+                                        return $query->select('product_categories.*')
+                                            ->where('product_categories.locale', $locale)
+                                            ->withoutGlobalScopes()
+                                            ->orderBy('product_categories.order', 'asc');
+
+                                        // return $query->where('product_categories.locale', app()->getLocale())
+                                        //     ->orderBy('product_categories.order', 'asc');
+                                    },function ($query, $record) {
+                                        // 編輯模式時使用記錄的語系，新增模式時使用當前語系
+                                        $locale = app()->getLocale();
+                                        // $locale = $record ? $record->locale : app()->getLocale();
+
+                                        // 使用更明確的查詢方式
+                                        return $query->select('product_categories.*')
+                                            ->where('product_categories.locale', $locale)
+                                            ->withoutGlobalScopes()
+                                            ->orderBy('product_categories.order', 'asc');
+                                    }, )
+                                    ->withCount()
+                                    ->expandSelected(true)
+                                    // ->alwaysOpen()
+                                    ->multiple(true)
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                                        $record->product_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                                // return [$slug => ['product_slug' => $record->slug]];
+                                                return [$slug => [
+                                                    'product_slug' => $record->slug,
+                                                    'locale' => app()->getLocale()
+                                                ]];
+
+                                            })
+                                        );
+
+                                        // // 先刪除當前語系的關聯
+                                        // $record->product_category()->wherePivot('locale', $record->locale)->detach();
+                                        // // 重新建立關聯
+                                        // if (!empty($state)) {
+                                        //     $syncData = collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                        //         return [$slug => [
+                                        //             'product_slug' => $record->slug,
+                                        //             'locale' => $record->locale
+                                        //         ]];
+                                        //     });
+                                        //     $record->product_category()->attach($syncData->toArray());
+                                        // }
+                                    }),
 
 
 
@@ -294,61 +334,63 @@ class ProductResource extends Resource
                                 //     // ->alwaysOpen()
                                 //     ->multiple(true)
                                 //     // ->searchable()
-                                Select::make('product_downloads')
-                                    ->label(__('backstage.product_download'))
-                                    ->placeholder(__('backstage.select_category'))
-                                    ->multiple()
-                                    ->searchable()
-                                    ->options(function (Get $get, ?Product $record) {
-                                        // First, try to get the locale from the live form state, for when the user types manually.
-                                        $locale = $get('locale');
+                                // Select::make('product_downloads')
+                                //     ->label(__('backstage.product_download'))
+                                //     ->placeholder(__('backstage.select_category'))
+                                //     ->multiple()
+                                //     ->searchable()
+                                //     ->relationship('product_download', 'title')
+                                //     ->options(function (Get $get, ?Product $record) {
+                                //         // First, try to get the locale from the live form state, for when the user types manually.
+                                //         $locale = $get('locale');
 
-                                        // If the form state is not available (e.g., on initial page load), determine the locale from the context.
-                                        if (!$locale) {
-                                            if ($record) {
-                                                // On the EDIT page, the record's own locale is the source of truth.
-                                                $locale = $record->locale;
-                                            } else {
-                                                // On the CREATE page, the URL segment (`/en/` or `/tw/`) is the source of truth.
-                                                $locale = request()->route('locale') ?? app()->getLocale();
-                                            }
-                                        }
+                                //         // If the form state is not available (e.g., on initial page load), determine the locale from the context.
+                                //         if (!$locale) {
+                                //             if ($record) {
+                                //                 // On the EDIT page, the record's own locale is the source of truth.
+                                //                 $locale = $record->locale;
+                                //             } else {
+                                //                 // On the CREATE page, the URL segment (`/en/` or `/tw/`) is the source of truth.
+                                //                 $locale = request()->route('locale') ?? app()->getLocale();
+                                //             }
+                                //         }
 
-                                        if (!$locale) {
-                                            return []; // Cannot determine locale, so return empty options.
-                                        }
+                                //         if (!$locale) {
+                                //             return []; // Cannot determine locale, so return empty options.
+                                //         }
 
-                                        $categories = \App\Models\ProductDownload::where('locale', $locale)->get();
-                                        $grouped = $categories->groupBy('parent_slug');
+                                //         $categories = \App\Models\ProductDownload::where('locale', $locale)->get();
+                                //         $grouped = $categories->groupBy('parent_slug');
 
-                                        $buildOptions = function ($parentSlug = 'home') use (&$buildOptions, $grouped) {
-                                            if (!$grouped->has($parentSlug)) {
-                                                return [];
-                                            }
+                                //         $buildOptions = function ($parentSlug = 'home') use (&$buildOptions, $grouped) {
+                                //             if (!$grouped->has($parentSlug)) {
+                                //                 return [];
+                                //             }
 
-                                            $options = [];
-                                            foreach ($grouped[$parentSlug] as $item) {
-                                                $children = $buildOptions($item->slug);
-                                                if (!empty($children)) {
-                                                    // This is a parent category, so it becomes an optgroup.
-                                                    $options[$item->title] = $children;
-                                                } else {
-                                                    // This is a selectable child category.
-                                                    $options[$item->slug] = $item->title;
-                                                }
-                                            }
-                                            return $options;
-                                        };
+                                //             $options = [];
+                                //             foreach ($grouped[$parentSlug] as $item) {
+                                //                 $children = $buildOptions($item->slug);
+                                //                 if (!empty($children)) {
+                                //                     // This is a parent category, so it becomes an optgroup.
+                                //                     $options[$item->title] = $children;
+                                //                 } else {
+                                //                     // This is a selectable child category.
+                                //                     $options[$item->slug] = $item->title;
+                                //                 }
+                                //             }
+                                //             return $options;
+                                //         };
 
-                                        return $buildOptions();
-                                    })
-                                    ->saveRelationshipsUsing(function (Product $record, $state) {
-                                        $record->product_download()->sync(
-                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
-                                                return [$slug => ['product_slug' => $record->slug]];
-                                            })
-                                        );
-                                    }),
+                                //         return $buildOptions();
+                                //     })
+                                //     ->saveRelationshipsUsing(function (Product $record, $state) {
+                                //         $record->product_download()->sync(
+                                //             collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                //                 return [$slug => ['product_slug' => $record->slug]];
+                                //             })
+                                //         );
+                                //     })
+                                //     ->dehydrated(false),
                                 Forms\Components\TextInput::make('url')
                                     ->label(__('backstage.url'))
                                     ->placeholder('https://example.com')
@@ -372,7 +414,7 @@ class ProductResource extends Resource
                                     ->columnSpanFull() // 讓圖片欄位佔滿整行
                                     ->relationship('images', 'id') // 這是關鍵！指定關聯名稱和要儲存的 ID 欄位
                                     ->orderColumn('order')
-                                    ->pathGenerator(CustomPathGenerator::class), // 可選：指定中間表中的排序欄位
+                                    ->pathGenerator(DefaultPathGenerator::class), // 可選：指定中間表中的排序欄位
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -385,18 +427,10 @@ class ProductResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function ($query) {
-                $locale = app()->getLocale();
-                $routeLocale = request()->route('locale');
-
-                // 如果是 Livewire 請求，從 referer 中提取語言
-                if (!$routeLocale && request()->header('Referer')) {
-                    $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
-                    if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
-                        $routeLocale = $matches[1];
-                    }
-                }
-                $actualLocale = $routeLocale ?: $locale;
-                return $query->where('locale', $actualLocale);
+                // 根據 URL 的語系過濾資料
+                $currentLocale = app()->getLocale(); //tw
+                // 只需要按語系過濾，menu_slug 已經在 getTableQuery 中處理
+                $query->where('locale', $currentLocale);
             })
             ->columns([
                 Tables\Columns\TextColumn::make('locale')
@@ -428,6 +462,14 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('product_category.title')
                     ->label(__('backstage.product_category'))
+                    ->getStateUsing(function ($record) {
+                        $currentLocale = app()->getLocale();
+                        return $record->product_category()
+                            ->wherePivot('locale', $currentLocale)
+                            ->where('product_categories.locale', $currentLocale)
+                            ->pluck('title')
+                            ->join(', ');
+                    })
                     ->searchable(),
             ])
             ->reorderable('order') // 啟用拖拉排序功能

@@ -59,11 +59,16 @@ class ProductCategory extends Model
         return $this->slug;
     }
 
-    public function products():HasMany
+    // public function products(): HasMany
+    // {
+    //     // return $this->hasMany(Product::class, 'product_category_id', 'id')
+    //     return $this->hasMany(Product::class, 'product_category_slug', 'slug')
+    //         ->where('locale', $this->locale);
+    // }
+
+    public function products(): BelongsToMany
     {
-        // return $this->hasMany(Product::class, 'product_category_id', 'id')
-        return $this->hasMany(Product::class, 'product_category_slug', 'slug')
-            ->where('locale', $this->locale);
+        return $this->belongsToMany(Product::class, 'product_relation', 'product_category_slug', 'product_slug', 'slug', 'slug');
     }
 
     public function parent()
@@ -132,4 +137,70 @@ class ProductCategory extends Model
         // 寫入日誌，可以根據需要調整日誌格式
         Log::info("ProductCategory : A record has been {$action}: ", $model->toArray());
     }
+
+    // /**
+    //  * Generate a tree structure of categories and their products for SelectTree.
+    //  *
+    //  * @param string $locale
+    //  * @param string|null $parentSlug
+    //  * @return array
+    //  */
+    // public static function getCategoryProductTree(string $locale, ?string $parentSlug = 'home'): array
+    // {
+    //     $tree = [];
+
+    //     // 獲取當前層級的分類
+    //     $categories = self::where('locale', $locale)
+    //         ->where('parent_slug', $parentSlug)
+    //         ->orderBy('order')
+    //         ->get();
+
+    //     foreach ($categories as $category) {
+    //         $children = self::getCategoryProductTree($locale, $category->slug);
+
+    //         // 獲取此分類下的產品
+    //         $products = $category->products()->where('locale', $locale)->get();
+    //         foreach ($products as $product) {
+    //             // 將產品作為子節點加入，ID 前綴 "product-" 以便區分
+    //             $children[] = [
+    //                 'id' => 'product-' . $product->slug,
+    //                 'label' => $product->title,
+    //             ];
+    //         }
+
+    //         // 將分類作為節點加入
+    //         $tree[$category->slug] = [
+    //             'id' => $category->slug,
+    //             'label' => $category->title,
+    //             'children' => $children,
+    //         ];
+    //     }
+
+    //     return $tree;
+    // }
+    public static function getProductTree($locale = 'tw')
+    {
+        $allCategories = ProductCategory::where('locale', $locale)->get()->keyBy('slug');
+        $products = Product::where('locale', $locale)->get()->groupBy('product_category_slug');
+
+        // 遞迴組分類樹
+        $buildTree = function ($parentSlug) use (&$buildTree, $allCategories, $products) {
+            return $allCategories->filter(fn($cat) => $cat->parent_slug === $parentSlug)->map(function ($cat) use (&$buildTree, $products) {
+                return [
+                    'id' => $cat->title,
+                    // 'label' => $cat->title,
+                    // 'children' => collect($products[$cat->slug] ?? [])->map(function ($product) {
+                    //     return [
+                    //         'id' => $product->slug,
+                    //         'label' => $product->title,
+                    //     ];
+                    // })->concat($buildTree($cat->slug))->values(),
+                    'children' => $cat->title,
+                ];
+            })->values();
+        };
+
+        return $buildTree('home'); // 由最上層 home 開始
+    }
+
 }

@@ -4,11 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductDownloadResource\Pages;
 use App\Models\ProductDownload;
+use App\Models\ProductCategory;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+
 
 class ProductDownloadResource extends Resource
 {
@@ -52,6 +55,64 @@ class ProductDownloadResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
+                Forms\Components\Select::make('products')
+                    ->label(__('backstage.product'))
+                    ->placeholder(__('backstage.select_product'))
+                    // ->options(fn () => ProductCategory::getProductTree(app()->getLocale()))
+                    ->multiple()
+                    ->searchable()
+                    ->preload()
+                    ->relationship(
+                        name: 'products',
+                        titleAttribute: 'title',
+                        modifyQueryUsing: function ($query) {
+                            $locale = app()->getLocale();
+                            $routeLocale = request()->route('locale');
+
+                            if (!$routeLocale && request()->header('Referer')) {
+                                $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                                if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                                    $routeLocale = $matches[1];
+                                }
+                            }
+
+                            $actualLocale = $routeLocale ?: $locale;
+                            return $query->where('products.locale', $actualLocale);
+                        }
+                    ),
+                // SelectTree::make('products')
+                //     ->label(__('backstage.product'))
+                //     ->placeholder(__('backstage.select_product'))
+                //     ->parentNullValue('home')
+                //     ->withKey('slug')
+                //     ->relationship('products', 'title', 'slug', function ($query, $record) {
+                //         // 取得當前語系
+                //         $locale = app()->getLocale();
+                //         $routeLocale = request()->route('locale');
+
+                //         // 如果是 Livewire 請求，從 referer 中提取語言
+                //         if (!$routeLocale && request()->header('Referer')) {
+                //             $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+                //             if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                //                 $routeLocale = $matches[1];
+                //             }
+                //         }
+
+                //         $actualLocale = $routeLocale ?: $locale;
+                //         return $query->where('locale', $actualLocale);
+                //     })
+                //     ->withCount()
+                //     ->expandSelected(true)
+                //     ->multiple(true)
+                //     ->searchable()
+                //     ->saveRelationshipsUsing(function (Products $record, $state) {
+                //         $record->products()->sync(
+                //             collect($state)->mapWithKeys(function ($slug) use ($record) {
+                //                 return [$slug => ['product_slug' => $record->slug]];
+                //             })
+                //         );
+                //     }),
+
                 Forms\Components\Toggle::make('display')
                     ->label(__('backstage.published')),
             ]);

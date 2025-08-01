@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use SolutionForest\FilamentTree\Concern\ModelTree;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductDownload extends Model
 {
@@ -59,10 +60,22 @@ class ProductDownload extends Model
         return $this->slug;
     }
 
-    public function products():HasMany
+    // public function products(): HasMany
+    // {
+    //     return $this->hasMany(Product::class, 'product_download_slug', 'slug')
+    //         ->where('locale', $this->locale);
+    // }
+
+    public function products(): BelongsToMany
     {
-        return $this->hasMany(Product::class, 'product_download_slug', 'slug')
-            ->where('locale', $this->locale);
+        return $this->belongsToMany(
+            Product::class,
+            'product_download_relation',
+            'product_download_slug',
+            'product_slug',
+            'slug',
+            'slug'
+        );
     }
 
     public function parent()

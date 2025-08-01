@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\PatientResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
+use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class TreatmentsRelationManager extends RelationManager
 {
@@ -92,5 +94,42 @@ class TreatmentsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function getHeaderActions(): array
+    {
+        return [
+            // 將 tabs 作為 header actions
+            Action::make('tabs')
+                // ->view('filament.components.custom-tabs')
+                ->extraAttributes(['class' => 'w-full']),
+        ];
+
+        // return $this->table(new \Filament\Tables\Table($this))->getHeaderActions();
+    }
+
+    public function getTabs(): array
+    {
+        $ownerRecord = $this->getOwnerRecord();
+
+        // dd($ownerRecord);
+        // 基於用戶權限的 Tab
+        $tabs = [
+            'all' => Tab::make('全部文章')
+                ->badge($ownerRecord->treatments()->count())
+                // ->badge(Post::count())
+                ->icon('heroicon-o-document-duplicate'),
+            'published' => Tab::make('已發布')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1))
+                // ->badge($ownerRecord->treatments()->where('display', 1)->count())
+                ->badgeColor('success')
+                ->icon('heroicon-o-check-circle'),
+            // 'unpublished' => Tab::make('未發布')
+            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0))
+            //     // ->badge($ownerRecord->treatments()->where('display', 0)->count())
+            //     ->badgeColor('gray')
+            //     ->icon('heroicon-o-x-circle'),
+        ];
+        return $tabs;
     }
 }

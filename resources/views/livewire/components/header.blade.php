@@ -1,11 +1,11 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100" wire:id="header-component">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed z-[90] w-full opacity-90" wire:id="header-component">
     <!-- Primary Navigation Menu -->
     <div class="max-w-[1600px] mx-auto">
-        <div class="h-16 px-8 lg:px-32">
+        <div class="px-8 lg:px-32">
 
 
             <!-- maryUI -->
-            <div class="navbar bg-base-100 relative">
+            <div class="navbar bg-base-100 relative p-5">
 
                 <!-- Logo -->
                 <div class="shrink-0 items-center">
@@ -15,35 +15,52 @@
                     </a>
                 </div>
 
-
-
-
                 <div class="navbar-start">
                     <div class="navbar-center hidden lg:flex relative">
 
                         @if ($menus->count() > 0)
                             @foreach ($menus as $menu)
-                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'grid' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses')
+                                @if ($menu->type === 'posts' || $menu->type === 'lists' || $menu->type === 'grid' || $menu->type === 'timeline' || $menu->type === 'tabs' || $menu->type === 'collapses' || $menu->type === 'tilelists')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
                                             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow-md rounded-lg bg-base-100 w-52 border-gray-200">
                                                 @foreach($menu->children->where('display', 1) as $child)
                                                     <li>
-                                                        <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}">
-                                                            {!! $child->title !!}
-                                                        </a>
+                                                        @if($child->type === 'url')
+                                                            <a href="javascript:void(0)"
+                                                                onclick="handleUrlMenuClick('{{ $child->url }}', {{ $child->url_target }})"
+                                                                >
+                                                                {!! $child->title !!}
+                                                            </a>
+                                                        @else
+                                                            {{-- <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}"> --}}
+                                                            <a href="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $child->type ?? $menu->type, 'menu' => $child->slug]) }}">
+                                                                {!! $child->title !!}
+                                                            </a>
+                                                        @endif
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         </div>
                                     @else
-                                        <x-mary-button link="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}" class="btn-ghost text-base">
-                                            {!! $menu->title !!}
-                                        </x-mary-button>
+                                        @if($menu->slug === 'contact')
+                                            <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                                {!! $menu->title !!}
+                                            </x-mary-button>
+                                        @else
+                                            <x-mary-button link="{{ route('post.show', ['locale' => app()->getLocale(), 'type' => $menu->type, 'menu' => $menu->slug]) }}" class="btn-ghost text-base">
+                                                {!! $menu->title !!}
+                                            </x-mary-button>
+                                        @endif
                                     @endif
-
-                                @elseif($menu->type == 'products')
+                                @elseif($menu->type === 'url' && $menu->slug != 'products')
+                                    <a href="javascript:void(0)"
+                                        onclick="handleUrlMenuClick('{{ $menu->url }}', {{ $menu->url_target }})"
+                                        >
+                                        {!! $menu->title !!}
+                                    </a>
+                                @elseif($menu->type === 'url' && $menu->slug === 'products')
                                     @if($menu->children->count() > 0)
                                         <div class="dropdown dropdown-hover">
                                             <div tabindex="0" role="button" class="btn btn-ghost px-4 text-base">{{ $menu->title }}</div>
@@ -62,17 +79,15 @@
                                             {!! $menu->title !!}
                                         </x-mary-button>
                                     @endif
-
-
-
                                 @endif
-
                             @endforeach
 
-
+                            {{-- <x-mary-button link="{{ route('contact.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
+                                {{ __('聯絡我們') }}
+                            </x-mary-button> --}}
 
                             <x-mary-button link="{{ route('openai.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
-                                {{ __('OPEN AI') }}
+                                {{ __('OPEN AI').__('global.hoho.label') }}
                             </x-mary-button>
                             <x-mary-button link="{{ route('gpt.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
                                 {{ __('Chat GTP') }}
@@ -80,16 +95,9 @@
                             <x-mary-button link="{{ route('mobile.index', ['locale' => app()->getLocale()]) }}" class="btn-ghost text-base">
                                 {{ __('Chat Bot') }}
                             </x-mary-button>
-
                         @endif
                     </div>
                 </div>
-
-
-
-
-
-
 
 
 
@@ -111,9 +119,6 @@
                         <x-nav-link :href="route('mobile.index', ['locale' => app()->getLocale()])" :active="request()->routeIs('mobile.index')">
                             {{ __('Mobile') }}
                         </x-nav-link> --}}
-
-
-
 
 
 
@@ -168,7 +173,7 @@
                         </button>
 
 
-                        <div class="dropdown dropdown-end hidden lg:inline-block">
+                        {{-- <div class="dropdown dropdown-end hidden lg:inline-block">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                                 <div class="indicator">
                                     <x-mary-icon name="o-shopping-cart"/>
@@ -186,7 +191,24 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> --}}
+                        <div class="dropdown dropdown-end hidden lg:inline-block ml-4">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                                🌐
+                            </div>
+                            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-40">
+                                @foreach (['tw' => '繁體中文', 'en' => 'English'] as $code => $label)
+                                    <li>
+                                        {{-- <a href="/{{ $code }}{{ request()->getPathInfo() }}" --}}
+                                        <a href="{{ localized_url($code) }}"
+                                            class="{{ app()->getLocale() === $code ? 'font-bold text-primary' : '' }}">
+                                            {{ $label }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
+
 
                         <!-- user dropdown -->
                         @guest
@@ -266,46 +288,16 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    {{-- <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
-                {{ __('Chirps') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('note.index')" :active="request()->routeIs('note.index')">
-                {{ __('Note') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
-                {{ __('OPEN AI') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div> --}}
+    <script>
+        function handleUrlMenuClick(url, target)
+        {
+            if (target == 1) {
+                window.open(url, '_blank');
+            } else {
+                window.location.href = url;
+            }
+        }
+        // 確保函數在全局範圍內可用
+        window.handleUrlMenuClick = handleUrlMenuClick;
+    </script>
 </nav>

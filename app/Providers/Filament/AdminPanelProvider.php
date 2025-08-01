@@ -26,6 +26,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Datlechin\FilamentMenuBuilder\FilamentMenuBuilderPlugin;
 use Datlechin\FilamentMenuBuilder\MenuPanel\StaticMenuPanel;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Filament\View\PanelsRenderHook;
+use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -47,10 +49,19 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             // ->login(Login::class)
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Violet,
+                // 'primary' => Color::Lime,
+                // 'primary' => Color::Amber,
+                // 'gray' => Color::Slate, // 這會影響背景色調
+                'gray' => Color::Stone, // 這會影響背景色調
             ])
             // ->darkMode(false)
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->sidebarCollapsibleOnDesktop()
+            // ->sidebarFullyCollapsibleOnDesktop()
+            ->viteTheme([
+                'resources/css/filament/admin/theme.css',
+                'resources/css/filament/admin/tiptap-dark-mode.css',
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -73,29 +84,40 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->profile()
+            ->darkMode()
             ->userMenuItems([
-                MenuItem::make()
-                    ->label('繁體中文')
-                    ->url('/tw/admin')
-                    ->color('success')
-                    ->icon('heroicon-o-language'),
-                MenuItem::make()
-                    ->label('English')
-                    ->color('info')
-                    ->url('/en/admin')
-                    ->icon('heroicon-o-language'),
+                // MenuItem::make()
+                //     ->label('繁體中文')
+                //     ->url('/tw/admin')
+                //     ->color('success')
+                //     ->icon('heroicon-o-language'),
+                // MenuItem::make()
+                //     ->label('English')
+                //     ->color('info')
+                //     ->url('/en/admin')
+                //     ->icon('heroicon-o-language'),
                 'logout' => MenuItem::make()->url(fn () => route('filament.admin.auth.logout', ['locale' => app()->getLocale()])
                 ),
             ])
+            ->renderHook(
+                // PanelsRenderHook::TOPBAR_END,
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): string => Livewire::mount('components.language-switcher')
+            )
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => view('filament.pages.theme-switcher')->render()
+            )
             ->plugins([
                 CuratorPlugin::make()
-                    ->label('Media')
-                    ->pluralLabel('Media')
-                    ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Content')
-                    ->navigationSort(3)
-                    ->navigationCountBadge()
-                    ->registerNavigation(true)
+                    // ->label('圖片管理')
+                    ->pluralLabel(__('backstage.media_manage'))
+                    // ->navigationIcon('heroicon-o-photo')
+                    ->navigationGroup('Website')
+                    ->navigationSort(1)
+                    // ->navigationCountBadge()
+                    // ->registerNavigation(true)
                     ->defaultListView('grid' || 'list'),
                 // FilamentMenuBuilderPlugin::make()
                 //     ->addLocation('header', 'Header')

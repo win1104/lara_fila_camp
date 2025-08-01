@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('avatar')->after('email')->nullable();
+            $table->string('status')->after('remember_token')->nullable();
         });
     }
 

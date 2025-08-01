@@ -11,7 +11,9 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
+        //從網址拿到語系代碼
         $locale = $request->route('locale');
+        //允許的語系代碼列表
         $allowedLocales = ['en', 'tw'];
 
         // \Illuminate\Support\Facades\Log::info('SetLocale Middleware:', [
@@ -37,7 +39,7 @@ class SetLocale
             return redirect("/{$locale}");
         }
 
-        // 設定應用程式的語言環境
+        // 設定應用程式的目前語系
         App::setLocale($locale);
 
         // 設定系統層級的語言環境

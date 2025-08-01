@@ -38,6 +38,13 @@ class EditMenu extends EditRecord
 
     protected function getRedirectUrl(): string
     {
+        // 從 session 中獲取頁次信息
+        if ($page = session('menus_list_page')) {
+            session()->forget('menus_list_page');
+            return $this->getResource()::getUrl('index', ['page' => $page]);
+        }
+
+        // 預設回到第一頁
         return $this->getResource()::getUrl('index');
     }
 
@@ -56,6 +63,11 @@ class EditMenu extends EditRecord
         return [
             // Actions\DeleteAction::make(),
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return $this->record->title;
     }
 
     protected function getFormActions(): array

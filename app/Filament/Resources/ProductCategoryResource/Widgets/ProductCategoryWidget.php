@@ -25,10 +25,6 @@ class ProductCategoryWidget extends BaseWidget
     protected ?string $treeTitle = '產品類別（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
-    protected $localeMap = [
-        'zh_TW' => 'tw',
-        'en' => 'en',
-    ];
 
 
     protected function getFormSchema(): array
@@ -160,9 +156,65 @@ class ProductCategoryWidget extends BaseWidget
 
     protected function getTreeQuery(): \Illuminate\Database\Eloquent\Builder
     {
+        $locale = app()->getLocale();
+        $routeLocale = request()->route('locale');
+        $actualLocale = $routeLocale ?: $locale;
+
+        // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getTreeQuery:', [
+        //     'app_locale' => $locale,
+        //     'route_locale' => $routeLocale,
+        //     'actual_locale' => $actualLocale,
+        //     'count' => static::getModel()::where('locale', $actualLocale)->count(),
+        //     'sample_records' => static::getModel()::where('locale', $actualLocale)->take(3)->get(['slug', 'title', 'locale'])->toArray()
+        // ]);
+
         return static::getModel()::query()
-            ->where('locale', $this->localeMap[app()->getLocale()])
+            ->where('locale', $actualLocale)
             ->orderBy('order');
+    }
+
+    public function getRootLayerRecords(): \Illuminate\Support\Collection
+    {
+        $locale = app()->getLocale();
+        $routeLocale = request()->route('locale');
+
+        // 如果是 Livewire 請求，從 referer 中提取語言
+        if (!$routeLocale && request()->header('Referer')) {
+            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                $routeLocale = $matches[1];
+            }
+        }
+
+        // 如果 route locale 和 app locale 不一致，使用 route locale
+        $actualLocale = $routeLocale ?: $locale;
+
+        $records = static::getModel()::query()
+            ->where('locale', $actualLocale)
+            ->where('parent_slug', ProductCategory::defaultParentKey())
+            ->orderBy('order')
+            ->get();
+
+        // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getRootLayerRecords:', [
+        //     'app_locale' => $locale,
+        //     'route_locale' => $routeLocale,
+        //     'actual_locale' => $actualLocale,
+        //     'request_url' => request()->url(),
+        //     'referer' => request()->header('Referer'),
+        //     'route_parameters' => request()->route() ? request()->route()->parameters() : null,
+        //     'default_parent_key' => ProductCategory::defaultParentKey(),
+        //     'count' => $records->count(),
+        //     'records' => $records->map(function($item) {
+        //         return [
+        //             'slug' => $item->slug,
+        //             'title' => $item->title,
+        //             'locale' => $item->locale,
+        //             'parent_slug' => $item->parent_slug
+        //         ];
+        //     })->toArray()
+        // ]);
+
+        return $records;
     }
 
     public function updateTree(?array $list = null): array
@@ -188,10 +240,10 @@ class ProductCategoryWidget extends BaseWidget
             return $this->getTreeData();
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Tree Update Failed:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
+            // Log::error('Tree Update Failed:', [
+            //     'error' => $e->getMessage(),
+            //     'trace' => $e->getTraceAsString()
+            // ]);
 
             Notification::make()
                 ->title('更新失敗')
@@ -216,10 +268,28 @@ class ProductCategoryWidget extends BaseWidget
     protected function processTreeItem(array $item, $parentSlug = null, int $order = 1): void
     {
         $slug = $item['id'];
-        $record = static::getModel()::where('slug', $slug)->first();
+
+        // 取得當前語系
+        $locale = app()->getLocale();
+        $routeLocale = request()->route('locale');
+
+        // 如果是 Livewire 請求，從 referer 中提取語言
+        if (!$routeLocale && request()->header('Referer')) {
+            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                $routeLocale = $matches[1];
+            }
+        }
+
+        $actualLocale = $routeLocale ?: $locale;
+
+        // 加上語系條件查找記錄
+        $record = static::getModel()::where('slug', $slug)
+            ->where('locale', $actualLocale)
+            ->first();
 
         if (!$record) {
-            Log::warning('Record not found:', ['slug' => $slug]);
+            Log::warning('Record not found:', ['slug' => $slug, 'locale' => $actualLocale]);
             return;
         }
 
@@ -229,17 +299,32 @@ class ProductCategoryWidget extends BaseWidget
             'updated_at' => now(),
         ])->save();
 
-        Log::info('Processed tree item:', [
-            'slug' => $slug,
-            'parent_slug' => $record->parent_slug,
-            'order' => $order
-        ]);
+        // Log::info('Processed tree item:', [
+        //     'slug' => $slug,
+        //     'locale' => $actualLocale,
+        //     'parent_slug' => $record->parent_slug,
+        //     'order' => $order
+        // ]);
     }
 
     //排序儲存後重新抓資料
     protected function getTreeData(): array
     {
         $items = $this->getRootLayerRecords();
+
+        // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget getTreeData:', [
+        //     'locale' => app()->getLocale(),
+        //     'root_items_count' => $items->count(),
+        //     'root_items' => $items->map(function($item) {
+        //         return [
+        //             'slug' => $item->slug,
+        //             'title' => $item->title,
+        //             'locale' => $item->locale,
+        //             'parent_slug' => $item->parent_slug
+        //         ];
+        //     })->toArray()
+        // ]);
+
         return $this->transformItems($items);
     }
 
@@ -247,12 +332,30 @@ class ProductCategoryWidget extends BaseWidget
     {
         $result = [];
         foreach ($items as $item) {
+            // 現在可以直接使用 model 的 children 關聯，因為已經包含語言過濾
+            $children = $item->children;
+
+            // \Illuminate\Support\Facades\Log::info('ProductCategoryWidget transformItems:', [
+            //     'parent_slug' => $item->slug,
+            //     'parent_title' => $item->title,
+            //     'parent_locale' => $item->locale,
+            //     'children_count' => $children->count(),
+            //     'children' => $children->map(function($child) {
+            //         return [
+            //             'slug' => $child->slug,
+            //             'title' => $child->title,
+            //             'locale' => $child->locale,
+            //             'parent_slug' => $child->parent_slug
+            //         ];
+            //     })->toArray()
+            // ]);
+
             $result[] = [
                 'id' => $item->slug,
                 'parent' => $item->parent_slug === ProductCategory::defaultParentKey() ? -1 : $item->parent_slug,
                 'order' => $item->order,
                 'title' => $this->getTreeRecordTitle($item),
-                'children' => $this->transformItems($item->children),
+                'children' => $this->transformItems($children),
             ];
         }
         return $result;

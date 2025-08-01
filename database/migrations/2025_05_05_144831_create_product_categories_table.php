@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug')->default('category');
             $table->string('parent_slug')->default('category');
             $table->string('type')->default('post');
-            $table->treeColumns();
+            $table->string('title', 2048);
+            $table->integer('order')->default(1);
             // $table->string('title', 2048);
             // $table->string('parent_id', 255)->nullable();
             // $table->integer('order')->default('1');
@@ -25,7 +26,6 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->string('fixuser')->nullable();
             $table->timestamps();
-
             $table->unique(['locale', 'slug']);
         });
     }

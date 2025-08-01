@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Config;
 class FilamentLocale
 {
     protected $localeMap = [
-        // 'tw' => 'tw',
-        'tw' => 'zh_TW',
+        'tw' => 'tw',
+        // 'tw' => 'zh_TW',
         'en' => 'en',
     ];
 
@@ -25,7 +25,8 @@ class FilamentLocale
 
             // 設定 Laravel 的語系
             App::setLocale($systemLocale);
-            URL::defaults(['locale' => $urlLocale]);
+            URL::defaults(['locale' => $systemLocale]);
+            // URL::defaults(['locale' => $urlLocale]);
 
             // 設定 Filament 的語系
             Config::set('app.locale', $systemLocale);

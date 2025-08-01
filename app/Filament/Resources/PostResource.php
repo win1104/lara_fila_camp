@@ -3,125 +3,214 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use App\Models\Menu;
 use App\Models\Post;
 use Filament\Tables;
 use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PostCategory;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Tables\Columns\DateTimeColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PostResource\Pages;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
+use Awcodes\Curator\PathGenerators\CustomPathGenerator;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PostResource\RelationManagers;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Resources\Components\Tab;
 
 class PostResource extends Resource
 {
     protected static ?string $model = Post::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-x-mark';
-    protected static ?string $pluralLabel = 'Post'; // 這將用於標題和側邊欄
     // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
-    protected static ?string $label = '文章'; // 這將用於單數形式
-
-    protected static ?string $navigationParentItem = 'Article';
+    public static function getModelLabel(): string
+    {
+        return __('post.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('post.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('post.navigation');
+    }
     protected static ?string $navigationGroup = 'Website';
+    protected static bool $shouldRegisterNavigation = false;
+
+    public static function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /* 全文檢索 start */
+    protected static int $globalSearchResultsLimit = 10;
+    public static function getGlobalSearchResultTitle($record): string
+    {
+        return $record->title;
+    }
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'Slug' => $record->slug,
+            // 移除 Category 以避免 N+1 查詢問題
+        ];
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->select(['id', 'title', 'slug', 'display', 'locale']) // 只選擇需要的欄位
+            ->where('locale', app()->getLocale())
+            ->where('display', 1) // 只搜尋已發布的內容
+            ->orderBy('title'); // 加入排序提升使用者體驗
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'slug']; // 移除 content 和 intro 以提升效能
+    }
+    /* 全文檢索 end */
+
+    public static function resolveRecordRouteBinding($key): ?\Illuminate\Database\Eloquent\Model
+    {
+        $locale = app()->getLocale();
+
+        $result = static::getModel()::where('slug', $key)
+            ->where('locale', $locale)
+            ->first();
+
+        return $result;
+    }
 
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('locale')
-                    ->required()
-                    ->default(fn () => app()->getLocale()),
-                Forms\Components\Select::make('menu_slug')
-                    ->label('Menu')
-                    ->options(fn () => Menu::where('locale', app()->getLocale())
-                        ->pluck('title', 'slug'))
-                    ->required()
-                    ->searchable(),
-                Forms\Components\TextInput::make('title')
-                    ->label('Title')
-                    ->required(),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->required(),
-                Forms\Components\RichEditor::make('content')
-                    ->label('Content')
-                    // ->toolbarButtons([
-                    //     'blockquote',
-                    //     'bold',
-                    //     'bulletList',
-                    //     'codeBlock',
-                    //     'h2',
-                    //     'h3',
-                    //     'italic',
-                    //     'link',
-                    //     'orderedList',
-                    //     'redo',
-                    //     'strike',
-                    //     'undo',
-                    //     'html', // 啟用 HTML 編輯按鈕
-                    // ])
-                    ->required(),
-                // CuratorPicker::make('media_id')
-                //     ->label('Media'),
-                    // ->required(),
-                Forms\Components\Toggle::make('display')
-                    ->label('Published'),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Published At'),
-                Forms\Components\Textarea::make('intro')
-                    ->label('Intro')
-                    ->columnSpan('full')
-                    // ->visible(fn () => $this->getOwnerRecord()?->type !== 'rabbit')
-                    ->maxLength(65535),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label(__('backstage.title'))
+                                    ->required(),
+                                Forms\Components\TextInput::make('slug')
+                                    ->label(__('backstage.slug'))
+                                    ->required(),
+                                Forms\Components\RichEditor::make('intro')
+                                    ->label(__('backstage.intro')),
+                            ]),
+
+                        Forms\Components\Section::make(__('backstage.content'))
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->label(__('backstage.content'))
+                                    ->required(),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('backstage.setting'))
+                            ->schema([
+                                Forms\Components\Toggle::make('display')
+                                    ->label(__('backstage.published')),
+                                Forms\Components\Hidden::make('locale')
+                                    ->label(__('backstage.locale'))
+                                    ->required()
+                                    ->default(fn ($record) => $record?->locale ?? app()->getLocale()),
+                                Forms\Components\DatePicker::make('date')
+                                    ->label(__('backstage.published_at')),
+                                Forms\Components\Select::make('post_categories')
+                                    ->label(__('backstage.category'))
+                                    ->relationship('post_category_for_filament', 'title', fn(Builder $query) => $query->where('post_categories.locale', app()->getLocale()))
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable()
+                                    ->saveRelationshipsUsing(function (Post $record, $state) {
+                                        $record->post_category()->sync(
+                                            collect($state)->mapWithKeys(function ($slug) use ($record) {
+                                                return [$slug => [
+                                                    'post_slug' => $record->slug,
+                                                    'locale' => $record->locale ?? app()->getLocale()
+                                                ]];
+                                            })
+                                        );
+                                    }),
+                                Forms\Components\TextInput::make('url')
+                                    ->label(__('backstage.url'))
+                                    ->placeholder('https://example.com')
+                                    ->helperText(__('backstage.url_helper')),
+                                Forms\Components\Toggle::make('url_target')
+                                    ->label(__('backstage.url_target'))
+                                    ->helperText(__('backstage.url_target_helper')),
+                            ]),
+                        Forms\Components\Section::make('圖片')
+                            ->schema([
+                                CuratorPicker::make('images')
+                                    ->label(__('backstage.images'))
+                                    ->multiple()
+                                    ->constrained(true)
+                                    ->columnSpanFull()
+                                    ->relationship('images', 'id')
+                                    ->orderColumn('order')
+                                    ->pathGenerator(CustomPathGenerator::class),
+                            ]),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 // CuratorColumn::make('media_id')
                 //     ->label('Media')
                 //     ->size('40'),
-
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\IconColumn::make('display')
-                    ->label('Published')
+                    ->label(__('backstage.published'))
                     ->boolean()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Order')
+                    ->label(__('backstage.order'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
+                    ->label(__('backstage.title'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('slug')
-                    ->label('Slug')
+                    ->label(__('backstage.slug'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
-                    ->label('Published At')
+                    ->label(__('backstage.published_at'))
                     ->date()
                     ->sortable(),
             ])
             ->reorderable('order') // 啟用拖拉排序功能
             ->defaultSort('order') // 預設按 sort_order 排序
             ->filters([
-                SelectFilter::make('display')
-                    ->label('發布狀態')
+                Filter::make(__('product.phase_out'))
+                    ->query(fn (Builder $query) => $query->where('check', 1)),
+                SelectFilter::make(__('backstage.status'))
                     ->options([
-                        '1' => '已發布',
-                        '0' => '未發布',
+                        'draft' => __('backstage.draft'),
+                        'reviewing' => __('backstage.reviewing'),
+                        'published' => __('backstage.published'),
+                    ]),
+                SelectFilter::make(__('backstage.display'))
+                    ->options([
+                        '1' => __('backstage.display'),
+                        '0' => __('backstage.undisplay'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return match ($data['value']) {
@@ -151,26 +240,6 @@ class PostResource extends Resource
                 Infolists\Components\TextEntry::make('date')
                     ->columnSpanFull(),
             ]);
-    }
-
-    public static function getTabs(): array
-    {
-        return [
-            'all' => Tab::make('全部文章')
-                ->badge(Post::count()),
-            'published' => Tab::make('已發布')
-                ->badge(Post::where('display', 1)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
-            'unpublished' => Tab::make('未發布')
-                ->badge(Post::where('display', 0)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
-            'recent' => Tab::make('最近更新')
-                ->badge(Post::where('updated_at', '>=', now()->subDays(7))->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
-            'this_month' => Tab::make('本月發布')
-                ->badge(Post::whereMonth('created_at', now()->month)->count())
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereMonth('created_at', now()->month)),
-        ];
     }
 
     public static function getRelations(): array

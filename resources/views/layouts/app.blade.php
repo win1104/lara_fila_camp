@@ -16,6 +16,10 @@
         <!-- Tailwind CDN（測試用）-->
         <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -42,6 +46,9 @@
             }
             .dropdown-content ul {
                 margin-top: 0 !important;
+            }
+            body{
+                font-family: Helvetica, Arial, "Noto Sans TC", "微軟正黑體", "Microsoft JhengHei", "Microsoft YaHei";
             }
         </style>
     </head>
@@ -81,7 +88,7 @@
 
         <!-- Livewire Scripts (必須在 Alpine 之前) -->
         @livewireScripts
-        <script src="{{ asset('js/app.js') }}"></script>
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
         <!-- Mary UI Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}
@@ -89,6 +96,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // === 計數器功能 ===
             const counters = document.querySelectorAll('.counter');
             let started = false; // 防止重複執行
 

@@ -110,7 +110,7 @@
 
 
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-xl text-gray-800 leading-tight pt-24">
         {{ __('手冊助理') }}
     </h2>
 </x-slot>

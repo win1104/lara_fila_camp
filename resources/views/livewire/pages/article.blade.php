@@ -6,10 +6,14 @@
                     {{ $article?->title }}
                 </h1>
 
-                <img class="rounded-lg" src="/storage/{{ $article?->image->path }}" alt="{{ $article?->image->alt_text }}"/>
-                <small>{{ $article?->image->caption }}</small>
+                @if($article?->image)
+                    <img class="rounded-lg" src="/storage/{{ $article->image->path }}" alt="{{ $article->image->alt_text }}"/>
+                    <small>{{ $article->image->caption }}</small>
+                @endif
                 <div class="">
-                    {!! $article?->content !!}
+                    <div class="prose dark:prose-invert max-w-none">
+        {!! $article?->content !!}
+    </div>
                 </div>
             </article>
         </div>

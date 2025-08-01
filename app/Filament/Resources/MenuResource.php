@@ -14,11 +14,20 @@ use Filament\Tables\Table;
 class MenuResource extends Resource
 {
     protected static ?string $model = Menu::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $pluralLabel = '內容管理'; // 這將用於標題和側邊欄
-    // protected static ?string $navigationLabel = '網站選單'; // 只有側邊欄
-    protected static ?string $label = '文章'; // 這將用於單數形式
+
+    public static function getModelLabel(): string
+    {
+        return __('post.label');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('post.plural');
+    }
+    public static function getNavigationLabel(): string
+    {
+        return __('post.content_mana');
+    }
     protected static ?string $navigationGroup = 'Website';
 
     public static function form(Form $form): Form
@@ -27,34 +36,65 @@ class MenuResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->key('patient-form-card')
-                    ->heading('選單資料')
+                    ->heading(__('backstage.menu_data'))
                     ->icon('heroicon-m-bars-4')
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('locale')
-                            ->disabled()
-                            ->required(),
-                            Forms\Components\TextInput::make('slug')
-                            ->required(),
-                        // Forms\Components\TextInput::make('parent_slug')
-                        //     ->maxLength(255),
-                        Forms\Components\Toggle::make('display')
-                            ->label('Display'),
-                        // Forms\Components\TextInput::make('order')
-                        //     ->required()
-                        //     ->numeric()
-                        //     ->default(0),
-                        Forms\Components\Select::make('type')
-                            ->options([
-                                'posts' => 'Posts',
-                                'listS' => 'Lists',
-                                'tilelists' => 'Tilelists',
-                                'tabs' => 'Tabs',
-                                'collapses' => 'Collapses',
-                            ])
-                            ->required(),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\TextInput::make('title')
+                                                ->label(__('backstage.title'))
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('slug')
+                                                ->label(__('backstage.slug'))
+                                                ->maxLength(255),
+                                            Forms\Components\TextInput::make('parent_slug')
+                                                ->label(__('backstage.parent_slug'))
+                                                ->maxLength(255),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 2]),
+                            Forms\Components\Group::make()
+                                ->schema([
+                                    Forms\Components\Section::make()
+                                        ->schema([
+                                            Forms\Components\Toggle::make('display')
+                                                ->label(__('backstage.published')),
+                                            Forms\Components\Hidden::make('locale')
+                                                ->label(__('backstage.locale'))
+                                                ->disabled()
+                                                ->required()
+                                                ->default(fn ($record) => $record?->locale ?? (request()->route('locale') ?? app()->getLocale())),
+                                            Forms\Components\Select::make('type')
+                                                ->label(__('backstage.type'))
+                                                ->options([
+                                                    'url' => __('backstage.type_url'),
+                                                    'posts' => __('backstage.type_posts'),
+                                                    'listS' => __('backstage.type_lists'),
+                                                    'tilelists' => __('backstage.type_tilelists'),
+                                                    'tabs' => __('backstage.type_tabs'),
+                                                    'collapses' => __('backstage.type_collapses'),
+                                                    'timeline' => __('backstage.type_timeline'),
+                                                ])
+                                                ->required(),
+                                            Forms\Components\Hidden::make('order')
+                                                ->label(__('backstage.order'))
+                                                ->required()
+                                                // ->numeric()
+                                                ->default(0),
+                                            Forms\Components\TextInput::make('url')
+                                                ->label(__('backstage.url'))
+                                                ->placeholder('https://example.com')
+                                                ->helperText(__('backstage.url_helper')),
+                                            Forms\Components\Toggle::make('url_target')
+                                                ->label(__('backstage.url_target'))
+                                                ->helperText(__('backstage.url_target_helper')),
+                                        ]),
+                                ])
+                                ->columnSpan(['lg' => 1]),
                     ])
+                    ->columns(3)
                     ->collapsible()
                     ->collapsed()
                     ->footerActions([
@@ -77,24 +117,34 @@ class MenuResource extends Resource
     {
         return $table
             ->heading('網站架構（表格模式）')
+            // ->defaultPaginationPageOptions([50])
+            ->modifyQueryUsing(fn ($query) => $query->where('locale', app()->getLocale()))
             ->columns([
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('backstage.title'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('locale'),
+                Tables\Columns\TextColumn::make('locale')
+                    ->label(__('backstage.locale')),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label(__('backstage.slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('parent_slug')
+                    ->label(__('backstage.parent_slug'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('order')
+                    ->label(__('backstage.order'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('backstage.type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('backstage.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('backstage.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -137,8 +187,9 @@ class MenuResource extends Resource
         return 'slug';
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+    /* Navigation 的 label 旁有資料總筆數的數字 */
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return static::getModel()::count();
+    // }
 }

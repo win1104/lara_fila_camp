@@ -26,7 +26,7 @@
                         style="background-color:rgb(251 251 251 / 20%);">
                         <div>
                             <div class="flex items-center w-16 h-8 mb-5 rounded-full">
-                                <img src="{{ asset('Page-1.png') }}" alt="">
+                                <img src="{{ asset('nobg_ai.png') }}" alt="">
                             </div>
                             <h3 class="mb-3 font-black leading-5 text-white">超越客服，打造沉浸式品牌體驗</h3>
                             <p class="mb-3 text-base text-white">
@@ -107,16 +107,17 @@
 
     {{-- 業務DNA --}}
     <section class="text-gray-600 body-font bg-[#EBF0FE]">
-        <div class="max-w-[1600px] mx-auto px-5 py-24 lg:px-32 flex md:flex-row flex-col items-center justify-center gap-8">
+        <div class="max-w-[1600px] mx-auto px-5 py-40 lg:px-32 flex md:flex-row flex-col items-center justify-center gap-14">
             <div class="md:w-1/2 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center max-w-lg">
-                    <h2 class="title-font sm:text-3xl text-2xl mb-8 font-black text-gray-900 font-sans">深入您的業務DNA，打造最懂您的 AI 聊天機器人</h2>
-                    <p class="mb-20 leading-relaxed text-lg">將 AI 模型和技術整合到您的網站或雲端系統中，從需求分析、數據準備、模型訓練，提供完整的 AI 聊天應用解決方案s</p>
+                    <h2 class="title-font sm:text-3xl text-2xl mb-8 font-black text-gray-900">深入您的業務DNA，打造最懂您的 AI 聊天機器人</h2>
+                    <p class="mb-20 font-medium text-lg">將 AI 模型和技術整合到您的網站或雲端系統中，從需求分析、數據準備、模型訓練，提供完整的 AI 聊天應用解決方案s</p>
                     <div class="flex justify-center">
                         <button
                             class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-2 px-10 focus:outline-none hover:bg-[#8cb02f] text-lg">更多訊息</button>
                     </div>
             </div>
-            <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+            {{-- <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6"> --}}
+            <div class="md:w-7/12 w-5/6">
                 <img class="object-cover object-center rounded" alt="hero" src="{{ asset('emphasize.png') }}" alt="">
             </div>
         </div>
@@ -126,7 +127,7 @@
     <section class="body-font bg-[#0D256D]">
         <div class="max-w-[1600px] mx-auto px-5 py-24 lg:px-32">
             <div class="">
-                <div class="max-w-xl mb-6 sm:mx-auto sm:text-center md:mb-10 lg:max-w-2xl">
+                <div class="max-w-lg mb-6 sm:mx-auto text-center md:mb-10 lg:max-w-xl">
                     <h2 class="text-white font-black mb-6 text-3xl">
                         可量化的商業價值
                     </h2>
@@ -135,20 +136,26 @@
                     </p>
                 </div>
                 <div class="grid gap-6 row-gap-5 lg:grid-cols-3">
-                    <div>
-                        <img class="object-cover w-full h-64 mb-6 rounded shadow-lg lg:h-80 xl:h-96"
-                            src="https://images.pexels.com/photos/3184311/pexels-photo-3184311.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;w=500"
-                            alt="" />
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="font-bold text-center mb-4">客服成本結構變化</h3>
+                        <div class="relative w-full h-[400px] max-h-[400px] mr-auto ml-auto">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-4 text-center">透過 AI 協同作業，大幅降低重複性問題的人力成本，讓人力專注於更高價值的客戶服務。</p>
                     </div>
-                    <div>
-                        <img class="object-cover w-full h-64 mb-6 rounded shadow-lg lg:h-80 xl:h-96"
-                            src="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-                            alt="" />
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="font-bold text-center mb-4">客戶互動渠道轉換率</h3>
+                        <div class="relative w-full h-[400px] max-h-[400px] mr-auto ml-auto">
+                            <canvas id="conversionChart"></canvas>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-4 text-center">GPT Assistant 提供 24/7 即時、個人化的互動，有效提升訪客轉換為潛在客戶或完成購買的機率。</p>
                     </div>
-                    <div>
-                        <img class="object-cover w-full h-64 mb-6 rounded shadow-lg lg:h-80 xl:h-96"
-                            src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-                            alt="" />
+                    <div class="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
+                        <h3 class="font-bold text-center mb-4">導入後月銷售額增長趨勢</h3>
+                        <div class="relative w-full h-[400px] max-h-[400px] mr-auto ml-auto">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-4 text-center">智能推薦與不間斷的銷售引導，直接反映在持續上揚的月銷售額曲線上。</p>
                     </div>
                 </div>
             </div>
@@ -249,7 +256,7 @@
     <footer class="text-gray-600 body-font bg-gray-100">
         <div
             class="border-b-2 border-gray-300 max-w-[1600px] px-5 lg:px-32 pt-20 pb-14 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
-            <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-right md:mt-0 mt-10">
+            <div class=" flex-shrink-0 md:mx-0 mx-auto text-center md:text-right md:mt-0 mt-10">
                 <a class="flex title-font font-medium items-center md:justify-end justify-center text-gray-900">
                     <img src="{{ asset('logo_black.png') }}" alt="maxweb Logo" role="img">
                 </a>
@@ -325,3 +332,170 @@
         </div>
     </footer>
 </div>
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Helper function for label wrapping
+            const wrapLabel = (label, maxLength = 16) => {
+                if (label.length <= maxLength) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).length > maxLength && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        if (currentLine.length > 0) {
+                            currentLine += ' ' + word;
+                        } else {
+                            currentLine = word;
+                        }
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            };
+
+            // Shared tooltip configuration
+            const tooltipConfig = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function (tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                    return label.join(' ');
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Chart 1: Cost Structure Donut Chart
+            const costCtx = document.getElementById('costChart').getContext('2d');
+            new Chart(costCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['人力成本', 'AI 系統與維護'],
+                    datasets: [{
+                        label: '導入前',
+                        data: [95, 5],
+                        backgroundColor: ['#118AB2', '#06D6A0'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                    }, {
+                        label: '導入後',
+                        data: [60, 40],
+                        backgroundColor: ['#118AB2', '#06D6A0'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        hidden: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        ...tooltipConfig.plugins,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '導入 AI 前後成本比較',
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Conversion Rate Bar Chart
+            const conversionCtx = document.getElementById('conversionChart').getContext('2d');
+            new Chart(conversionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['傳統線上客服', '電子郵件行銷', wrapLabel('GPT Assistants 智能助理')],
+                    datasets: [{
+                        label: '轉換率 (%)',
+                        data: [2.5, 1.8, 8.5],
+                        backgroundColor: [
+                            '#FFD166',
+                            '#118AB2',
+                            '#06D6A0'
+                        ],
+                        borderColor: [
+                            '#FFD166',
+                            '#118AB2',
+                            '#06D6A0'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...tooltipConfig.plugins,
+                        legend: {
+                            display: false,
+                        },
+                    }
+                }
+            });
+
+            // Chart 3: Sales Growth Line Chart
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['第一月', '第二月', '第三月', '第四月', '第五月', '第六月'],
+                    datasets: [{
+                        label: '導入後月銷售額 (萬元)',
+                        data: [120, 135, 160, 185, 220, 250],
+                        fill: true,
+                        backgroundColor: 'rgba(6, 214, 160, 0.2)',
+                        borderColor: '#06D6A0',
+                        tension: 0.3
+                    },
+                    {
+                        label: '導入前平均月銷售額 (萬元)',
+                        data: [115, 115, 115, 115, 115, 115],
+                        fill: false,
+                        borderColor: '#FF6B6B',
+                        borderDash: [5, 5],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        ...tooltipConfig.plugins,
+                    }
+                }
+            });
+        });
+    </script>
+@endpush

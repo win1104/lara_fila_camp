@@ -18,6 +18,8 @@ class Menu extends Model
         'title',
         'order',
         'display',
+        'url',
+        'url_target',
         'note',
         'fixuser',
     ];
@@ -30,6 +32,55 @@ class Menu extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        // 先嘗試從路由參數取得
+        $locale = request()->route('locale');
+
+        // 如果沒有，從 URL 路徑中提取
+        if (!$locale) {
+            $path = request()->path();
+            if (preg_match('/^([a-z]{2})\//', $path, $matches)) {
+                $locale = $matches[1];
+            }
+        }
+
+        // 如果還是沒有，從 referer 中提取
+        if (!$locale && request()->header('Referer')) {
+            $refererPath = parse_url(request()->header('Referer'), PHP_URL_PATH);
+            if (preg_match('/^\/([a-z]{2})\//', $refererPath, $matches)) {
+                $locale = $matches[1];
+            }
+        }
+
+        // 最後回退到應用預設語系
+        $locale = $locale ?? app()->getLocale();
+
+        // 強制寫入日誌
+        // \Illuminate\Support\Facades\Log::info('Menu resolveRouteBinding CALLED:', [
+        //     'slug' => $value,
+        //     'locale' => $locale,
+        //     'route_locale' => request()->route('locale'),
+        //     'path' => request()->path(),
+        //     'referer' => request()->header('Referer'),
+        //     'timestamp' => now(),
+        // ]);
+
+        // 也寫入到檔案
+        file_put_contents(
+            storage_path('logs/debug-menu-binding.log'),
+            date('Y-m-d H:i:s') . " - resolveRouteBinding called with slug: {$value}, locale: {$locale}\n",
+            FILE_APPEND
+        );
+
+        return $this->where('slug', $value)
+            ->where('locale', $locale)
+            ->first();
     }
 
     public function posts(): HasMany
@@ -90,12 +141,12 @@ class Menu extends Model
             }
 
             // 除錯資訊
-            \Illuminate\Support\Facades\Log::info('Menu Saving:', [
-                'slug' => $model->slug,
-                'parent_slug' => $model->parent_slug,
-                'order' => $model->order,
-                'changes' => $model->getDirty()
-            ]);
+            // \Illuminate\Support\Facades\Log::info('Menu Saving:', [
+            //     'slug' => $model->slug,
+            //     'parent_slug' => $model->parent_slug,
+            //     'order' => $model->order,
+            //     'changes' => $model->getDirty()
+            // ]);
         });
 
         // 攔截所有更新操作
@@ -108,10 +159,10 @@ class Menu extends Model
                 unset($model->attributes['parent_id']);
 
                 // 除錯資訊
-                \Illuminate\Support\Facades\Log::info('Intercepted parent_id update:', [
-                    'original_parent_id' => $dirty['parent_id'],
-                    'new_parent_slug' => $model->parent_slug
-                ]);
+                // \Illuminate\Support\Facades\Log::info('Intercepted parent_id update:', [
+                //     'original_parent_id' => $dirty['parent_id'],
+                //     'new_parent_slug' => $model->parent_slug
+                // ]);
             }
 
             return true;

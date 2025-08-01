@@ -20,6 +20,14 @@ class ListMenus extends ListRecords
         ];
     }
 
+    public function mount(): void
+    {
+        // 保存當前頁次到 session
+        if (request()->has('page')) {
+            session(['menus_list_page' => request('page')]);
+        }
+    }
+
     protected function getHeaderWidgets(): array
     {
         return [

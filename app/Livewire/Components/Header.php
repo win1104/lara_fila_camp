@@ -19,9 +19,10 @@ class Header extends Component
         $this->menus = MenuModel::where('locale', app()->getLocale())
             ->where('parent_slug', 'home')
             ->where('display', 1)
-            ->limit(8)
+            // ->limit(8)
             ->orderBy('order', 'asc')
             ->get();
+
 
         // $this->productCategory = ProductCategory::where('locale', app()->getLocale())
         //     ->where('parent_slug', 'home')
@@ -44,7 +45,7 @@ class Header extends Component
     //     $this->responsiveMenu = !$this->responsiveMenu;
     // }
 
-    public function render()
+        public function render()
     {
         return view('livewire.components.header');
     }

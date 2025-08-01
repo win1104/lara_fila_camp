@@ -83,7 +83,7 @@
             @endisset
         </div>
 
-        @livewire('chat-widget')
+        @livewire('pages.chat-widget')
         {{-- @livewire('doc-bot') --}}
 
         <!-- Livewire Scripts (必須在 Alpine 之前) -->

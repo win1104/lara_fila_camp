@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'member' => '會員',
+    'member_mana' => '會員管理',
+    'name' => '姓名',
+    'type' => '類別',
+    'sn' => '編號',
+    'pid' => '身份證號碼',
+    'firstname' => '英文名',
+    'lastname' => '英文姓',
+    'gender' => '性別',
+    'birthday' => '生日',
+    'phone' => '聯絡電話',
+    'mobile' => '手機',
+    'fax' => '傳真',
+    'fb_id' => 'FB',
+    'line_id' => 'Line',
+    'website' => '網站',
+    'country' => '國家',
+    'city' => '城市',
+    'district' => '縣市',
+    'zip' => '郵遞區號',
+    'address' => '地址',
+    'company' => '公司',
+    'company_no' => '統編',
+    'position' => '職稱',
+    'job_title' => '職位',
+    'education' => '教育程度',
+    'note' => '備註',
+    'verify' => '認證',
+    'frozen' => '凍結',
+    'check' => '確認',
+    'expired' => '到期'
+
+];

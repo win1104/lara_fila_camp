@@ -27,7 +27,6 @@ class User extends Authenticatable
         'avatar',
         'password',
         'status',
-        'public_slug',
     ];
 
     /**

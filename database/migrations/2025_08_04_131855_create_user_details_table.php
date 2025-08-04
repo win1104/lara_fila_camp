@@ -43,7 +43,7 @@ return new class extends Migration
             $table->string('verify_code')->nullable();
             $table->boolean('frozen')->default(false);
             $table->boolean('check')->default(false);
-            $table->integer('login_count')->default(0);
+            $table->integer('login_count')->nullable()->default(0);
             $table->timestamp('expired')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -54,21 +54,28 @@ return new class extends Migration
 
 
             // 複合索引：(用於全域搜尋)
-            $table->index(['sn', 'pid', 'mobile'], 'idx_users_search');
+            $table->index(['sn', 'pid', 'mobile'], 'idx_user_details_search');
             // 複合索引：(用於 slug 搜尋)
-            $table->index(['pid', 'mobile'], 'idx_users_slug');
+            $table->index(['pid', 'mobile'], 'idx_user_details_slug');
             // 單一索引：(用於標題搜尋)
-            $table->index('pid', 'idx_users_pid');
-            $table->index('mobile', 'idx_users_mobile');
-            $table->index('sn', 'idx_users_sn');
+            $table->index('pid', 'idx_user_details_pid');
+            $table->index('mobile', 'idx_user_details_mobile');
+            $table->index('sn', 'idx_user_details_sn');
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->string('public_slug', 8)->unique()->nullable();
+            $table->string('public_slug', 8)->unique()->nullable()->after('id');
+            $table->unsignedBigInteger('creator_id')->nullable()->after('status');
+
+            $table->foreign('creator_id')
+                ->references('id')->on('admins');
 
             // 複合索引：(用於全域搜尋)
-            $table->index(['name', 'email'], 'idx_users_search');
+            $table->index(['public_slug', 'name', 'email'], 'idx_users_search');
+            // 複合索引：(用於 slug 搜尋)
+            $table->index(['public_slug', 'name'], 'idx_users_slug');
             // 單一索引：(用於標題搜尋)
+            $table->index('public_slug', 'idx_users_public_slug');
             $table->index('name', 'idx_users_name');
             $table->index('email', 'idx_users_email');
         });
@@ -82,7 +89,18 @@ return new class extends Migration
         Schema::dropIfExists('user_details');
 
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('public_slug');
+            // 刪除索引
+            $table->dropIndex('idx_users_search');
+            $table->dropIndex('idx_users_slug');
+            $table->dropIndex('idx_users_public_slug');
+            $table->dropIndex('idx_users_name');
+            $table->dropIndex('idx_users_email');
+
+            // 刪除外鍵約束
+            $table->dropForeign(['creator_id']);
+
+            // 刪除欄位
+            $table->dropColumn(['public_slug', 'creator_id']);
         });
     }
 };

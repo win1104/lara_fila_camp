@@ -7,16 +7,17 @@ use App\Models\Post;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PostCategory;
 use Filament\Actions\Action;
 use Illuminate\Support\Facades\Log;
 use Filament\Resources\Components\Tab;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Builder;
+use FilamentTiptapEditor\Enums\TiptapOutput;
 use App\Filament\Resources\PostResource\Pages;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Filament\Resources\RelationManagers\RelationManager;
-use App\Models\PostCategory;
 
 class PostsRelationManager extends RelationManager
 {
@@ -111,12 +112,14 @@ class PostsRelationManager extends RelationManager
                                 //     ->label(__('backstage.intro')),
                                 TiptapEditor::make('intro')
                                     ->label(__('backstage.intro'))
+                                    ->output(TiptapOutput::Json)
                                     ->columnSpan('full'),
                             ]),
                         Forms\Components\Section::make(__('backstage.content'))
                             ->schema([
                                 TiptapEditor::make('content')
                                     ->label(__('backstage.content'))
+                                    ->output(TiptapOutput::Json)
                                     ->columnSpan('full'),
                                 // Forms\Components\RichEditor::make('content')
                                 //     ->label(__('backstage.content'))

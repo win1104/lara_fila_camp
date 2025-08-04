@@ -6,7 +6,8 @@
             <article class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-3xl font-bold mb-4">{{ $post->title }}</h2>
                 @if($post->intro)
-                    <div class="text-gray-600 mb-6">{!! $post->intro !!}</div>
+                    {{-- <div class="text-gray-600 mb-6">{!! $post->intro !!}</div> --}}
+                    <div class="text-gray-600 mb-6">{!! tiptap_converter()->asHTML($post->intro ?? '', toc: true, maxDepth: 4) !!}</div>
                 @endif
                 <div class="prose max-w-none">
                     <div class="prose dark:prose-invert max-w-none">

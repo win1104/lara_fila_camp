@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Filament\Tiptap\Stats;
 use App\Filament\Tiptap\Carousel;
 use App\Filament\Tiptap\LtextRimage;
+use App\Filament\Tiptap\T_img_b_text;
 use Illuminate\Support\Facades\Blade;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use App\View\Components\Filament\Resources\RelationManager;
+use Filament\Support\Facades\FilamentIcon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
                     Stats::class,
                     Carousel::class,
                     LtextRimage::class,
+                    T_img_b_text::class,
                 ]);
         });
     }
@@ -36,5 +39,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
         Blade::component('filament::resources.relation-manager', RelationManager::class);
+
+        //  FilamentIcon::register([ // [!code focus]
+        //     'custom-icons' => __DIR__.
+        //     '/../../resources/svg', // [!code focus]
+        // ]); // [!code focus]
     }
 }

@@ -5,7 +5,7 @@ use FilamentTiptapEditor\TiptapBlock;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\FileUpload as FilamentFileUpload;
+use Filament\Forms\Components\FileUpload;
 
 class LtextRimage extends TiptapBlock
 {
@@ -18,7 +18,13 @@ class LtextRimage extends TiptapBlock
         return [
             TextInput::make('title')->required(),
             Textarea::make('contact')->required(),
-            FilamentFileUpload::make('image')->required(),
+            // FileUpload::make('image'),
+            // Repeater::make('images')
+            //     ->schema([
+                    FileUpload::make('images')->required()
+                // ])
+                // ->multiple()
+                // ->maxParallelUploads(1),
             // TextInput::make('color'),
             // Select::make('side')
             //     ->options([

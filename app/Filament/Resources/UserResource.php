@@ -18,14 +18,7 @@ use App\Filament\Resources\UserResource\RelationManagers;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
-    // protected static ?string $navigationLabel = '會員管理';
-
-    // protected static ?string $modelLabel = '會員';
-
-    // protected static ?string $pluralModelLabel = '會員';
 
     public static function getModelLabel(): string
     {
@@ -40,6 +33,45 @@ class UserResource extends Resource
         return __('user.member_mana');
     }
     protected static ?string $navigationGroup = 'Member';
+
+
+
+
+
+    /* 全文檢索 start */
+    protected static int $globalSearchResultsLimit = 10;
+    public static function getGlobalSearchResultTitle($record): string
+    {
+        return $record->name;
+    }
+    public static function getGlobalSearchResultDetails($record): array
+    {
+        return [
+            'Email' => $record->email,
+            // 移除 Category 以避免 N+1 查詢問題
+        ];
+    }
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()
+            ->select('users.id', 'users.name', 'users.email', 'user_details.mobile', 'user_details.firstname')
+            ->leftJoin('user_details', 'users.id', '=', 'user_details.user_id')
+            ->orderBy('users.name');
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return [
+            'name',
+            'email',
+            'userDetail.mobile',
+            'userDetail.firstname',
+        ];
+    }
+    /* 全文檢索 end */
+
+
+
+
 
     public static function form(Form $form): Form
     {
@@ -84,19 +116,19 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('detail_type')
                             ->label('會員類型'),
-                        
+
                         Forms\Components\TextInput::make('detail_sn')
                             ->label('會員序號'),
-                        
+
                         Forms\Components\TextInput::make('detail_pid')
                             ->label('身份證號碼'),
-                        
+
                         Forms\Components\TextInput::make('detail_firstname')
                             ->label('名'),
-                        
+
                         Forms\Components\TextInput::make('detail_lastname')
                             ->label('姓'),
-                        
+
                         Forms\Components\Select::make('detail_gender')
                             ->label('性別')
                             ->options([
@@ -104,7 +136,7 @@ class UserResource extends Resource
                                 'F' => '女',
                                 'O' => '其他',
                             ]),
-                        
+
                         Forms\Components\DatePicker::make('detail_birthday')
                             ->label('生日'),
                     ])
@@ -115,20 +147,20 @@ class UserResource extends Resource
                         Forms\Components\TextInput::make('detail_phone')
                             ->label('電話')
                             ->tel(),
-                        
+
                         Forms\Components\TextInput::make('detail_mobile')
                             ->label('手機')
                             ->tel(),
-                        
+
                         Forms\Components\TextInput::make('detail_fax')
                             ->label('傳真'),
-                        
+
                         Forms\Components\TextInput::make('detail_fb_id')
                             ->label('Facebook ID'),
-                        
+
                         Forms\Components\TextInput::make('detail_line_id')
                             ->label('Line ID'),
-                        
+
                         Forms\Components\TextInput::make('detail_website')
                             ->label('網站')
                             ->url(),
@@ -139,16 +171,16 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('detail_country')
                             ->label('國家'),
-                        
+
                         Forms\Components\TextInput::make('detail_city')
                             ->label('城市'),
-                        
+
                         Forms\Components\TextInput::make('detail_district')
                             ->label('區域'),
-                        
+
                         Forms\Components\TextInput::make('detail_zip')
                             ->label('郵遞區號'),
-                        
+
                         Forms\Components\Textarea::make('detail_address')
                             ->label('地址')
                             ->rows(2)
@@ -160,16 +192,16 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('detail_company')
                             ->label('公司名稱'),
-                        
+
                         Forms\Components\TextInput::make('detail_company_no')
                             ->label('公司統編'),
-                        
+
                         Forms\Components\TextInput::make('detail_position')
                             ->label('職位'),
-                        
+
                         Forms\Components\TextInput::make('detail_job_title')
                             ->label('職稱'),
-                        
+
                         Forms\Components\TextInput::make('detail_education')
                             ->label('學歷'),
                     ])
@@ -179,24 +211,24 @@ class UserResource extends Resource
                     ->schema([
                         Forms\Components\Toggle::make('detail_verify')
                             ->label('已驗證'),
-                        
+
                         Forms\Components\TextInput::make('detail_verify_code')
                             ->label('驗證碼'),
-                        
+
                         Forms\Components\Toggle::make('detail_frozen')
                             ->label('凍結'),
-                        
+
                         Forms\Components\Toggle::make('detail_check')
                             ->label('已檢查'),
-                        
+
                         Forms\Components\TextInput::make('detail_login_count')
                             ->label('登入次數')
                             ->numeric()
                             ->default(0),
-                        
+
                         Forms\Components\DateTimePicker::make('detail_expired')
                             ->label('到期時間'),
-                        
+
                         Forms\Components\Textarea::make('detail_note')
                             ->label('備註')
                             ->rows(3)

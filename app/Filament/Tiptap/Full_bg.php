@@ -2,29 +2,22 @@
 
 namespace App\Filament\Tiptap;
 use FilamentTiptapEditor\TiptapBlock;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 
-class LtextRimage extends TiptapBlock
+class Full_bg extends TiptapBlock
 {
-    public string $preview = 'blocks.previews.ltextrimage';
+    public string $preview = 'blocks.previews.full_bg';
 
-    public string $rendered = 'blocks.rendered.ltextrimage';
+    public string $rendered = 'blocks.rendered.full_bg';
 
     public function getFormSchema(): array
     {
         return [
             TextInput::make('title')->required(),
             Textarea::make('contact'),
-            // FileUpload::make('image'),
-            // Repeater::make('images')
-            //     ->schema([
-                    FileUpload::make('images')->required()
-                // ])
-                // ->multiple()
-                // ->maxParallelUploads(1),
+            FileUpload::make('images')->required(),
             // TextInput::make('color'),
             // Select::make('side')
             //     ->options([

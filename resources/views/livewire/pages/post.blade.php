@@ -71,6 +71,7 @@
                         </div>
                     </section>
                 </div>
+                {{ $posts->links() }}
                 @break
 
             @case('timeline')

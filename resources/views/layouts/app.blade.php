@@ -24,6 +24,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+        {{-- @maryScripts --}}
+
 
         <style>
             .dropdown {
@@ -61,7 +63,7 @@
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
+                <header class="bg-white shadow mt-24">
                     <div class="max-w-[1632px] mx-auto px-8 py-6 lg:px-32">
                         {{ $header }}
                     </div>

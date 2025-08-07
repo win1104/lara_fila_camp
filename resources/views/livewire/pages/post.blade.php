@@ -70,8 +70,8 @@
                             @endforeach
                         </div>
                     </section>
+                    {{ $posts->links() }}
                 </div>
-                {{ $posts->links() }}
                 @break
 
             @case('timeline')

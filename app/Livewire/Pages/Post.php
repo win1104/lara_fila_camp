@@ -52,7 +52,7 @@ class Post extends Component
                 ->where('locale', app()->getLocale())
                 ->where('display', 1)
                 ->orderBy('order', 'asc')
-                ->paginate(10);
+                ->paginate(12);
         }
 
         return view('livewire.pages.post', [

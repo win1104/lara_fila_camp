@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed z-[90] w-full opacity-90" wire:id="header-component">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 fixed top-0 z-[90] w-full opacity-90" wire:id="header-component">
     <!-- Primary Navigation Menu -->
     <div class="max-w-[1600px] mx-auto">
         <div class="px-8 lg:px-32">

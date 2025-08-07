@@ -9,6 +9,7 @@ use App\Models\UserTag;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Filament\Clusters\Member;
 use Filament\Support\Colors\Color;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
@@ -17,22 +18,28 @@ use App\Filament\Resources\UserResource\RelationManagers;
 
 class UserResource extends Resource
 {
+    // 指定這個 Resource 屬於 Blog Cluster
+    protected static ?string $cluster = Member::class;
+
+
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    public static function getModelLabel(): string
-    {
-        return __('user.member');
-    }
-    public static function getModelPluralLabel(): string
-    {
-        return __('user.member');
-    }
+    // 在 Cluster 內的排序
+    protected static ?int $navigationSort = 1;
+    // public static function getModelLabel(): string
+    // {
+    //     return __('user.member');
+    // }
+    // public static function getModelPluralLabel(): string
+    // {
+    //     return __('user.member');
+    // }
     public static function getNavigationLabel(): string
     {
         return __('user.member_mana');
     }
-    protected static ?string $navigationGroup = 'Member';
+    // protected static ?string $navigationGroup = 'User';
 
 
 

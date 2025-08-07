@@ -15,6 +15,8 @@ class Carousel extends TiptapBlock
 
     public string $eximg = '/storage/app/public/maxweb_logo.png';
 
+    public ?string $icon = '/icon-carousel.svg';
+
     // public function getIcon(): ?string
     // {
     //     return 'custom-icons::logo-icon';

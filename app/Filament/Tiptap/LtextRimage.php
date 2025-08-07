@@ -13,6 +13,8 @@ class LtextRimage extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.ltextrimage';
 
+    public string $width = 'xl';
+
     public function getFormSchema(): array
     {
         return [

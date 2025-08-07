@@ -15,6 +15,7 @@ use App\Filament\Tiptap\Step;
 use App\Filament\Tiptap\Accordion;
 use App\Filament\Tiptap\Team_noBorder;
 use App\Filament\Tiptap\Gallery;
+use App\Filament\Tiptap\Gallery_two;
 use Illuminate\Support\Facades\Blade;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
                     Accordion::class,
                     Team_noBorder::class,
                     Gallery::class,
+                    Gallery_two::class,
                 ]);
         });
     }

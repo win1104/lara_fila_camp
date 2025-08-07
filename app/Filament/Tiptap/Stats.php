@@ -10,6 +10,14 @@ class Stats extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.stats';
 
+    public string $width = 'xl';
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-stats.svg';
+
+
+    // public bool $slideOver = true;
+
     public function getFormSchema(): array
     {
         return [

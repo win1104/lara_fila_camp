@@ -12,6 +12,8 @@ class Accordion extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.accordion';
 
+    public string $width = 'xl';
+
     public function getFormSchema(): array
     {
         return [

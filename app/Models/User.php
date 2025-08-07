@@ -6,8 +6,11 @@ namespace App\Models;
 // use App\Models\Chat;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -87,5 +90,37 @@ class User extends Authenticatable
     public function chat_assistants(): HasMany
     {
         return $this->hasMany(Chat_assistant::class);
+    }
+
+    /**
+     * @return 一對一的關係
+     */
+    public function userDetail(): HasOne
+    {
+        // return $this->hasOne(UserDetail::class);
+        return $this->hasOne(UserDetail::class, 'user_id');
+    }
+
+    /**
+     * @return 多對多的關係
+     */
+    public function userTags(): BelongsToMany
+    {
+        return $this->belongsToMany(UserTag::class, 'user_tag_relations');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->public_slug)) {
+                do {
+                    $publicSlug = Str::random(8);
+                } while (self::where('public_slug', $publicSlug)->exists());
+
+                $model->public_slug = $publicSlug;
+            }
+        });
     }
 }

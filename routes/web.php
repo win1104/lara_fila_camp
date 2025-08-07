@@ -1,8 +1,8 @@
 <?php
 
-use App\Livewire\DocBot;
-use App\Livewire\ChatWidget;
 use Illuminate\Http\Request;
+use App\Livewire\Pages\DocBot;
+use App\Livewire\Pages\ChatWidget;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Post;
 use App\Livewire\Pages\Product;

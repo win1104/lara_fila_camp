@@ -21,7 +21,7 @@ class EditProduct extends EditRecord
     {
         // 從 URL 中提取語系
         $path = request()->getPathInfo();
-        $locale = 'tw'; // 預設值
+        $locale = app()->getLocale(); // 預設值
         if (preg_match('#^/([a-z]{2})/#', $path, $matches)) {
             $locale = $matches[1];
         }

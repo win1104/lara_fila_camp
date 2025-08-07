@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'member' => 'Member',
+    'member_mana' => 'Member Mana',
+    'name' => 'Name',
+    'type' => 'Type',
+    'sn' => 'SN',
+    'pid' => 'ID',
+    'firstname' => 'Firstname',
+    'lastname' => 'Lastname',
+    'gender' => 'Gender',
+    'birthday' => 'Birthday',
+    'phone' => 'Phone',
+    'mobile' => 'Mobile',
+    'fax' => 'Fax',
+    'fb_id' => 'FB',
+    'line_id' => 'Line',
+    'website' => 'Website',
+    'country' => 'Country',
+    'city' => 'City',
+    'district' => 'Sistrict',
+    'zip' => 'Zip',
+    'address' => 'Address',
+    'company' => 'Company',
+    'company_no' => 'Company NO',
+    'position' => 'Position',
+    'job_title' => 'Job Title',
+    'education' => 'Education',
+    'note' => 'Note',
+    'verify' => 'Verify',
+    'frozen' => 'Frozen',
+    'check' => 'Check',
+    'expired' => 'Expired'
+
+];

@@ -131,6 +131,7 @@
 
                         <!-- daisyui modal -->
                         <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
+                        <button class="btn btn-ghost text-xl hidden lg:inline-block" onclick="my_modal_1.showModal()"> {{ config("app.name")}}</button>
                         <dialog id="my_modal_1" class="modal">
                             <div class="modal-box">
                                 <h3 class="text-lg font-bold">Hello!</h3>

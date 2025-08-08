@@ -6,7 +6,7 @@ use Filament\Clusters\Cluster;
 
 class Member extends Cluster
 {
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $navigationLabel = 'My Member';
 

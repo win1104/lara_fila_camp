@@ -19,7 +19,7 @@ class UserCategoryResource extends Resource
     // 指定這個 Resource 屬於 Blog Cluster
     protected static ?string $cluster = Member::class;
     protected static ?string $model = UserCategory::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     // 在 Cluster 內的排序
     protected static ?int $navigationSort = 2;

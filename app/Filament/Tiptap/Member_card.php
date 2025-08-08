@@ -13,6 +13,10 @@ class Member_card extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.member_card';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-member_card.svg';
+
     public function getFormSchema(): array
     {
         return [

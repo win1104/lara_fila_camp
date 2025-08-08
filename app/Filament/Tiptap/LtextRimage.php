@@ -15,6 +15,10 @@ class LtextRimage extends TiptapBlock
 
     public string $width = 'xl';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-ltext_rimage.svg';
+
     public function getFormSchema(): array
     {
         return [

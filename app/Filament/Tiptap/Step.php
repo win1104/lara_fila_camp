@@ -13,6 +13,10 @@ class Step extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.step';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-step.svg';
+
     public function getFormSchema(): array
     {
         return [

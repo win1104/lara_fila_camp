@@ -12,6 +12,10 @@ class Full_bg extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.full_bg';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-full_bg.svg';
+
     public function getFormSchema(): array
     {
         return [

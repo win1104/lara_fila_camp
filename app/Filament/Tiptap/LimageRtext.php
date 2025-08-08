@@ -13,6 +13,10 @@ class LimageRtext extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.limagertext';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-limage_rtext.svg';
+
     public function getFormSchema(): array
     {
         return [

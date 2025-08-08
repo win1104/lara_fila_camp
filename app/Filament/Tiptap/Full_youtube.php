@@ -12,6 +12,10 @@ class Full_youtube extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.full_youtube';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-full_youtube.svg';
+
     public function getFormSchema(): array
     {
         return [

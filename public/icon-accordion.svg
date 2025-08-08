@@ -1,0 +1,52 @@
+<svg width="368" height="218" xmlns="http://www.w3.org/2000/svg" version="1.1" stroke="null">
+ <g stroke="null">
+  <title stroke="null">Layer 1</title>
+  <text fill="#4b5568" x="21.60159" y="42.93095" id="svg_79" stroke-width="0" font-size="24" font-family="'Cabin'" text-anchor="start" xml:space="preserve" transform="matrix(0.80764 0 0 0.812804 3.8273 8.90683)" font-weight="bold" stroke="null">Group 1</text>
+  <path fill="#000000" id="svg_4" stroke="null"/>
+  <path fill="#000000" id="svg_6" stroke="null"/>
+  <path fill="#000000" id="svg_11" stroke="null"/>
+  <path fill="#000000" id="svg_16" stroke="null"/>
+  <path fill="#000000" id="svg_22" stroke="null"/>
+  <path fill="#000000" id="svg_24" stroke="null"/>
+  <path fill="#000000" id="svg_25" stroke="null"/>
+  <path fill="#000000" id="svg_26" stroke="null"/>
+  <path fill="#000000" id="svg_27" stroke="null"/>
+  <path fill="#000000" id="svg_29" stroke="null"/>
+  <path fill="#000000" id="svg_30" stroke="null"/>
+  <path fill="#000000" id="svg_31" stroke="null"/>
+  <path fill="#000000" id="svg_32" stroke="null"/>
+  <path fill="#000000" id="svg_33" stroke="null"/>
+  <path fill="#000000" id="svg_40" stroke="null"/>
+  <path fill="#000000" id="svg_50" stroke="null"/>
+  <path fill="#000000" id="svg_51" stroke="null"/>
+  <path fill="#000000" id="svg_52" stroke="null"/>
+  <path fill="#000000" id="svg_54" stroke="null"/>
+  <path fill="#000000" id="svg_55" stroke="null"/>
+  <path fill="#000000" id="svg_62" stroke="null"/>
+  <path fill="#000000" id="svg_70" stroke="null"/>
+  <path fill="#000000" id="svg_75" stroke="null"/>
+  <path fill="#000000" id="svg_76" stroke="null"/>
+  <text fill="#a0aec0" stroke-width="0" x="24.08914" y="80.97676" id="svg_80" font-size="24" font-family="'Alumni Sans'" text-anchor="start" xml:space="preserve" font-weight="normal" transform="matrix(0.882055 0 0 0.882055 2.75205 10.7988)" stroke="null">Hello 1</text>
+  <text fill="#4b5568" x="20.9825" y="42.54553" id="svg_81" stroke-width="0" font-size="24" font-family="'Cabin'" text-anchor="start" xml:space="preserve" transform="matrix(0.80764 0 0 0.812804 3.8273 102.278)" font-weight="bold" stroke="null">Group 2</text>
+  <text fill="#4b5568" x="20.9825" y="42.54553" id="svg_82" stroke-width="0" font-size="24" font-family="'Cabin'" text-anchor="start" xml:space="preserve" transform="matrix(0.80764 0 0 0.812804 3.8273 158.778)" font-weight="bold" stroke="null">Group 3</text>
+  <g id="svg_86">
+   <path fill="#000000" opacity="undefined" d="m295.5,36.75l-7.5,7.5" id="svg_83" stroke-width="2" stroke="#4b5568"/>
+   <path fill="#000000" opacity="undefined" d="m295.5,36.75l-7.5,7.5" id="svg_84" stroke-width="2" stroke="#4b5568"/>
+   <path transform="rotate(90 298.25 40.5)" fill="#000000" d="m302,36.75l-7.5,7.5" id="svg_85" stroke-width="2" stroke="#4b5568"/>
+  </g>
+  <g transform="rotate(180 295 131)" id="svg_90">
+   <path fill="#000000" opacity="undefined" d="m295.5,127.25l-7.5,7.5" id="svg_87" stroke-width="2" stroke="#4b5568"/>
+   <path fill="#000000" opacity="undefined" d="m295.5,127.25l-7.5,7.5" id="svg_88" stroke-width="2" stroke="#4b5568"/>
+   <path transform="rotate(90 298.25 131)" fill="#000000" d="m302,127.25l-7.5,7.5" id="svg_89" stroke-width="2" stroke="#4b5568"/>
+  </g>
+  <g transform="rotate(180 295 189.5)" id="svg_5">
+   <path fill="#000000" opacity="undefined" d="m295.5,185.74988l-7.5,7.5" id="svg_1" stroke-width="2" stroke="#4b5568"/>
+   <path fill="#000000" opacity="undefined" d="m295.5,185.74988l-7.5,7.5" id="svg_2" stroke-width="2" stroke="#4b5568"/>
+   <path transform="rotate(90 298.25 189.5)" fill="#000000" d="m302,185.74988l-7.5,7.5" id="svg_3" stroke-width="2" stroke="#4b5568"/>
+  </g>
+  <line id="svg_13" y2="161.7499" x2="370" y1="161.7499" x1="0" stroke="#b3c3d6" fill="none"/>
+  <line id="svg_14" y2="161.7499" x2="370" y1="161.7499" x1="0" stroke="#b3c3d6" fill="none"/>
+  <line id="svg_15" y2="100.90185" x2="370" y1="100.90185" x1="0" stroke="#b3c3d6" fill="none"/>
+ </g>
+
+</svg>

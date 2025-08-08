@@ -13,7 +13,7 @@ class Carousel extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.carousel';
 
-    public string $eximg = '/storage/app/public/maxweb_logo.png';
+    public ?string $label = '';
 
     public ?string $icon = '/icon-carousel.svg';
 

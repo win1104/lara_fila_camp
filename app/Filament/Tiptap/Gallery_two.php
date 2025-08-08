@@ -13,6 +13,10 @@ class Gallery_two extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.gallery_two';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-gallery_two.svg';
+
     public function getFormSchema(): array
     {
         return [

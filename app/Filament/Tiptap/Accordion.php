@@ -14,6 +14,10 @@ class Accordion extends TiptapBlock
 
     public string $width = 'xl';
 
+    public ?string $label = '';
+
+    public ?string $icon = '/icon-accordion.svg';
+
     public function getFormSchema(): array
     {
         return [

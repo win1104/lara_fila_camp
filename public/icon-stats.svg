@@ -1,3 +1,13 @@
-<svg class="inline w-9 h-9" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"></path>
+<svg width="368" height="210" xmlns="http://www.w3.org/2000/svg" class="inline w-9 h-9" fill="none" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+ <g>
+  <title>Layer 1</title>
+  <path stroke-linecap="round" stroke-linejoin="round" d="m33.74974,131.49906l37.21251,-37.21251l23.73883,23.73883a65.87993,65.87993 0 0 1 32.05238,-30.42054l15.10552,-6.72582m0,0l-32.74701,-12.57507m32.74701,12.56956l-12.56956,32.75252" id="svg_1" stroke="null"/>
+ </g>
+
+ <g>
+  <title>Layer 2</title>
+  <rect stroke="null" id="svg_2" fill="#a0aec0" rx="2" height="4.6282" width="83.33324" y="54.29355" x="182.66661"/>
+  <rect stroke="null" id="svg_3" fill="#4b5568" rx="2.5" height="5" width="120" y="95.83749" x="183.66661"/>
+  <rect stroke="null" id="svg_4" fill="#a0aec0" rx="2" height="4.83849" width="120" y="137.62679" x="183.33328"/>
+ </g>
 </svg>

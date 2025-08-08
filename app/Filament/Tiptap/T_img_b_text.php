@@ -13,8 +13,8 @@ class T_img_b_text extends TiptapBlock
     public string $rendered = 'blocks.rendered.t_img_b_text';
     public string $width = 'xl';
 
-    public ?string $label = '上圖_下文字';
-    public ?string $icon = 'heroicon-o-film';
+    public ?string $label = '';
+    public ?string $icon = '/icon-timg_btext.svg';
 
     public function getFormSchema(): array
     {

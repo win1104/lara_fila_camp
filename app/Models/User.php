@@ -23,11 +23,17 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'slug',
         'email',
         'avatar',
         'password',
         'status',
     ];
+
+    // public function getRouteKeyName(): string
+    // {
+    //     return 'slug';
+    // }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -109,17 +115,26 @@ class User extends Authenticatable
         return $this->belongsToMany(UserTag::class, 'user_tag_relations');
     }
 
+    /**
+     * @return 多對多的關係 - User Categories
+     */
+    public function userCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(UserCategory::class, 'user_relation', 'user_slug', 'user_category_slug', 'slug', 'slug')
+            ->withTimestamps();
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($model) {
-            if (empty($model->public_slug)) {
+            if (empty($model->slug)) {
                 do {
-                    $publicSlug = Str::random(8);
-                } while (self::where('public_slug', $publicSlug)->exists());
+                    $slug = Str::random(8);
+                } while (self::where('slug', $slug)->exists());
 
-                $model->public_slug = $publicSlug;
+                $model->slug = $slug;
             }
         });
     }

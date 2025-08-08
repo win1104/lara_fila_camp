@@ -20,8 +20,6 @@ class UserResource extends Resource
 {
     // 指定這個 Resource 屬於 Blog Cluster
     protected static ?string $cluster = Member::class;
-
-
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -84,10 +82,10 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('基本資料')
+                Forms\Components\Section::make(__('user.basic_info'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
-                            ->label('姓名')
+                            ->label(__('user.name'))
                             ->required()
                             ->maxLength(255),
 
@@ -98,166 +96,166 @@ class UserResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('public_slug')
-                            ->label('公開編號')
+                        Forms\Components\TextInput::make('slug')
+                            ->label(__('user.slug'))
                             ->disabled()
-                            ->helperText('系統自動生成的8位數編號'),
+                            ->helperText(__('user.slug_helper')),
 
                         Forms\Components\FileUpload::make('avatar')
-                            ->label('頭像')
+                            ->label(__('user.avatar'))
                             ->image()
                             ->directory('avatars'),
 
                         Forms\Components\Select::make('status')
-                            ->label('狀態')
+                            ->label(__('user.status'))
                             ->options([
-                                'active' => '啟用',
-                                'inactive' => '停用',
-                                'pending' => '待審核',
+                                'active' => __('user.status_active'),
+                                'inactive' => __('user.status_inactive'),
+                                'pending' => __('user.status_pending'),
                             ])
                             ->default('active'),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('詳細資料')
+                Forms\Components\Section::make(__('user.detail_info'))
                     ->schema([
                         Forms\Components\TextInput::make('detail_type')
-                            ->label('會員類型'),
+                            ->label(__('user.type')),
 
                         Forms\Components\TextInput::make('detail_sn')
-                            ->label('會員序號'),
+                            ->label(__('user.sn')),
 
                         Forms\Components\TextInput::make('detail_pid')
-                            ->label('身份證號碼'),
+                            ->label(__('user.pid')),
 
                         Forms\Components\TextInput::make('detail_firstname')
-                            ->label('名'),
+                            ->label(__('user.firstname')),
 
                         Forms\Components\TextInput::make('detail_lastname')
-                            ->label('姓'),
+                            ->label(__('user.lastname')),
 
                         Forms\Components\Select::make('detail_gender')
-                            ->label('性別')
+                            ->label(__('user.gender'))
                             ->options([
-                                'M' => '男',
-                                'F' => '女',
-                                'O' => '其他',
+                                'M' => __('user.gender_male'),
+                                'F' => __('user.gender_female'),
+                                'O' => __('user.gender_other'),
                             ]),
 
                         Forms\Components\DatePicker::make('detail_birthday')
-                            ->label('生日'),
+                            ->label(__('user.birthday')),
                     ])
                     ->columns(3),
 
-                Forms\Components\Section::make('聯絡資訊')
+                Forms\Components\Section::make(__('user.contact_info'))
                     ->schema([
                         Forms\Components\TextInput::make('detail_phone')
-                            ->label('電話')
+                            ->label(__('user.phone'))
                             ->tel(),
 
                         Forms\Components\TextInput::make('detail_mobile')
-                            ->label('手機')
+                            ->label(__('user.mobile'))
                             ->tel(),
 
                         Forms\Components\TextInput::make('detail_fax')
-                            ->label('傳真'),
+                            ->label(__('user.fax')),
 
                         Forms\Components\TextInput::make('detail_fb_id')
-                            ->label('Facebook ID'),
+                            ->label(__('user.fb_id')),
 
                         Forms\Components\TextInput::make('detail_line_id')
-                            ->label('Line ID'),
+                            ->label(__('user.line_id')),
 
                         Forms\Components\TextInput::make('detail_website')
-                            ->label('網站')
+                            ->label(__('user.website'))
                             ->url(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('地址資訊')
+                Forms\Components\Section::make(__('user.address_info'))
                     ->schema([
                         Forms\Components\TextInput::make('detail_country')
-                            ->label('國家'),
+                            ->label(__('user.country')),
 
                         Forms\Components\TextInput::make('detail_city')
-                            ->label('城市'),
+                            ->label(__('user.city')),
 
                         Forms\Components\TextInput::make('detail_district')
-                            ->label('區域'),
+                            ->label(__('user.district')),
 
                         Forms\Components\TextInput::make('detail_zip')
-                            ->label('郵遞區號'),
+                            ->label(__('user.zip')),
 
                         Forms\Components\Textarea::make('detail_address')
-                            ->label('地址')
+                            ->label(__('user.address'))
                             ->rows(2)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('工作資訊')
+                Forms\Components\Section::make(__('user.work_info'))
                     ->schema([
                         Forms\Components\TextInput::make('detail_company')
-                            ->label('公司名稱'),
+                            ->label(__('user.company')),
 
                         Forms\Components\TextInput::make('detail_company_no')
-                            ->label('公司統編'),
+                            ->label(__('user.company_no')),
 
                         Forms\Components\TextInput::make('detail_position')
-                            ->label('職位'),
+                            ->label(__('user.position')),
 
                         Forms\Components\TextInput::make('detail_job_title')
-                            ->label('職稱'),
+                            ->label(__('user.job_title')),
 
                         Forms\Components\TextInput::make('detail_education')
-                            ->label('學歷'),
+                            ->label(__('user.education')),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('帳戶設定')
+                Forms\Components\Section::make(__('user.account_settings'))
                     ->schema([
                         Forms\Components\Toggle::make('detail_verify')
-                            ->label('已驗證'),
+                            ->label(__('user.verify')),
 
                         Forms\Components\TextInput::make('detail_verify_code')
-                            ->label('驗證碼'),
+                            ->label(__('user.verify_code')),
 
                         Forms\Components\Toggle::make('detail_frozen')
-                            ->label('凍結'),
+                            ->label(__('user.frozen')),
 
                         Forms\Components\Toggle::make('detail_check')
-                            ->label('已檢查'),
+                            ->label(__('user.check')),
 
                         Forms\Components\TextInput::make('detail_login_count')
-                            ->label('登入次數')
+                            ->label(__('user.login_count'))
                             ->numeric()
                             ->default(0),
 
                         Forms\Components\DateTimePicker::make('detail_expired')
-                            ->label('到期時間'),
+                            ->label(__('user.expired')),
 
                         Forms\Components\Textarea::make('detail_note')
-                            ->label('備註')
+                            ->label(__('user.note'))
                             ->rows(3)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('標籤設定')
+                Forms\Components\Section::make(__('user.tag_settings'))
                     ->schema([
                         Forms\Components\Select::make('userTags')
-                            ->label('會員標籤')
+                            ->label(__('user.member_tags'))
                             ->multiple()
                             ->relationship('userTags', 'name')
                             ->getOptionLabelFromRecordUsing(fn (UserTag $record): string => $record->name)
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
-                                    ->label('標籤名稱')
+                                    ->label(__('user.tag_name'))
                                     ->required()
                                     ->maxLength(255),
 
                                 Forms\Components\ColorPicker::make('color')
-                                    ->label('顏色')
+                                    ->label(__('user.color'))
                                     ->default('#3b82f6'),
                             ])
                             ->createOptionUsing(function (array $data): int {
@@ -272,17 +270,17 @@ class UserResource extends Resource
                             ->preload(),
                     ]),
 
-                Forms\Components\Section::make('密碼設定')
+                Forms\Components\Section::make(__('user.password_settings'))
                     ->schema([
                         Forms\Components\TextInput::make('password')
-                            ->label('密碼')
+                            ->label(__('user.password'))
                             ->password()
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create'),
 
                         Forms\Components\TextInput::make('password_confirmation')
-                            ->label('確認密碼')
+                            ->label(__('user.password_confirmation'))
                             ->password()
                             ->same('password')
                             ->required(fn (string $context): bool => $context === 'create'),
@@ -297,12 +295,12 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('avatar')
-                    ->label('頭像')
+                    ->label(__('user.avatar'))
                     ->circular()
                     ->size(40),
 
                 Tables\Columns\TextColumn::make('name')
-                    ->label('姓名')
+                    ->label(__('user.name'))
                     ->searchable()
                     ->sortable(),
 
@@ -311,15 +309,15 @@ class UserResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('public_slug')
-                    ->label('公開編號')
+                Tables\Columns\TextColumn::make('slug')
+                    ->label(__('user.slug'))
                     ->searchable()
                     ->copyable()
-                    ->copyMessage('已複製公開編號')
+                    ->copyMessage(__('user.copy_message'))
                     ->copyMessageDuration(1500),
 
                 Tables\Columns\TextColumn::make('userTags.name')
-                    ->label('標籤')
+                    ->label(__('global.tag'))
                     ->badge()
                     ->state(function (User $record): array {
                         return $record->userTags()->get()->map(fn ($tag) => [
@@ -333,7 +331,7 @@ class UserResource extends Resource
                     ->separator(','),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('狀態')
+                    ->label(__('user.status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'active' => 'success',
@@ -342,35 +340,35 @@ class UserResource extends Resource
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'active' => '啟用',
-                        'inactive' => '停用',
-                        'pending' => '待審核',
+                        'active' => __('user.status_active'),
+                        'inactive' => __('user.status_inactive'),
+                        'pending' => __('user.status_pending'),
                         default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('建立時間')
+                    ->label(__('user.created_at'))
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('更新時間')
+                    ->label(__('user.updated_at'))
                     ->dateTime('Y-m-d H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('狀態')
+                    ->label(__('user.status'))
                     ->options([
-                        'active' => '啟用',
-                        'inactive' => '停用',
-                        'pending' => '待審核',
+                        'active' => __('user.status_active'),
+                        'inactive' => __('user.status_inactive'),
+                        'pending' => __('user.status_pending'),
                     ]),
 
                 Tables\Filters\SelectFilter::make('userTags')
-                    ->label('標籤')
+                    ->label(__('user.tags'))
                     ->relationship('userTags', 'name')
                     ->multiple(),
             ])

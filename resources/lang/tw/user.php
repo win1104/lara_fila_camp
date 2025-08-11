@@ -6,7 +6,7 @@ return [
     'member_mana' => '會員管理',
     'name' => '姓名',
     'type' => '類別',
-    'slug' => '編號',
+    'slug' => 'Slug/ID',
     'sn' => '編號',
     'pid' => '身份證號碼',
     'firstname' => '英文名',
@@ -35,7 +35,7 @@ return [
     'frozen' => '凍結',
     'check' => '確認',
     'expired' => '到期',
-    
+
     // 表單區塊
     'basic_info' => '基本資料',
     'detail_info' => '詳細資料',
@@ -45,7 +45,7 @@ return [
     'account_settings' => '帳戶設定',
     'tag_settings' => '標籤設定',
     'password_settings' => '密碼設定',
-    
+
     // 表單欄位
     'slug_helper' => '系統自動生成的8位數編號',
     'verify_code' => '驗證碼',
@@ -59,17 +59,17 @@ return [
     'created_at' => '建立時間',
     'updated_at' => '更新時間',
     'tags' => '標籤',
-    
+
     // 狀態值
     'status_active' => '啟用',
     'status_inactive' => '停用',
     'status_pending' => '待審核',
-    
+
     // 性別
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_other' => '其他',
-    
+
     // 會員分類
     'category' => '會員分類',
     'category_label' => '會員分類',

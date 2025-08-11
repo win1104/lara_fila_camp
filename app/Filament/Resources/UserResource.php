@@ -82,40 +82,86 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make(__('user.basic_info'))
+                Forms\Components\Grid::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->label(__('user.name'))
-                            ->required()
-                            ->maxLength(255),
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make(__('user.basic_info'))
+                                    ->schema([
+                                        Forms\Components\TextInput::make('slug')
+                                            ->label(__('user.slug'))
+                                            ->disabled()
+                                            ->helperText(__('user.slug_helper')),
 
-                        Forms\Components\TextInput::make('email')
-                            ->label('Email')
-                            ->email()
-                            ->required()
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('name')
+                                            ->label(__('user.name'))
+                                            ->required()
+                                            ->maxLength(255),
 
-                        Forms\Components\TextInput::make('slug')
-                            ->label(__('user.slug'))
-                            ->disabled()
-                            ->helperText(__('user.slug_helper')),
+                                        Forms\Components\TextInput::make('email')
+                                            ->label('Email')
+                                            ->email()
+                                            ->required()
+                                            ->unique(ignoreRecord: true)
+                                            ->maxLength(255),
 
-                        Forms\Components\FileUpload::make('avatar')
-                            ->label(__('user.avatar'))
-                            ->image()
-                            ->directory('avatars'),
-
-                        Forms\Components\Select::make('status')
-                            ->label(__('user.status'))
-                            ->options([
-                                'active' => __('user.status_active'),
-                                'inactive' => __('user.status_inactive'),
-                                'pending' => __('user.status_pending'),
+                                        Forms\Components\Textarea::make('detail_note')
+                                            ->label(__('user.note'))
+                                            ->rows(3)
+                                            ->columnSpanFull(),
+                                    ]),
                             ])
-                            ->default('active'),
+                            ->columnSpan(['lg' => 2]),
+
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make(__('user.tag_settings'))
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('avatar')
+                                            ->label(__('user.avatar'))
+                                            ->image()
+                                            ->directory('avatars'),
+
+                                        Forms\Components\Select::make('status')
+                                            ->label(__('user.status'))
+                                            ->options([
+                                                'active' => __('user.status_active'),
+                                                'inactive' => __('user.status_inactive'),
+                                                'pending' => __('user.status_pending'),
+                                            ])
+                                            ->default('active'),
+
+                                        Forms\Components\Select::make('userTags')
+                                            ->label(__('user.member_tags'))
+                                            ->multiple()
+                                            ->relationship('userTags', 'name')
+                                            ->getOptionLabelFromRecordUsing(fn (UserTag $record): string => $record->name)
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->label(__('user.tag_name'))
+                                                    ->required()
+                                                    ->maxLength(255),
+
+                                                Forms\Components\ColorPicker::make('color')
+                                                    ->label(__('user.color'))
+                                                    ->default('#3b82f6'),
+                                            ])
+                                            ->createOptionUsing(function (array $data): int {
+                                                $tag = UserTag::create([
+                                                    'name' => $data['name'],
+                                                    'color' => $data['color'],
+                                                    'creator_id' => auth()->id(),
+                                                ]);
+                                                return $tag->id;
+                                            })
+                                            ->searchable()
+                                            ->preload(),
+                                    ]),
+                            ])
+                            ->columnSpan(['lg' => 1]),
+
                     ])
-                    ->columns(2),
+                    ->columns(3),
 
                 Forms\Components\Section::make(__('user.detail_info'))
                     ->schema([
@@ -233,42 +279,8 @@ class UserResource extends Resource
 
                         Forms\Components\DateTimePicker::make('detail_expired')
                             ->label(__('user.expired')),
-
-                        Forms\Components\Textarea::make('detail_note')
-                            ->label(__('user.note'))
-                            ->rows(3)
-                            ->columnSpanFull(),
                     ])
                     ->columns(2),
-
-                Forms\Components\Section::make(__('user.tag_settings'))
-                    ->schema([
-                        Forms\Components\Select::make('userTags')
-                            ->label(__('user.member_tags'))
-                            ->multiple()
-                            ->relationship('userTags', 'name')
-                            ->getOptionLabelFromRecordUsing(fn (UserTag $record): string => $record->name)
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('user.tag_name'))
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\ColorPicker::make('color')
-                                    ->label(__('user.color'))
-                                    ->default('#3b82f6'),
-                            ])
-                            ->createOptionUsing(function (array $data): int {
-                                $tag = UserTag::create([
-                                    'name' => $data['name'],
-                                    'color' => $data['color'],
-                                    'creator_id' => auth()->id(),
-                                ]);
-                                return $tag->id;
-                            })
-                            ->searchable()
-                            ->preload(),
-                    ]),
 
                 Forms\Components\Section::make(__('user.password_settings'))
                     ->schema([

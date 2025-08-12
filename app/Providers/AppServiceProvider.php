@@ -16,12 +16,16 @@ use App\Filament\Tiptap\Accordion;
 use App\Filament\Tiptap\Team_noBorder;
 use App\Filament\Tiptap\Gallery;
 use App\Filament\Tiptap\Gallery_two;
+use App\Filament\Tiptap\Card_gallery;
+use App\Filament\Tiptap\Card_gallery_two;
+use App\Filament\Tiptap\Feature_list;
+use App\Filament\Tiptap\Testimonial;
 use Illuminate\Support\Facades\Blade;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use App\View\Components\Filament\Resources\RelationManager;
-use Filament\Support\Facades\FilamentIcon;
+use BladeUI\Icons\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,6 +52,10 @@ class AppServiceProvider extends ServiceProvider
                     Team_noBorder::class,
                     Gallery::class,
                     Gallery_two::class,
+                    Card_gallery::class,
+                    Card_gallery_two::class,
+                    Feature_list::class,
+                    Testimonial::class,
                 ]);
         });
     }
@@ -55,14 +63,15 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    // public function boot(): void
+    public function boot(Factory $icons): void
     {
         Model::unguard();
         Blade::component('filament::resources.relation-manager', RelationManager::class);
 
-        //  FilamentIcon::register([ // [!code focus]
-        //     'custom-icons' => __DIR__.
-        //     '/../../resources/svg', // [!code focus]
-        // ]); // [!code focus]
+        $icons->add('default', [
+            'path' => resource_path('svg'),
+            'prefix' => '',
+        ]);
     }
 }

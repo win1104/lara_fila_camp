@@ -15,7 +15,7 @@ class Gallery_two extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-gallery_two.svg';
+    public ?string $icon = 'icon-gallery_two';
 
     public function getFormSchema(): array
     {

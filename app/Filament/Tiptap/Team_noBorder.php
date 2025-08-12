@@ -15,7 +15,7 @@ class Team_noBorder extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-team_noborder.svg';
+    public ?string $icon = 'icon-team_noborder';
 
     public function getFormSchema(): array
     {

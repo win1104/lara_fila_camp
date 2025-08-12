@@ -14,12 +14,12 @@ class Full_bg extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-full_bg.svg';
+    public ?string $icon = 'icon-full_bg';
 
     public function getFormSchema(): array
     {
         return [
-            TextInput::make('title')->required(),
+            TextInput::make('title'),
             Textarea::make('contact'),
             FileUpload::make('images')->required(),
             // TextInput::make('color'),

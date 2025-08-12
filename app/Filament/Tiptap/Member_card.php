@@ -15,7 +15,7 @@ class Member_card extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-member_card.svg';
+    public ?string $icon = 'icon-member_card';
 
     public function getFormSchema(): array
     {

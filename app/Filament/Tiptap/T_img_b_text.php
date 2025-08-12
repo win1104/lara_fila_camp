@@ -14,7 +14,7 @@ class T_img_b_text extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = '/icon-timg_btext.svg';
+    public ?string $icon = 'icon-timg_btext';
 
     public function getFormSchema(): array
     {

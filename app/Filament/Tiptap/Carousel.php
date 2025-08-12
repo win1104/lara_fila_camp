@@ -15,7 +15,7 @@ class Carousel extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-carousel.svg';
+    public ?string $icon = 'icon-carousel';
 
     // public function getIcon(): ?string
     // {

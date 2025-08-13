@@ -24,6 +24,7 @@ class Product extends Component
     {
         $this->categories = ProductCategory::where('locale', app()->getLocale())
             ->where('display', 1)
+            ->where('slug', '!=', 'home')
             ->orderBy('order')
             ->get();
 
@@ -60,7 +61,12 @@ class Product extends Component
 
     public function selectCategory($slug = null)
     {
-        $this->selectedCategory = $slug;
+        // $this->selectedCategory = $slug;
+        if ($this->selectedCategory === $slug) {
+            $this->selectedCategory = null;
+        } else {
+            $this->selectedCategory = $slug;
+        }
         $this->loadProducts();
     }
 
@@ -74,6 +80,7 @@ class Product extends Component
         if ($this->selectedCategory) {
             $query->whereHas('product_category', function ($q) {
                 $q->where('slug', $this->selectedCategory);
+                    // ->where('locale', app()->getLocale());
             });
         }
 

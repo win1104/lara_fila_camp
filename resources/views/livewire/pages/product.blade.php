@@ -1,5 +1,30 @@
 <div class="pt-24">
 
+    <div class="relative">
+        <img src="{{ asset('bg_product.png') }}" class="absolute inset-0 object-cover w-full h-full" alt="" />
+        <div class="relative  bg-opacity-75">
+            {{-- <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                --}}
+                <div class="max-w-[1600px] mx-auto px-8 pt-8 lg:px-32 lg:pt-0">
+                    <div class="sm:text-left">
+                        <div class="flex justify-between items-center flex-wrap md:flex-nowrap gap-0 lg:gap-7">
+                            <div class="max-w-[507px]">
+                                <h2 class="mb-8 font-sans text-2xl font-black leading-none text-white sm:text-5xl">
+                                    呈現的作品
+                                </h2>
+                                <p class="text-xl text-white font-medium md:text-3xl">
+                                    通過溝通、協調、創意、設計與時間所雕琢的作品，即使非至完美，但卻是您心中的精品
+                                </p>
+                            </div>
+                            <div>
+                                <img src="{{ asset('bg_product_c.png') }}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     @if($isDetail)
                 {{-- 單一產品詳情頁面 --}}
@@ -405,10 +430,11 @@
         {{-- 產品列表頁面 --}}
         @if($products)
             <section class="text-gray-600 body-font">
-                <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+                <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32 flex">
+                    <div class="flex gap-6 mx-auto">
 
 
-                    <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+                    {{-- <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
                         <div class="mb-6 flex flex-wrap gap-2">
                             <button wire:click="selectCategory(null)" class="px-4 py-2 rounded text-sm font-medium
                                 {{ $selectedCategory === null ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
@@ -423,127 +449,111 @@
                                 </button>
                             @endforeach
                         </div>
+                    </div> --}}
+
+                    <div class="bg-[#FAFBFC] w-full max-w-[312px] p-6">
+                        {{-- 產業分類區塊 --}}
+                        <div>
+                            <div class="mb-4">
+                                <p class="text-xl font-medium text-[#172844]">產業分類</p>
+                            </div>
+                            <div>
+                                @foreach($categories as $category)
+                                    <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                        {{-- <input class="rounded" type="checkbox" --}}
+                                        <input class="rounded" type="radio" name="category"
+                                         value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')"
+                                        {{ $selectedCategory === $category->slug ? 'checked' : '' }}>
+                                        <label class="" for="{{ $category->slug }}">
+                                            {{ $category->title }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- 功能分類區塊 --}}
+                        <div>
+                            <div class="my-4">
+                                <p class="text-xl font-medium text-[#172844]">功能分類</p>
+                            </div>
+                            <div>
+                                <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                    <input class="rounded" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="" for="flexCheckDefault">
+                                        線上刷卡
+                                    </label>
+                                </div>
+                                <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                    <input class="rounded" type="checkbox" value="" id="flexCheckChecked">
+                                    <label class="" for="flexCheckChecked">
+                                        線上報名
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {{-- <div class="flex flex-wrap -m-4"> --}}
-                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+                    {{-- <div class="grid gap-6 justify-center
+                    [grid-template-columns:repeat(1,minmax(0,1fr))]
+                    sm:[grid-template-columns:repeat(2,312px)]
+                    xl:[grid-template-columns:repeat(3,312px)]"> --}}
+                    {{-- style="
+                    grid-template-columns: repeat(auto-fit, minmax(312px, 312px));
+                    max-width: calc(312px * 3 + 2 * 1.5rem);
+                    margin-left: auto;
+                    margin-right: auto;
+                    "> --}}
+
                         @foreach($products as $product)
-                            {{-- <div class="p-4 "> --}}
-                                {{-- <div class="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden"> --}}
-                                <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden">
-                                    @if($product->images)
-                                        @forelse ($product->images as $key => $image)
-                                            @if($key == 0)
-                                                <div class="h-[192px]">
-                                                {{-- <div class="aspect-[4/3] bg-gray-100"> --}}
-                                                    <x-curator-glider
-                                                        :media="$image"
-                                                        {{-- class="hover:opacity-75 transition duration-300 ease-in-out object-cover h-full" --}}
-                                                        class="w-full h-full object-cover"
-                                                        :srcset="[
-                                '1000w' => 1000,
-                                '750w' => 750,
-                                '500w' => 500,
-                            ]"
-                                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                                        {{-- width="100%" --}}
-                                                        {{-- height="100%" --}}
-                                                        fit="crop"
-                                                        quality="80"
-                                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"/>
-                                                </div>
-                                            @endif
-                                        @empty
+                            <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden w-full h-[342px]">
+                                @if($product->images)
+                                    @forelse ($product->images as $key => $image)
+                                        @if($key == 0)
+                                                                <div class="h-[192px] flex-shrink-0">
+                                                                    <x-curator-glider
+                                                                        :media="$image"
+                                                                        class="w-full h-full object-cover"
+                                                                        :srcset="['1000w' => 1000, '750w' => 750, '500w' => 500]"
+                                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                                        fit="crop"
+                                                                        quality="80"
+                                                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"/>
+                                                                </div>
+                                        @endif
+                                    @empty
                                         <div>
-                                            <p class="col-span-full text-gray-500">此產品沒有圖片。</p>
+                                            {{-- <p class="col-span-full text-gray-500">此產品沒有圖片。</p> --}}
+                                            <p class="h-[192px] flex items-center justify-center bg-gray-100 text-gray-500">此產品沒有圖片。</p>
                                         </div>
-                                        @endforelse
-                                    @else
-                                        <img class="lg:h-48 md:h-36 w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
-                                    @endif
-                                    <div class="p-6">
-                                        <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p>
-                                        <h2 class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</h2>
-                                        <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div>
-                                        {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{{ Str::limit(strip_tags($product->content), 200) }}</div> --}}
-                                        <div class="flex items-center flex-wrap ">
-                                            <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}" class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More
-                                                <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M5 12h14"></path>
-                                                <path d="M12 5l7 7-7 7"></path>
-                                                </svg>
-                                            </a>
-                                            <span class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                                                <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                <circle cx="12" cy="12" r="3"></circle>
-                                                </svg>1.2K
-                                            </span>
-                                            <span class="text-gray-400 inline-flex items-center leading-none text-sm">
-                                                <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                                                <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-                                                </svg>6
-                                            </span>
-                                        </div>
+                                    @endforelse
+                                @else
+                                    <img class="h-[192px] w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
+                                @endif
+                                <div class="p-6 flex flex-col flex-1">
+                                    {{-- <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
+                                    <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p>
+                                    {{-- <p class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</p> --}}
+                                    <p class="title-font text-lg font-extrabold text-gray-900 my-3 max-h-[56px] overflow-hidden">{{ $product->title }}</p>
+                                    {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div> --}}
+                                    {{-- <div class="flex items-center flex-wrap mt-auto"> --}}
+                                    <div class="mt-auto">
+                                        <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}"
+                                            {{-- class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More --}}
+                                            class="inline-flex items-center">觀看網站
+                                            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M5 12h14"></path>
+                                            <path d="M12 5l7 7-7 7"></path>
+                                            </svg>
+                                        </a>
                                     </div>
-                                    {{-- <div class="p-5 flex flex-col flex-grow">
-                                        <p class="text-xs text-indigo-500 font-medium uppercase mb-2">分類名稱</p>
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ $product->title }}</h3>
-                                        <div class="text-sm text-gray-600 mb-4 line-clamp-3">
-                                            {!! Str::limit($product->content, 200) !!}
-                                        </div>
-                                        <div class="mt-auto flex items-center flex-wrap">
-                                            <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}"
-                                                class="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-medium text-sm">
-                                                查看更多
-                                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                                </svg>
-                                            </a>
-                                            <span
-                                                class="text-gray-400 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200">
-                                                <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round" viewBox="0 0 24 24">
-                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                    <circle cx="12" cy="12" r="3"></circle>
-                                                </svg>1.2K
-                                            </span>
-                                            <span class="text-gray-400 inline-flex items-center leading-none text-sm">
-                                                <svg class="w-4 h-4 mr-1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
-                                                    stroke-linejoin="round" viewBox="0 0 24 24">
-                                                    <path
-                                                        d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z">
-                                                    </path>
-                                                </svg>6
-                                            </span>
-                                        </div>
-                                    </div> --}}
                                 </div>
-                            {{-- </div> --}}
+                            </div>
                         @endforeach
+                    </div>
                     </div>
                 </div>
             </section>
-            {{-- @foreach($products as $product)
-                <div class="border rounded-lg shadow-lg overflow-hidden">
-                    @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="w-full h-48 object-cover">
-                    @else
-                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
-                            無圖片
-                        </div>
-                    @endif
-                    <div class="p-4">
-                        <h3 class="text-xl font-semibold mb-2">{{ $product->title }}</h3>
-                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ $product->content }}</p>
-                        <p class="text-lg font-bold text-blue-600">NT$ {{ number_format($product->tag, 0) }}</p>
-                        <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}" class="mt-4 block w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-center">
-                            查看詳情
-                        </a>
-                    </div>
-                </div>
-            @endforeach --}}
         @else
             <p class="col-span-full text-center text-gray-500">目前沒有找到產品。</p>
         @endif
@@ -552,6 +562,3 @@
 
     @endif
 </div>
-
-{{-- 您可能需要引入 Tailwind CSS 來使上述樣式生效 --}}
-{{-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --}}

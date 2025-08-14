@@ -5,25 +5,25 @@
         <div class="relative  bg-opacity-75">
             {{-- <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
                 --}}
-                <div class="max-w-[1600px] mx-auto px-8 pt-8 lg:px-32 lg:pt-0">
-                    <div class="sm:text-left">
-                        <div class="flex justify-between items-center flex-wrap md:flex-nowrap gap-0 lg:gap-7">
-                            <div class="max-w-[507px]">
-                                <h2 class="mb-8 font-sans text-2xl font-black leading-none text-white sm:text-5xl">
-                                    呈現的作品
-                                </h2>
-                                <p class="text-xl text-white font-medium md:text-3xl">
-                                    通過溝通、協調、創意、設計與時間所雕琢的作品，即使非至完美，但卻是您心中的精品
-                                </p>
-                            </div>
-                            <div>
-                                <img src="{{ asset('bg_product_c.png') }}" alt="">
-                            </div>
+            <div class="max-w-[1600px] mx-auto px-8 pt-8 lg:px-32 lg:pt-0">
+                <div class="sm:text-left">
+                    <div class="flex justify-between items-center flex-wrap md:flex-nowrap gap-0 lg:gap-7">
+                        <div class="max-w-[507px]">
+                            <h2 class="mb-8 font-sans text-2xl font-black leading-none text-white sm:text-5xl">
+                                呈現的作品
+                            </h2>
+                            <p class="text-xl text-white font-medium md:text-3xl">
+                                通過溝通、協調、創意、設計與時間所雕琢的作品，即使非至完美，但卻是您心中的精品
+                            </p>
+                        </div>
+                        <div>
+                            <img src="{{ asset('bg_product_c.png') }}" alt="">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 
     @if($isDetail)

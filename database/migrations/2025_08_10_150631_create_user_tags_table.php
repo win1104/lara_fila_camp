@@ -25,6 +25,10 @@ return new class extends Migration
 
             // 建立複合索引
             $table->unique(['locale', 'slug']);
+        });
+
+        // 單獨添加外鍵約束
+        Schema::table('user_tags', function (Blueprint $table) {
             $table->foreign('creator_id')->references('id')->on('admins');
         });
     }

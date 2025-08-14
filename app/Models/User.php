@@ -112,7 +112,8 @@ class User extends Authenticatable
      */
     public function userTags(): BelongsToMany
     {
-        return $this->belongsToMany(UserTag::class, 'user_tag_relations');
+        return $this->belongsToMany(UserTag::class, 'user_tag_relations', 'user_slug', 'user_tag_slug', 'slug', 'slug')
+            ->withTimestamps();
     }
 
     /**
@@ -122,6 +123,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(UserCategory::class, 'user_relation', 'user_slug', 'user_category_slug', 'slug', 'slug')
             ->withTimestamps();
+            // ->withPivot('locale')
+            // ->using(function ($attributes) {
+            //     $attributes['locale'] = app()->getLocale();
+            //     return $attributes;
+            // });
     }
 
     protected static function boot()

@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('user_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('locale')->default('tw');
+            $table->string('slug');
+            $table->string('title');
+            $table->integer('order')->default('1');
+            $table->boolean('display')->default('0');
             $table->string('color')->nullable();
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->timestamps();
 
+            // 建立複合索引
+            $table->unique(['locale', 'slug']);
             $table->foreign('creator_id')->references('id')->on('admins');
         });
     }

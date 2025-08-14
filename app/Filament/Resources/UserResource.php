@@ -131,6 +131,15 @@ class UserResource extends Resource
                                             ])
                                             ->default('active'),
 
+                                        Forms\Components\Select::make('userCategories')
+                                            ->label(__('user.category'))
+                                            ->relationship('userCategories', 'title')
+                                            ->getOptionLabelFromRecordUsing(fn ($record): string => $record->title)
+                                            ->searchable()
+                                            ->preload()
+                                            ->multiple(true)
+                                            ->maxItems(1),
+
                                         Forms\Components\Select::make('userTags')
                                             ->label(__('user.member_tags'))
                                             ->multiple()
@@ -315,6 +324,16 @@ class UserResource extends Resource
                     ->label(__('user.name'))
                     ->searchable()
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('userCategories.title')
+                    ->label(__('user.category'))
+                    ->color(fn (User $record): string =>
+                        $record->userCategories()->first()?->title === '代理商' ? 'warning' : 'info'
+                    )
+                    ->formatStateUsing(fn (User $record): string =>
+                        $record->userCategories()->first()?->title ?? '-'
+                    )
+                    ->badge(),
 
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')

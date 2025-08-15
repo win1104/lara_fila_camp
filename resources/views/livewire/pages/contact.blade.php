@@ -73,8 +73,8 @@
                                     <label for="captcha" class="block text-sm font-medium text-gray-700">
                                         <span class="text-red-500">*</span> 驗證碼
                                     </label>
-                                    <div class="flex items-center mt-1 flex-col lg:flex-row">
-                                        <img src="{{ url(app()->getLocale() . '/captcha') }}" alt="驗證碼" class="mr-4 cursor-pointer"
+                                    <div class="flex items-center mt-1 flex-col xl:flex-row flex-wrap">
+                                        <img src="{{ url(app()->getLocale() . '/captcha') }}" alt="驗證碼" class="mb-4 xl:mb-0 mr-0 xl:mr-4 cursor-pointer"
                                             onclick="this.src='{{ url(app()->getLocale() . '/captcha') }}?'+Math.random()">
                                         <input id="captcha" type="text" wire:model="captcha" placeholder="請輸入驗證碼">
                                         @if (session('success'))
@@ -83,9 +83,9 @@
                                             @error('captcha') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
                                         @endif
                                         {{-- @error('captcha') <div class="text-red-600">{{ $message }}</div> @enderror --}}
-                                        <div class="text-center ml-12">
+                                        <div class="text-center mt-12 2xl:mt-0 ml-0 2xl:ml-12">
                                             <button type="submit"
-                                                class="inline-flex text-white bg-[#9BBF3E] rounded-full border-0 py-3 px-12 focus:outline-none hover:bg-[#8cb02f] text-lg">
+                                                class="inline-flex text-white bg-[#9BBF3E] rounded-3xl border-0 py-3 px-12 focus:outline-none hover:bg-[#8cb02f] text-lg">
                                                 確定送出
                                             </button>
                                             {{-- <button type="button" wire:click="resetForm">清空</button> --}}

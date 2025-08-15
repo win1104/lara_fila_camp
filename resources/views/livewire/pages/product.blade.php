@@ -459,15 +459,22 @@
                             </div>
                             <div>
                                 @foreach($categories as $category)
-                                    <div class="text-base mb-2 text-[#6F777B] font-medium">
-                                        {{-- <input class="rounded" type="checkbox" --}}
-                                        <input class="rounded" type="radio" name="category"
-                                         value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')"
-                                        {{ $selectedCategory === $category->slug ? 'checked' : '' }}>
-                                        <label class="" for="{{ $category->slug }}">
-                                            {{ $category->title }}
-                                        </label>
-                                    </div>
+                                                                    <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                                                        <input class="rounded" type="checkbox"
+                                                                        {{-- <input class="rounded" type="radio" name="category" --}}
+                                                                         {{-- value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')" wire:model="category" --}}
+                                                                         value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')"
+                                                                         {{ in_array($category->slug, $selectedCategory) ? 'checked' : '' }}>
+                                                                        {{-- {{ $selectedCategory === $category->slug ? 'checked' : '' }}> --}}
+                                    {{-- <input type="checkbox"
+                                           value="{{ $cat->slug }}"
+                                           wire:click="toggleCategory('{{ $cat->slug }}')"
+                                           {{ $category === $cat->slug ? 'checked' : '' }}> --}}
+                                                                        <label class="" for="{{ $category->slug }}">
+                                                                        {{-- <label class=""> --}}
+                                                                            {{ $category->title }}
+                                                                        </label>
+                                                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -506,7 +513,7 @@
                     "> --}}
 
                         @foreach($products as $product)
-                            <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden w-full h-[342px]">
+                            <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow  flex flex-col overflow-hidden w-full h-[316px]">
                                 @if($product->images)
                                     @forelse ($product->images as $key => $image)
                                         @if($key == 0)
@@ -530,11 +537,16 @@
                                 @else
                                     <img class="h-[192px] w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
                                 @endif
-                                <div class="p-6 flex flex-col flex-1">
+                                <div class="py-4 px-6 flex flex-col flex-1">
+                                    <div class="flex gap-2">
+                                    @foreach($product->product_category as $category)
                                     {{-- <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
-                                    <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p>
+                                    {{-- <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
+                                    <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1 px-1.5 py-0.5">{{ $category->title }}</p>
+                                    @endforeach
+                                    </div>
                                     {{-- <p class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</p> --}}
-                                    <p class="title-font text-lg font-extrabold text-gray-900 my-3 max-h-[56px] overflow-hidden">{{ $product->title }}</p>
+                                    <p class="title-font text-lg font-extrabold text-gray-900 my-3 max-h-[56px] line-clamp-2">{{ $product->title }}</p>
                                     {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div> --}}
                                     {{-- <div class="flex items-center flex-wrap mt-auto"> --}}
                                     <div class="mt-auto">

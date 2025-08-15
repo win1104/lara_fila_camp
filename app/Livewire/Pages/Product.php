@@ -14,10 +14,11 @@ class Product extends Component
     // use WithPagination; // 使用分頁功能
 
     public ?ProductModel $product = null;
-    public $products = null;
+    public $products = [];
     public $search = ''; // 用於搜尋功能 (稍後可擴展)
     public $categories;
-    public $selectedCategory = null;
+    public $category = null;
+    public $selectedCategory = []; // 改為 array 支援複選
     public $isDetail = false; // 每頁顯示數量
 
     public function mount($product = null)
@@ -61,12 +62,18 @@ class Product extends Component
 
     public function selectCategory($slug = null)
     {
-        // $this->selectedCategory = $slug;
-        if ($this->selectedCategory === $slug) {
-            $this->selectedCategory = null;
+        // 複選邏輯：如果已選中則移除，如果未選中則添加
+        if (in_array($slug, $this->selectedCategory)) {
+            $this->selectedCategory = array_values(array_filter($this->selectedCategory, function($item) use ($slug) {
+                return $item !== $slug;
+            }));
         } else {
-            $this->selectedCategory = $slug;
+            $this->selectedCategory[] = $slug;
         }
+        $this->loadProducts();
+    }
+    public function updatedSelectedCategory()
+    {
         $this->loadProducts();
     }
 
@@ -77,9 +84,9 @@ class Product extends Component
             ->where('display', 1)
             ->orderBy('order');
 
-        if ($this->selectedCategory) {
+        if (!empty($this->selectedCategory)) {
             $query->whereHas('product_category', function ($q) {
-                $q->where('slug', $this->selectedCategory);
+                $q->whereIn('slug', $this->selectedCategory);
                     // ->where('locale', app()->getLocale());
             });
         }

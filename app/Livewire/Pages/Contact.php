@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use Livewire\Component;
+use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
@@ -94,6 +95,7 @@ class Contact extends Component
 
     // }
 
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.pages.contact');

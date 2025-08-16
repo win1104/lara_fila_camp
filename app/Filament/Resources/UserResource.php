@@ -143,10 +143,10 @@ class UserResource extends Resource
                                         Forms\Components\Select::make('userTags')
                                             ->label(__('user.member_tags'))
                                             ->multiple()
-                                            ->relationship('userTags', 'name')
-                                            ->getOptionLabelFromRecordUsing(fn (UserTag $record): string => $record->name)
+                                            ->relationship('userTags', 'title')
+                                            ->getOptionLabelFromRecordUsing(fn (UserTag $record): string => $record->title)
                                             ->createOptionForm([
-                                                Forms\Components\TextInput::make('name')
+                                                Forms\Components\TextInput::make('title')
                                                     ->label(__('user.tag_name'))
                                                     ->required()
                                                     ->maxLength(255),
@@ -347,12 +347,12 @@ class UserResource extends Resource
                     ->copyMessage(__('user.copy_message'))
                     ->copyMessageDuration(1500),
 
-                Tables\Columns\TextColumn::make('userTags.name')
+                Tables\Columns\TextColumn::make('userTags.title')
                     ->label(__('global.tag'))
                     ->badge()
                     ->state(function (User $record): array {
                         return $record->userTags()->get()->map(fn ($tag) => [
-                            'label' => $tag->name,
+                            'label' => $tag->title,
                             'color' => $tag->color ?? '#808080',
                         ])->toArray();
                     })

@@ -22,10 +22,10 @@ class Member extends Cluster
     protected static bool $shouldRegisterNavigation = true;
 
 
-    //  // 設定為顯示在頂部
+    // 設定為顯示在頂部
     // protected static ?string $navigationGroup = null;
 
-    // // 或者完全隱藏在側邊欄，改用頂部導航
+    // 或者完全隱藏在側邊欄，改用頂部導航
     // protected static bool $shouldRegisterNavigation = false;
 
     // // 自訂導航項目

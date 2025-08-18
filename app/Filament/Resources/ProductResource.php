@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
+use App\Models\ProductTag;
 use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -299,6 +300,32 @@ class ProductResource extends Resource
                                         //     $record->product_category()->attach($syncData->toArray());
                                         // }
                                     }),
+
+                                    Forms\Components\Select::make('productTags')
+                                        ->label(__('global.tag'))
+                                        ->multiple()
+                                        ->relationship('productTags', 'title')
+                                        ->getOptionLabelFromRecordUsing(fn (ProductTag $record): string => $record->title)
+                                        ->createOptionForm([
+                                            Forms\Components\TextInput::make('title')
+                                                ->label(__('global.tag'))
+                                                ->required()
+                                                ->maxLength(255),
+
+                                            Forms\Components\ColorPicker::make('color')
+                                                ->label(__('user.color'))
+                                                ->default('#3b82f6'),
+                                        ])
+                                        ->createOptionUsing(function (array $data): int {
+                                            $tag = ProductTag::create([
+                                                'name' => $data['name'],
+                                                'color' => $data['color'],
+                                                'creator_id' => auth()->id(),
+                                            ]);
+                                            return $tag->id;
+                                        })
+                                        ->searchable()
+                                        ->preload(),
 
 
 

@@ -1,14 +1,24 @@
 {{-- 改良版的樹狀結構展示 --}}
-<div class="folder-tree-item" x-data="{ expanded: true }">
+<div class="folder-tree-item" x-data="{ 
+    expanded: {{ $level === 0 ? 'true' : 'false' }},
+    init() {
+        this.$wire.on('expand-all-folders', () => {
+            this.expanded = true;
+        });
+        this.$wire.on('collapse-all-folders', () => {
+            this.expanded = false;
+        });
+    }
+}">
     <div class="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group relative">
         {{-- 樹狀結構線條 --}}
         @if($level > 0)
-            <div class="absolute left-0 top-0 h-full w-px bg-gray-200 dark:bg-gray-600" style="left: {{ ($level - 1) * 24 + 12 }}px;"></div>
-            <div class="absolute top-1/2 w-3 h-px bg-gray-200 dark:bg-gray-600" style="left: {{ ($level - 1) * 24 + 12 }}px;"></div>
+            <div class="absolute left-0 top-0 h-full w-px bg-gray-200 dark:bg-gray-600" style="left: {{ ($level - 1) * 12 + 12 }}px;"></div>
+            <div class="absolute top-1/2 w-3 h-px bg-gray-200 dark:bg-gray-600" style="left: {{ ($level - 1) * 12 + 12 }}px;"></div>
         @endif
 
         {{-- 縮排和展開/收縮按鈕 --}}
-        <div class="flex items-center" style="margin-left: {{ $level * 24 }}px;">
+        <div class="flex items-center" style="margin-left: {{ $level * 12 }}px;">
             @if(!empty($folder['children']))
                 <button @click="expanded = !expanded" class="w-4 h-4 flex items-center justify-center rounded hover:bg-gray-200 dark:hover:bg-gray-700 mr-1">
                     <svg class="w-3 h-3 transition-transform text-gray-600 dark:text-gray-300" :class="{ 'rotate-90': expanded }" fill="currentColor" viewBox="0 0 20 20">

@@ -43,6 +43,7 @@ class MediaFolderManager extends Page
 
     public array $folders = [];
     public array $subFolderNames = [];
+    public bool $expandAll = false;
 
     public function mount(): void
     {
@@ -240,6 +241,18 @@ class MediaFolderManager extends Page
     public function prepareCreateFolder($parentPath)
     {
         $this->parentFolder = $parentPath;
+    }
+
+    public function expandAllFolders()
+    {
+        $this->expandAll = true;
+        $this->dispatch('expand-all-folders');
+    }
+
+    public function collapseAllFolders()
+    {
+        $this->expandAll = false;
+        $this->dispatch('collapse-all-folders');
     }
 
     // public static function flattenFolders(array $folders, string $prefix = ''): array

@@ -106,7 +106,25 @@
 
         {{-- 資料夾樹狀結構 --}}
         <div class="bg-white rounded-lg border border-gray-200 p-6">
-            <h3 class="text-lg font-medium mb-4">資料夾結構</h3>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium">資料夾結構</h3>
+                <div class="flex items-center space-x-2">
+                    <x-filament::button 
+                        wire:click="expandAllFolders" 
+                        size="sm" 
+                        color="gray"
+                        icon="heroicon-o-plus-circle">
+                        全部展開
+                    </x-filament::button>
+                    <x-filament::button 
+                        wire:click="collapseAllFolders" 
+                        size="sm" 
+                        color="gray"
+                        icon="heroicon-o-minus-circle">
+                        全部折叠
+                    </x-filament::button>
+                </div>
+            </div>
 
             @if(empty($folders))
                 <div class="text-center py-8 text-gray-500">

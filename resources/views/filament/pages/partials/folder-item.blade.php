@@ -1,4 +1,4 @@
-<li class="ml-{{ $level * 4 }} flex items-center space-x-2">
+{{-- <li class="ml-{{ $level * 4 }} flex items-center space-x-2">
     <span>📁</span>
     <span>{{ $folder['name'] }}</span>
 
@@ -36,15 +36,16 @@
         </ul>
     @endif
 
-</li>
+</li> --}}
 
 
 
 
 <li class="block relative" style="padding-left: calc(2 * var(--spacing) - var(--radius) - 2px);">
     <details {{ $level === 0 ? 'open' : '' }}>
-        <summary class="flex items-center space-x-2" style="">
-            <span>📁</span>
+        {{-- <summary class="flex items-center space-x-2" style="cursor: pointer;font-weight: 600;"> --}}
+        <summary class="cursor-pointer font-semibold">
+            {{-- <span>📁</span> --}}
             <span>{{ $folder['name'] }}</span>
 
             <!-- 新增子資料夾 -->

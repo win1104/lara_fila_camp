@@ -2,41 +2,42 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserTagResource\Pages;
-use App\Filament\Resources\UserTagResource\RelationManagers;
-use App\Models\UserTag;
-use App\Filament\Clusters\Member;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\UserTag;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Member;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\UserTagResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UserTagResource\RelationManagers;
 
 class UserTagResource extends Resource
 {
-    // 指定這個 Resource 屬於 Member Cluster
     protected static ?string $cluster = Member::class;
     protected static ?string $model = UserTag::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     // 在 Cluster 內的排序，UserCategory 是 2，所以 UserTag 設為 3
     protected static ?int $navigationSort = 3;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function getModelLabel(): string
     {
-        return __('user.tags');
+        return __('global.tag');
     }
 
     public static function getModelPluralLabel(): string
     {
-        return __('user.tags');
+        return __('global.tag_settings');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('user.tags');
+        return __('global.tag_settings');
     }
 
     public static function form(Form $form): Form

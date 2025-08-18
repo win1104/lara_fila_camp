@@ -2,6 +2,7 @@
 
 return [
     'tag' => '標籤',
+    'tag_settings' => '標籤設定',
     'jojo' => [
         'label' => '恩希',
         'plural' => '恩佑',

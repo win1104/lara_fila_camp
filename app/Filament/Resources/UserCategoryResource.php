@@ -2,27 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserCategoryResource\Pages;
-use App\Filament\Resources\UserCategoryResource\RelationManagers;
-use App\Models\UserCategory;
-use App\Filament\Clusters\Member;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\UserCategory;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Member;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\UserCategoryResource\Pages;
+use App\Filament\Resources\UserCategoryResource\RelationManagers;
 
 class UserCategoryResource extends Resource
 {
-    // 指定這個 Resource 屬於 Blog Cluster
     protected static ?string $cluster = Member::class;
     protected static ?string $model = UserCategory::class;
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     // 在 Cluster 內的排序
     protected static ?int $navigationSort = 2;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function getModelLabel(): string
     {

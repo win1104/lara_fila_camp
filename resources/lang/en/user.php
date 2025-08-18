@@ -35,17 +35,15 @@ return [
     'frozen' => 'Frozen',
     'check' => 'Check',
     'expired' => 'Expired',
-    
+
     // Form sections
     'basic_info' => 'Basic Information',
     'detail_info' => 'Detailed Information',
     'contact_info' => 'Contact Information',
     'address_info' => 'Address Information',
     'work_info' => 'Work Information',
-    'account_settings' => 'Account Settings',
-    'tag_settings' => 'Tag Settings',
     'password_settings' => 'Password Settings',
-    
+
     // Form fields
     'slug_helper' => 'System-generated 8-digit number',
     'verify_code' => 'Verification Code',
@@ -58,18 +56,17 @@ return [
     'copy_message' => 'ID copied',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
-    'tags' => 'Tags',
-    
+
     // Status values
     'status_active' => 'Active',
     'status_inactive' => 'Inactive',
     'status_pending' => 'Pending',
-    
+
     // Gender
     'gender_male' => 'Male',
     'gender_female' => 'Female',
     'gender_other' => 'Other',
-    
+
     // User Categories
     'category' => 'User Category',
     'category_label' => 'User Category',

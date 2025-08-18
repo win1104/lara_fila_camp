@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Clusters\Member;
 use Filament\Support\Colors\Color;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,13 +19,14 @@ use App\Filament\Resources\UserResource\RelationManagers;
 
 class UserResource extends Resource
 {
-    // 指定這個 Resource 屬於 Blog Cluster
     protected static ?string $cluster = Member::class;
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
     // 在 Cluster 內的排序
     protected static ?int $navigationSort = 1;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+
     // public static function getModelLabel(): string
     // {
     //     return __('user.member');
@@ -115,7 +117,7 @@ class UserResource extends Resource
 
                         Forms\Components\Group::make()
                             ->schema([
-                                Forms\Components\Section::make(__('user.tag_settings'))
+                                Forms\Components\Section::make(__('global.tag_settings'))
                                     ->schema([
                                         Forms\Components\FileUpload::make('avatar')
                                             ->label(__('user.avatar'))
@@ -399,7 +401,7 @@ class UserResource extends Resource
                     ]),
 
                 Tables\Filters\SelectFilter::make('userTags')
-                    ->label(__('user.tags'))
+                    ->label(__('global.tag'))
                     ->relationship('userTags', 'name')
                     ->multiple(),
             ])

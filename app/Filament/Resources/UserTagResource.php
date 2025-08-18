@@ -21,10 +21,6 @@ class UserTagResource extends Resource
     protected static ?string $model = UserTag::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
-    // 在 Cluster 內的排序，UserCategory 是 2，所以 UserTag 設為 3
-    protected static ?int $navigationSort = 3;
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-
     public static function getModelLabel(): string
     {
         return __('global.tag');
@@ -39,6 +35,9 @@ class UserTagResource extends Resource
     {
         return __('global.tag_settings');
     }
+
+    protected static ?int $navigationSort = 3;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {

@@ -3,7 +3,7 @@
 return [
     'avatar' => 'Avatar',
     'member' => 'Member',
-    'member_mana' => 'Member Management',
+    'member_mana' => 'Member Manage',
     'name' => 'Name',
     'type' => 'Type',
     'slug' => 'Slug',

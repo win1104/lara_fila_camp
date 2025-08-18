@@ -24,11 +24,11 @@ class ProductTagResource extends Resource
     }
     public static function getModelPluralLabel(): string
     {
-        return __('global.tag');
+        return __('global.tag_settings');
     }
     public static function getNavigationLabel(): string
     {
-        return __('global.tag');
+        return __('global.tag_settings');
     }
     protected static ?string $navigationGroup = 'Products';
 

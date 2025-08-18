@@ -43,7 +43,6 @@ return [
     'address_info' => '地址資訊',
     'work_info' => '工作資訊',
     'account_settings' => '帳戶設定',
-    'tag_settings' => '標籤設定',
     'password_settings' => '密碼設定',
 
     // 表單欄位
@@ -58,7 +57,6 @@ return [
     'copy_message' => '已複製編號',
     'created_at' => '建立時間',
     'updated_at' => '更新時間',
-    'tags' => '標籤',
 
     // 狀態值
     'status_active' => '啟用',

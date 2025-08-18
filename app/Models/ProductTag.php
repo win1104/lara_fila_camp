@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class UserTag extends Model
+class ProductTag extends Model
 {
     protected $fillable = [
         'locale',
@@ -21,7 +21,7 @@ class UserTag extends Model
         'updated_at',
     ];
 
-    protected $table = 'user_tags';
+    protected $table = 'product_tags';
 
     public function getRouteKeyName(): string
     {
@@ -31,9 +31,9 @@ class UserTag extends Model
     /**
      * @return 多對多的關係
      */
-    public function users(): BelongsToMany
+    public function products(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'user_tag_relations', 'user_tag_slug', 'user_slug', 'slug', 'slug')
+        return $this->belongsToMany(Product::class, 'product_tag_relations', 'product_tag_slug', 'product_slug', 'slug', 'slug')
             ->withTimestamps();
     }
 }

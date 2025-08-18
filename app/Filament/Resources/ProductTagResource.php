@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PostCategoryResource\Pages;
-use App\Filament\Resources\PostCategoryResource\RelationManagers;
-use App\Models\PostCategory;
+use App\Filament\Resources\ProductTagResource\Pages;
+use App\Filament\Resources\ProductTagResource\RelationManagers;
+use App\Models\ProductTag;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,28 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PostCategoryResource extends Resource
+class ProductTagResource extends Resource
 {
-    protected static ?string $model = PostCategory::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationGroup = 'Website';
+    protected static ?string $model = ProductTag::class;
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function getModelLabel(): string
     {
-        return __('post.c_label');
+        return __('global.tag');
     }
-
     public static function getModelPluralLabel(): string
     {
-        return __('post.plural');
+        return __('global.tag');
     }
-
     public static function getNavigationLabel(): string
     {
-        return __('post.category');
+        return __('global.tag');
     }
+    protected static ?string $navigationGroup = 'Products';
+
+    // protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -42,13 +40,11 @@ class PostCategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('title')
                     ->label(__('backstage.title'))
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('locale')
-                    ->label(__('backstage.locale'))
                     ->required()
-                    ->default(fn($record) => $record?->locale ?? app()->getLocale()),
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->label(__('backstage.slug'))
+                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('order')
                     ->label(__('backstage.order'))
@@ -56,7 +52,15 @@ class PostCategoryResource extends Resource
                     ->numeric()
                     ->default(1),
                 Forms\Components\Toggle::make('display')
-                    ->label(__('backstage.published')),
+                    ->label(__('backstage.published'))
+                    ->default(true),
+                Forms\Components\ColorPicker::make('color')
+                    ->label(__('backstage.color'))
+                    ->nullable(),
+                Forms\Components\Textarea::make('note')
+                    ->label(__('backstage.note'))
+                    ->rows(3)
+                    ->maxLength(500),
             ]);
     }
 
@@ -69,7 +73,8 @@ class PostCategoryResource extends Resource
                     ->label(__('backstage.locale')),
                 Tables\Columns\TextColumn::make('order')
                     ->label(__('backstage.order'))
-                    ->numeric(),
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('backstage.title'))
                     ->searchable()
@@ -78,6 +83,14 @@ class PostCategoryResource extends Resource
                     ->label(__('backstage.slug'))
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ColorColumn::make('color')
+                    ->label(__('backstage.color')),
+                Tables\Columns\ToggleColumn::make('display')
+                    ->label(__('backstage.published')),
+                Tables\Columns\TextColumn::make('products_count')
+                    ->label(__('product.products_count'))
+                    ->counts('products')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('backstage.created_at'))
                     ->dateTime()
@@ -85,12 +98,19 @@ class PostCategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->reorderable('order') // 啟用拖拉排序功能
-            ->defaultSort('order', 'asc') // 預設按 sort_order 排序
+            ->defaultSort('order', 'asc') // 預設按 order 排序
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('display')
+                    ->label(__('backstage.published'))
+                    ->boolean()
+                    ->trueLabel(__('backstage.published'))
+                    ->falseLabel(__('backstage.unpublished'))
+                    ->native(false),
             ])
             ->actions([
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -109,9 +129,10 @@ class PostCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPostCategories::route('/'),
-            'create' => Pages\CreatePostCategory::route('/create'),
-            'edit' => Pages\EditPostCategory::route('/{record}/edit'),
+            'index' => Pages\ListProductTags::route('/'),
+            // 'create' => Pages\CreateProductTag::route('/create'),
+            // 'view' => Pages\ViewProductTag::route('/{record}'),
+            // 'edit' => Pages\EditProductTag::route('/{record}/edit'),
         ];
     }
 }

@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Enums;
+
+enum TagType: string
+{
+    case POST = 'post';
+    case MEMBER = 'member';
+    case PRODUCT = 'product';
+    case TRAVEL = 'travel';
+    case ACCOUNTING = 'accounting';
+
+    // 取得所有值
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+
+    // 取得顯示標籤
+    public function label(): string
+    {
+        return match($this) {
+            self::POST => '文章標籤',
+            self::MEMBER => '會員標籤',
+            self::PRODUCT => '產品標籤',
+            self::TRAVEL => '旅遊標籤',
+            self::ACCOUNTING => '會計標籤',
+        };
+    }
+
+    // 取得所有選項（用於表單）
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(function ($case) {
+            return [$case->value => $case->label()];
+        })->toArray();
+    }
+}

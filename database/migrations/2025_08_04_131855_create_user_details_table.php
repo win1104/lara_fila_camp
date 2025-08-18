@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            // $table->string('public_slug', 8)->unique();
             $table->string('type')->nullable();
             $table->string('sn')->nullable();
             $table->string('pid')->nullable();
@@ -64,18 +63,18 @@ return new class extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->string('public_slug', 8)->unique()->nullable()->after('id');
+            $table->string('slug', 8)->unique()->nullable()->after('id');
             $table->unsignedBigInteger('creator_id')->nullable()->after('status');
 
             $table->foreign('creator_id')
                 ->references('id')->on('admins');
 
             // 複合索引：(用於全域搜尋)
-            $table->index(['public_slug', 'name', 'email'], 'idx_users_search');
+            $table->index(['slug', 'name', 'email'], 'idx_users_search');
             // 複合索引：(用於 slug 搜尋)
-            $table->index(['public_slug', 'name'], 'idx_users_slug');
+            $table->index(['slug', 'name'], 'idx_users_slug');
             // 單一索引：(用於標題搜尋)
-            $table->index('public_slug', 'idx_users_public_slug');
+            $table->index('slug', 'idx_users_slug_only');
             $table->index('name', 'idx_users_name');
             $table->index('email', 'idx_users_email');
         });
@@ -92,7 +91,7 @@ return new class extends Migration
             // 刪除索引
             $table->dropIndex('idx_users_search');
             $table->dropIndex('idx_users_slug');
-            $table->dropIndex('idx_users_public_slug');
+            $table->dropIndex('idx_users_slug_only');
             $table->dropIndex('idx_users_name');
             $table->dropIndex('idx_users_email');
 
@@ -100,7 +99,7 @@ return new class extends Migration
             $table->dropForeign(['creator_id']);
 
             // 刪除欄位
-            $table->dropColumn(['public_slug', 'creator_id']);
+            $table->dropColumn(['slug', 'creator_id']);
         });
     }
 };

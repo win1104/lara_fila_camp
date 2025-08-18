@@ -12,7 +12,7 @@ class UserDetail extends Model
 
     protected $fillable = [
         'user_id',
-        'public_slug',
+        'slug',
         'type',
         'sn',
         'pid',

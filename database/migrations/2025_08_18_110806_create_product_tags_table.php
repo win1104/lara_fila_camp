@@ -11,13 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_tags', function (Blueprint $table) {
+        Schema::create('product_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('locale')->default('tw');
+            $table->string('slug');
+            $table->string('title');
+            $table->integer('order')->default('1');
+            $table->boolean('display')->default('0');
             $table->string('color')->nullable();
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->timestamps();
 
+            // 建立複合索引
+            $table->unique(['locale', 'slug']);
+        });
+
+        // 單獨添加外鍵約束
+        Schema::table('product_tags', function (Blueprint $table) {
             $table->foreign('creator_id')->references('id')->on('admins');
         });
     }
@@ -27,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_tags');
+        Schema::dropIfExists('product_tags');
     }
 };

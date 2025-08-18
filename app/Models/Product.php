@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ProductOption;
 use App\Models\ProductCategory;
 use App\Models\ProductDownload;
+use App\Models\ProductTag;
 use Awcodes\Curator\Models\Media;
 use Illuminate\Support\Facades\Log;
 // use App\Models\Category;
@@ -88,6 +89,15 @@ class Product extends Model
     public function productOptions(): HasMany
     {
         return $this->hasMany(ProductOption::class, 'product_slug', 'slug');
+    }
+
+    /**
+     * @return 多對多的關係
+     */
+    public function productTags(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductTag::class, 'product_tag_relations', 'product_slug', 'product_tag_slug', 'slug', 'slug')
+            ->withTimestamps();
     }
 
     // 定義與 Curator Media 模型的多對多關聯

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'tag' => '標籤',
     'jojo' => [
         'label' => '恩希',
         'plural' => '恩佑',

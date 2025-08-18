@@ -75,6 +75,7 @@ class Product extends Model
             // ->where('product_categories.locale', $this->locale ?? app()->getLocale())
             // ->where('product_relation.locale', $this->locale ?? app()->getLocale())
             ->where('product_relation.locale', app()->getLocale())
+            ->where('product_categories.locale', app()->getLocale())
             // ->where('product_relation.locale', $this->locale)
             ->withTimestamps();
     }

@@ -6,6 +6,7 @@ use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Post as PostModel;
+use App\Models\PostCategory;
 use Illuminate\Support\Str;
 
 class Post extends Component
@@ -16,9 +17,17 @@ class Post extends Component
     public ?string $type = null;
     public string $activeTab = 'tab-0';
     public string $menu;
+    public $categories;
+    public $selectedCategory = null;
 
     public function mount($type, $menu, $post = null)
     {
+        $this->categories = PostCategory::where('locale', app()->getLocale())
+            ->where('display', 1)
+            // ->where('slug', '!=', 'home')
+            ->orderBy('order')
+            ->get();
+
         $this->type = $type;
         $this->menu = $menu;
 
@@ -41,6 +50,17 @@ class Post extends Component
         // }
     }
 
+    public function selectCategory($slug = null)
+    {
+        // $this->selectedCategory = $slug;
+        if ($this->selectedCategory === $slug) {
+            $this->selectedCategory = null;
+        } else {
+            $this->selectedCategory = $slug;
+        }
+        // $this->loadProducts();
+    }
+
     #[Layout('layouts.app')] //for PHP 8（Attribute）, 使用 layouts/app.blade.php 作為布局
     public function render():View
     {
@@ -51,8 +71,16 @@ class Post extends Component
                 ->where('menu_slug', $this->menu)
                 ->where('locale', app()->getLocale())
                 ->where('display', 1)
-                ->orderBy('order', 'asc')
-                ->paginate(12);
+                ->orderBy('order', 'asc');
+                // ->paginate(12);
+
+            if ($this->selectedCategory) {
+                $posts->whereHas('post_category', function ($q) {
+                    $q->where('slug', $this->selectedCategory);
+                });
+            }
+
+            $posts = $posts->paginate(12);
         }
 
         return view('livewire.pages.post', [

@@ -13,7 +13,8 @@ class Stats extends TiptapBlock
     public string $width = 'xl';
     public ?string $label = '';
 
-    public ?string $icon = '/icon-stats.svg';
+    public ?string $icon = 'icon-stats';
+    // public ?string $icon = 'heroicon-o-film';
 
 
     // public bool $slideOver = true;

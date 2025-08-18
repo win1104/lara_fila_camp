@@ -66,6 +66,8 @@ class Post extends Model
     {
         // 暫時使用最基本的關聯，不加任何條件
         return $this->belongsToMany(PostCategory::class, 'post_relation', 'post_slug', 'post_category_slug', 'slug', 'slug')
+            ->wherePivot('locale', app()->getLocale())
+            ->where('post_categories.locale', app()->getLocale())
             ->withTimestamps();
     }
 

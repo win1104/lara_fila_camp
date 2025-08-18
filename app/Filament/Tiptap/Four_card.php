@@ -15,7 +15,7 @@ class Four_card extends TiptapBlock
 
     public ?string $label = '';
 
-    public ?string $icon = '/icon-four_card.svg';
+    public ?string $icon = 'icon-four_card';
 
     public function getFormSchema(): array
     {

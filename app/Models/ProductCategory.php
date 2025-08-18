@@ -68,7 +68,8 @@ class ProductCategory extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class, 'product_relation', 'product_category_slug', 'product_slug', 'slug', 'slug');
+        return $this->belongsToMany(Product::class, 'product_relation', 'product_category_slug', 'product_slug', 'slug', 'slug')
+            ->where('locale', app()->getLocale());
     }
 
     public function parent()

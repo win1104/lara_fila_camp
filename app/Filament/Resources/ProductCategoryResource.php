@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductCategoryResource\Pages;
-// use App\Filament\Resources\ProductCategoryResource\Widgets;
-use App\Models\ProductCategory;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+// use App\Filament\Resources\ProductCategoryResource\Widgets;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ProductCategory;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Product;
+use Filament\Pages\SubNavigationPosition;
+use App\Filament\Resources\ProductCategoryResource\Pages;
 // use Filament\Widgets\Widget;
 
 class ProductCategoryResource extends Resource
 {
+    protected static ?string $cluster = Product::class;
     protected static ?string $model = ProductCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
@@ -30,7 +33,9 @@ class ProductCategoryResource extends Resource
     {
         return __('product.category');
     }
-    protected static ?string $navigationGroup = 'Products';
+
+    protected static ?int $navigationSort = 2;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {
@@ -94,8 +99,7 @@ class ProductCategoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->url(fn (ProductCategory $record): string => route('filament.admin.resources.product-categories.edit', ['record' => $record->slug])),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

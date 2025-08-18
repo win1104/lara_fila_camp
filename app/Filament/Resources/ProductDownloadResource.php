@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductDownloadResource\Pages;
-use App\Models\ProductDownload;
-use App\Models\ProductCategory;
-use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ProductDownload;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Product;
+use Filament\Pages\SubNavigationPosition;
+use App\Filament\Resources\ProductDownloadResource\Pages;
 
 
 class ProductDownloadResource extends Resource
 {
+    protected static ?string $cluster = Product::class;
     protected static ?string $model = ProductDownload::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';
@@ -31,7 +32,9 @@ class ProductDownloadResource extends Resource
     {
         return __('product.download_navigation');
     }
-    protected static ?string $navigationGroup = 'Products';
+
+    protected static ?int $navigationSort = 4;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {

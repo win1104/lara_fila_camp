@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Pages\SubNavigationPosition;
+use App\Filament\Resources\ProductCategoryResource;
 use SolutionForest\FilamentTree\Actions\Action;
 use SolutionForest\FilamentTree\Actions\EditAction;
 use SolutionForest\FilamentTree\Actions\LinkAction;
@@ -25,7 +27,6 @@ class ProductCategoryWidget extends BaseWidget
     protected ?string $treeTitle = '產品類別（樹狀模式）';
 
     protected bool $enableTreeTitle = true;
-
 
     protected function getFormSchema(): array
     {
@@ -62,11 +63,13 @@ class ProductCategoryWidget extends BaseWidget
         return [
             Action::make('編輯網頁內容')
                 ->url(fn (?ProductCategory $record) => $record
-                    ? route('filament.admin.resources.product-categories.edit', ['record' => $record->slug])
+                    ? ProductCategoryResource::getUrl('edit', ['record' => $record->slug])
                     : null,
                     shouldOpenInNewTab: false)
                 ->defaultView(Action::LINK_VIEW)
                 ->icon('heroicon-o-bars-4'),
+
+
             // LinkAction::make(),
                 // EditAction::make(),
             // DeleteAction::make(),

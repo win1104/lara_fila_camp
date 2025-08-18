@@ -6,7 +6,7 @@
         <x-filament::button wire:click="createFolder">新增</x-filament::button>
     </div>
 
-    <ul>
+    <ul style="--spacing: 1.5rem;--radius: 10px;">
         @foreach ($folders as $folder)
             @include('filament.pages.partials.folder-item', ['folder' => $folder, 'level' => 0])
         @endforeach

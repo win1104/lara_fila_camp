@@ -428,147 +428,168 @@
                 </section>
     @else
         {{-- 產品列表頁面 --}}
-        @if($products)
-            <section class="text-gray-600 body-font">
-                <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32 flex">
-                    <div class="flex gap-6 mx-auto">
+        {{-- @if($products) --}}
+                    <section class="text-gray-600 body-font">
+                        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32 flex">
+                            <div class="flex gap-6 mx-auto">
 
 
-                    {{-- <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-                        <div class="mb-6 flex flex-wrap gap-2">
-                            <button wire:click="selectCategory(null)" class="px-4 py-2 rounded text-sm font-medium
-                                {{ $selectedCategory === null ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                                全部
-                            </button>
+                            {{-- <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
+                                <div class="mb-6 flex flex-wrap gap-2">
+                                    <button wire:click="selectCategory(null)" class="px-4 py-2 rounded text-sm font-medium
+                                        {{ $selectedCategory === null ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+                                        全部
+                                    </button>
 
-                            @foreach($categories as $category)
-                                <button wire:click="selectCategory('{{ $category->slug }}')"
-                                    class="px-4 py-2 rounded text-sm font-medium
-                                            {{ $selectedCategory === $category->slug ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
-                                    {{ $category->title }}
-                                </button>
-                            @endforeach
-                        </div>
-                    </div> --}}
+                                    @foreach($categories as $category)
+                                        <button wire:click="selectCategory('{{ $category->slug }}')"
+                                            class="px-4 py-2 rounded text-sm font-medium
+                                                    {{ $selectedCategory === $category->slug ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+                                            {{ $category->title }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            </div> --}}
 
-                    <div class="bg-[#FAFBFC] w-full max-w-[312px] p-6">
-                        {{-- 產業分類區塊 --}}
-                        <div>
-                            <div class="mb-4">
-                                <p class="text-xl font-medium text-[#172844]">產業分類</p>
+                            <div class="bg-[#FAFBFC] w-full max-w-[312px] p-6">
+                                {{-- 產業分類區塊 --}}
+                                <div>
+                                    <div class="mb-4">
+                                        <p class="text-xl font-medium text-[#172844]">產業分類</p>
+                                    </div>
+                                    <div>
+                                        @foreach($categories as $category)
+                                            <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                                <input class="rounded" type="checkbox"
+                                                {{-- <input class="rounded" type="radio" name="category" --}}
+                                                    {{-- value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')" wire:model="category" --}}
+                                                    value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')"
+                                                    {{ in_array($category->slug, $selectedCategory) ? 'checked' : '' }}>
+                                                {{-- {{ $selectedCategory === $category->slug ? 'checked' : '' }}> --}}
+            {{-- <input type="checkbox"
+                    value="{{ $cat->slug }}"
+                    wire:click="toggleCategory('{{ $cat->slug }}')"
+                    {{ $category === $cat->slug ? 'checked' : '' }}> --}}
+                                                <label class="" for="{{ $category->slug }}">
+                                                {{-- <label class=""> --}}
+                                                    {{ $category->title }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                {{-- 功能分類區塊 --}}
+                                <div>
+                                    <div class="my-4">
+                                        <p class="text-xl font-medium text-[#172844]">功能分類</p>
+                                    </div>
+                                    <div>
+                                        @foreach($tags as $tag)
+                                            <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                                <input class="rounded" type="checkbox"
+                                                    value="{{ $tag->slug }}" id="{{ $tag->slug }}"
+                                                    wire:click="selectTag('{{ $tag->slug }}')" {{ in_array($tag->slug, $selectedCategory) ? 'checked' : '' }}>
+                                                <label class="" for="{{ $tag->slug }}">
+                                                        {{ $tag->title }}
+                                                    </label>
+                                            </div>
+                                        @endforeach
+
+                                        {{-- <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                            <input class="rounded" type="checkbox" value="" id="flexCheckDefault">
+                                            <label class="" for="flexCheckDefault">
+                                                線上刷卡
+                                            </label>
+                                        </div>
+                                        <div class="text-base mb-2 text-[#6F777B] font-medium">
+                                            <input class="rounded" type="checkbox" value="" id="flexCheckChecked">
+                                            <label class="" for="flexCheckChecked">
+                                                線上報名
+                                            </label>
+                                        </div> --}}
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                @foreach($categories as $category)
-                                                                    <div class="text-base mb-2 text-[#6F777B] font-medium">
-                                                                        <input class="rounded" type="checkbox"
-                                                                        {{-- <input class="rounded" type="radio" name="category" --}}
-                                                                         {{-- value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')" wire:model="category" --}}
-                                                                         value="{{ $category->slug }}" id="{{ $category->slug }}" wire:click="selectCategory('{{ $category->slug }}')"
-                                                                         {{ in_array($category->slug, $selectedCategory) ? 'checked' : '' }}>
-                                                                        {{-- {{ $selectedCategory === $category->slug ? 'checked' : '' }}> --}}
-                                    {{-- <input type="checkbox"
-                                           value="{{ $cat->slug }}"
-                                           wire:click="toggleCategory('{{ $cat->slug }}')"
-                                           {{ $category === $cat->slug ? 'checked' : '' }}> --}}
-                                                                        <label class="" for="{{ $category->slug }}">
-                                                                        {{-- <label class=""> --}}
-                                                                            {{ $category->title }}
-                                                                        </label>
-                                                                    </div>
+
+                            @if($products->isEmpty())
+    <p class="text-center text-gray-500">還沒有此產品</p>
+@else
+
+                            <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+                            {{-- <div class="grid gap-6 justify-center
+                            [grid-template-columns:repeat(1,minmax(0,1fr))]
+                            sm:[grid-template-columns:repeat(2,312px)]
+                            xl:[grid-template-columns:repeat(3,312px)]"> --}}
+                            {{-- style="
+                            grid-template-columns: repeat(auto-fit, minmax(312px, 312px));
+                            max-width: calc(312px * 3 + 2 * 1.5rem);
+                            margin-left: auto;
+                            margin-right: auto;
+                            "> --}}
+
+                                @foreach($products as $product)
+                                    <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow  flex flex-col overflow-hidden w-full h-[316px]">
+                                        @if($product->images)
+                                            @forelse ($product->images as $key => $image)
+                                                @if($key == 0)
+                                                                        <div class="h-[192px] flex-shrink-0">
+                                                                            <x-curator-glider
+                                                                                :media="$image"
+                                                                                class="w-full h-full object-cover"
+                                                                                :srcset="['1000w' => 1000, '750w' => 750, '500w' => 500]"
+                                                                                sizes="(max-width: 768px) 100vw, 33vw"
+                                                                                fit="crop"
+                                                                                quality="80"
+                                                                                alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"/>
+                                                                        </div>
+                                                @endif
+                                            @empty
+                                                <div>
+                                                    {{-- <p class="col-span-full text-gray-500">此產品沒有圖片。</p> --}}
+                                                    <p class="h-[192px] flex items-center justify-center bg-gray-100 text-gray-500">此產品沒有圖片。</p>
+                                                </div>
+                                            @endforelse
+                                        @else
+                                            <img class="h-[192px] w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
+                                        @endif
+                                        <div class="py-4 px-6 flex flex-col flex-1">
+                                            <div class="flex gap-2">
+                                            @foreach($product->product_category as $category)
+                                            {{-- <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
+                                            {{-- <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
+                                            <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1 px-1.5 py-0.5">{{ $category->title }}</p>
+                                            @endforeach
+
+                                            @foreach($product->productTags as $tag)
+                                                <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1 px-1.5 py-0.5">
+                                                    {{ $tag->title }}</p>
+                                            @endforeach
+                                            </div>
+                                            {{-- <p class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</p> --}}
+                                            <p class="title-font text-lg font-extrabold text-gray-900 my-3 max-h-[56px] line-clamp-2">{{ $product->title }}</p>
+                                            {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div> --}}
+                                            {{-- <div class="flex items-center flex-wrap mt-auto"> --}}
+                                            <div class="mt-auto">
+                                                <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}"
+                                                    {{-- class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More --}}
+                                                    class="inline-flex items-center">觀看網站
+                                                    <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="M12 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </div>
-                        </div>
-                        {{-- 功能分類區塊 --}}
-                        <div>
-                            <div class="my-4">
-                                <p class="text-xl font-medium text-[#172844]">功能分類</p>
-                            </div>
-                            <div>
-                                <div class="text-base mb-2 text-[#6F777B] font-medium">
-                                    <input class="rounded" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="" for="flexCheckDefault">
-                                        線上刷卡
-                                    </label>
-                                </div>
-                                <div class="text-base mb-2 text-[#6F777B] font-medium">
-                                    <input class="rounded" type="checkbox" value="" id="flexCheckChecked">
-                                    <label class="" for="flexCheckChecked">
-                                        線上報名
-                                    </label>
-                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="grid gap-6 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-                    {{-- <div class="grid gap-6 justify-center
-                    [grid-template-columns:repeat(1,minmax(0,1fr))]
-                    sm:[grid-template-columns:repeat(2,312px)]
-                    xl:[grid-template-columns:repeat(3,312px)]"> --}}
-                    {{-- style="
-                    grid-template-columns: repeat(auto-fit, minmax(312px, 312px));
-                    max-width: calc(312px * 3 + 2 * 1.5rem);
-                    margin-left: auto;
-                    margin-right: auto;
-                    "> --}}
-
-                        @foreach($products as $product)
-                            <div class=" bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow  flex flex-col overflow-hidden w-full h-[316px]">
-                                @if($product->images)
-                                    @forelse ($product->images as $key => $image)
-                                        @if($key == 0)
-                                                                <div class="h-[192px] flex-shrink-0">
-                                                                    <x-curator-glider
-                                                                        :media="$image"
-                                                                        class="w-full h-full object-cover"
-                                                                        :srcset="['1000w' => 1000, '750w' => 750, '500w' => 500]"
-                                                                        sizes="(max-width: 768px) 100vw, 33vw"
-                                                                        fit="crop"
-                                                                        quality="80"
-                                                                        alt="{{ $image->alt ?: $product->name . ' - ' . $image->name }}"/>
-                                                                </div>
-                                        @endif
-                                    @empty
-                                        <div>
-                                            {{-- <p class="col-span-full text-gray-500">此產品沒有圖片。</p> --}}
-                                            <p class="h-[192px] flex items-center justify-center bg-gray-100 text-gray-500">此產品沒有圖片。</p>
-                                        </div>
-                                    @endforelse
-                                @else
-                                    <img class="h-[192px] w-full object-cover object-center" src="https://dummyimage.com/720x400" alt="blog">
-                                @endif
-                                <div class="py-4 px-6 flex flex-col flex-1">
-                                    <div class="flex gap-2">
-                                    @foreach($product->product_category as $category)
-                                    {{-- <p class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
-                                    {{-- <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1">{{ $product->product_category->pluck('title')->implode(', ') }}</p> --}}
-                                    <p class="border-gray-400 text-center border rounded-md max-w-[80px] tracking-widest text-sm title-font font-medium text-gray-400 mb-1 px-1.5 py-0.5">{{ $category->title }}</p>
-                                    @endforeach
-                                    </div>
-                                    {{-- <p class="title-font text-lg font-medium text-gray-900 mb-3">{{ $product->title }}</p> --}}
-                                    <p class="title-font text-lg font-extrabold text-gray-900 my-3 max-h-[56px] line-clamp-2">{{ $product->title }}</p>
-                                    {{-- <div class="leading-relaxed mb-3 max-w-[380px] max-h-20 overflow-hidden">{!! Str::limit($product->content, 200) !!}</div> --}}
-                                    {{-- <div class="flex items-center flex-wrap mt-auto"> --}}
-                                    <div class="mt-auto">
-                                        <a href="{{ route('product.detail', ['locale' => app()->getLocale(), 'product' => $product->slug]) }}"
-                                            {{-- class="text-indigo-500 inline-flex items-center md:mb-2 lg:mb-0">Learn More --}}
-                                            class="inline-flex items-center">觀看網站
-                                            <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="M12 5l7 7-7 7"></path>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    </div>
-                </div>
-            </section>
-        @else
+                    </section>
+                @endif
+        {{-- @else
             <p class="col-span-full text-center text-gray-500">目前沒有找到產品。</p>
-        @endif
+        @endif --}}
 
 
 

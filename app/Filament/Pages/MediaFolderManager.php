@@ -10,6 +10,8 @@ class MediaFolderManager extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-folder';
     protected static string $view = 'filament.pages.media-folder-manager';
+
+
     public static function getModelLabel(): string
     {
         return __('backstage.media_folder_manage');
@@ -22,6 +24,7 @@ class MediaFolderManager extends Page
     {
         return __('backstage.media_folder_manage');
     }
+    protected static ?string $navigationGroup = 'Website';
 
     // public string $newFolder = '';
     public string $renameTo = '';
@@ -34,13 +37,13 @@ class MediaFolderManager extends Page
     public bool $delSubFolderModal = false;
     // public string $confirmingFolder = '';
     public string|null $confirmingDeleteFolder = null;
-    protected static ?string $navigationGroup = 'Website';
 
     // protected static bool $shouldRegisterNavigation = false;
 
 
     public array $folders = [];
     public array $subFolderNames = [];
+    public bool $expandAll = false;
 
     public function mount(): void
     {
@@ -238,6 +241,18 @@ class MediaFolderManager extends Page
     public function prepareCreateFolder($parentPath)
     {
         $this->parentFolder = $parentPath;
+    }
+
+    public function expandAllFolders()
+    {
+        $this->expandAll = true;
+        $this->dispatch('expand-all-folders');
+    }
+
+    public function collapseAllFolders()
+    {
+        $this->expandAll = false;
+        $this->dispatch('collapse-all-folders');
     }
 
     // public static function flattenFolders(array $folders, string $prefix = ''): array

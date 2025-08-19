@@ -2,19 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductTagResource\Pages;
-use App\Filament\Resources\ProductTagResource\RelationManagers;
-use App\Models\ProductTag;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\ProductTag;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Filament\Clusters\Product;
+use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ProductTagResource\Pages;
+use App\Filament\Resources\ProductTagResource\RelationManagers;
 
 class ProductTagResource extends Resource
 {
+    protected static ?string $cluster = Product::class;
     protected static ?string $model = ProductTag::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
@@ -30,7 +33,9 @@ class ProductTagResource extends Resource
     {
         return __('global.tag_settings');
     }
-    protected static ?string $navigationGroup = 'Products';
+
+    protected static ?int $navigationSort = 3;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     // protected static ?int $navigationSort = 3;
 

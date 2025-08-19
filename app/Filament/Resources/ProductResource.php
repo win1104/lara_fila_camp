@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Product;
+use App\Models\Product as ModelsProduct;
 use App\Models\ProductTag;
 use Filament\Infolists;
 use Filament\Forms\Form;
@@ -25,10 +25,9 @@ use Filament\Pages\SubNavigationPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use FilamentTiptapEditor\TiptapEditor;
-use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Clusters\Product;
 use App\Filament\Resources\ProductResource\Pages;
 use CodeWithDennis\FilamentSelectTree\SelectTree;
-use Filament\Forms\Components\Select;
 use Awcodes\Curator\Components\Forms\CuratorPicker;
 use Awcodes\Curator\Components\Tables\CuratorColumn;
 use Awcodes\Curator\PathGenerators\DefaultPathGenerator;
@@ -38,7 +37,8 @@ use Awcodes\Curator\PathGenerators\DefaultPathGenerator;
 
 class ProductResource extends Resource
 {
-    protected static ?string $model = Product::class;
+    protected static ?string $cluster = Product::class;
+    protected static ?string $model = ModelsProduct::class;
     protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function getModelLabel(): string
@@ -53,7 +53,8 @@ class ProductResource extends Resource
     {
         return __('product.navigation');
     }
-    protected static ?string $navigationGroup = 'Products';
+
+    protected static ?int $navigationSort = 1;
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function getRouteKeyName(): string
@@ -275,7 +276,7 @@ class ProductResource extends Resource
                                     // ->alwaysOpen()
                                     ->multiple(true)
                                     ->searchable()
-                                    ->saveRelationshipsUsing(function (Product $record, $state) {
+                                    ->saveRelationshipsUsing(function (ModelsProduct $record, $state) {
                                         $record->product_category()->sync(
                                             collect($state)->mapWithKeys(function ($slug) use ($record) {
                                                 // return [$slug => ['product_slug' => $record->slug]];
@@ -638,64 +639,6 @@ class ProductResource extends Resource
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(3);
-    }
-
-    public static function getTabs(): array
-    {
-        return [
-            // 'all' => Tab::make('全部商品')
-            //     ->badge(Product::query()->count()),
-            // 'published' => Tab::make('上架')
-            //     ->badge(Product::query()->where('display', 1)->count())
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 1)),
-            // 'unpublished' => Tab::make('下架')
-            //     ->badge(Product::query()->where('display', 0)->count())
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('display', 0)),
-            // 'recent' => Tab::make('最近更新')
-            //     ->badge(Product::query()->where('updated_at', '>=', now()->subDays(7))->count())
-            //     ->modifyQueryUsing(fn (Builder $query) => $query->where('updated_at', '>=', now()->subDays(7))),
-
-
-
-            'all' => Tab::make('全部商品')
-                ->icon('heroicon-o-shopping-bag')
-                //使用快取來優化徽章計數
-                ->badge(fn () => cache()->remember('products.all.count', 300, fn () => Product::count())),
-                // ->badge(fn () => Product::count()),
-
-            'active' => Tab::make('上架中')
-                ->icon('heroicon-o-check-circle')
-                //使用快取來優化徽章計數
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '1'))
-                ->badge(fn () => cache()->remember('products.published.count', 300, fn () => Product::where('display', '1')->count()))
-                // ->badge(fn () => Product::where('display', '1')->count())
-                ->badgeColor('success'),
-
-            'inactive' => Tab::make('下架')
-                ->icon('heroicon-o-x-circle')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '0'))
-                ->badge(fn () => Product::where('display', '0')->count())
-                ->badgeColor('danger'),
-
-            'out_of_stock' => Tab::make('缺貨')
-                ->icon('heroicon-o-exclamation-triangle')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('display', '0'))
-                // ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'out_of_stock'))
-                ->badge(fn () => Product::where('check', '1')->count())
-                // ->badge(fn () => Product::where('status', 'out_of_stock')->count())
-                ->badgeColor('warning'),
-
-            'featured' => Tab::make('精選商品')
-                ->icon('heroicon-o-star')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_featured', true))
-                ->badge(fn () => Product::where('tag', 'is_featured')->count())
-                ->badgeColor('info'),
-
-            'recent' => Tab::make('最近新增')
-                ->icon('heroicon-o-clock')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('created_at', '>=', now()->subDays(7)))
-                ->badge(fn () => Product::where('created_at', '>=', now()->subDays(7))->count()),
-        ];
     }
 
     public static function getRelations(): array

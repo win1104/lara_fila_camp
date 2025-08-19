@@ -21,10 +21,6 @@ class UserCategoryResource extends Resource
     protected static ?string $model = UserCategory::class;
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
-    // 在 Cluster 內的排序
-    protected static ?int $navigationSort = 2;
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
-
     public static function getModelLabel(): string
     {
         return __('user.category_label');
@@ -39,6 +35,9 @@ class UserCategoryResource extends Resource
     {
         return __('user.category');
     }
+
+    protected static ?int $navigationSort = 2;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function form(Form $form): Form
     {

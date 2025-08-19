@@ -23,23 +23,22 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    // 在 Cluster 內的排序
-    protected static ?int $navigationSort = 1;
-    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
-    // public static function getModelLabel(): string
-    // {
-    //     return __('user.member');
-    // }
-    // public static function getModelPluralLabel(): string
-    // {
-    //     return __('user.member');
-    // }
+    public static function getModelLabel(): string
+    {
+        return __('user.member_mana');
+    }
+    public static function getModelPluralLabel(): string
+    {
+        return __('user.member_mana');
+    }
     public static function getNavigationLabel(): string
     {
         return __('user.member_mana');
     }
-    // protected static ?string $navigationGroup = 'User';
+
+    protected static ?int $navigationSort = 1;
+    protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
 
 

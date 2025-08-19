@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Livewire\Component;
 use App\Models\Product as ProductModel; // 引入 Product 模型
 use App\Models\ProductCategory;
+use App\Models\ProductTag;
 // use Livewire\WithPagination; // 引入分頁 Trait
 
 class Product extends Component
@@ -15,10 +16,12 @@ class Product extends Component
 
     public ?ProductModel $product = null;
     public $products = [];
-    public $search = ''; // 用於搜尋功能 (稍後可擴展)
+    public $search = '';
     public $categories;
+    public $tags;
     public $category = null;
-    public $selectedCategory = []; // 改為 array 支援複選
+    public $selectedCategory = [];
+    public $selectedTag = [];
     public $isDetail = false; // 每頁顯示數量
 
     public function mount($product = null)
@@ -26,6 +29,11 @@ class Product extends Component
         $this->categories = ProductCategory::where('locale', app()->getLocale())
             ->where('display', 1)
             ->where('slug', '!=', 'home')
+            ->orderBy('order')
+            ->get();
+
+        $this->tags = ProductTag::where('locale', app()->getLocale())
+            ->where('display', 1)
             ->orderBy('order')
             ->get();
 
@@ -60,11 +68,23 @@ class Product extends Component
         }
     }
 
-    public function selectCategory($slug = null)
+    public function selectTag($slug = null)
     {
         // 複選邏輯：如果已選中則移除，如果未選中則添加
+        if (in_array($slug, $this->selectedTag)) {
+            $this->selectedTag = array_values(array_filter($this->selectedTag, function($item) use ($slug) {
+                return $item !== $slug;
+            }));
+        } else {
+            $this->selectedTag[] = $slug;
+        }
+        $this->loadProducts();
+    }
+
+    public function selectCategory($slug = null)
+    {
         if (in_array($slug, $this->selectedCategory)) {
-            $this->selectedCategory = array_values(array_filter($this->selectedCategory, function($item) use ($slug) {
+            $this->selectedCategory = array_values(array_filter($this->selectedCategory, function ($item) use ($slug) {
                 return $item !== $slug;
             }));
         } else {
@@ -72,14 +92,14 @@ class Product extends Component
         }
         $this->loadProducts();
     }
-    public function updatedSelectedCategory()
-    {
-        $this->loadProducts();
-    }
+    // public function updatedSelectedCategory()
+    // {
+    //     $this->loadProducts();
+    // }
 
     public function loadProducts()
     {
-        $query = ProductModel::with('product_category')
+        $query = ProductModel::with('product_category', 'productTags')
             ->where('locale', app()->getLocale())
             ->where('display', 1)
             ->orderBy('order');
@@ -88,6 +108,12 @@ class Product extends Component
             $query->whereHas('product_category', function ($q) {
                 $q->whereIn('slug', $this->selectedCategory);
                     // ->where('locale', app()->getLocale());
+            });
+        }
+
+        if (!empty($this->selectedTag)) {
+            $query->whereHas('productTags', function ($q) {
+                $q->whereIn('slug', $this->selectedTag);
             });
         }
 

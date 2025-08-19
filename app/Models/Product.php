@@ -97,6 +97,7 @@ class Product extends Model
     public function productTags(): BelongsToMany
     {
         return $this->belongsToMany(ProductTag::class, 'product_tag_relations', 'product_slug', 'product_tag_slug', 'slug', 'slug')
+            ->where('product_tag_relations.locale', app()->getLocale())
             ->withTimestamps();
     }
 

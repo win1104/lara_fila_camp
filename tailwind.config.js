@@ -9,6 +9,7 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './resources/views/vendor/**/*.blade.php',
         './vendor/awcodes/filament-curator/resources/**/*.blade.php',
         './vendor/awcodes/filament-tiptap-editor/resources/**/*.blade.php',
         './node_modules/mary-ui/**/*.{js,jsx,vue}', // 添加 Mary UI 組件路徑

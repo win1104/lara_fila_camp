@@ -3,6 +3,7 @@
 return [
     'columns' => [
         'url' => '連結',
+        'images' => '圖片',
         'name' => '名稱',
         'ext' => '副檔名',
         'disk' => '磁碟',

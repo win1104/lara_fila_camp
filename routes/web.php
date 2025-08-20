@@ -37,7 +37,7 @@ use Gregwar\Captcha\PhraseBuilder;
 // {
 //     return redirect('/'.config('app.fallback_locale'));
 // });
-Route::get('/aiing', Aiing::class);
+// Route::get('/aiing', Aiing::class);
 
 // 認證相關路由
 Route::middleware('guest')->group(function () {
@@ -86,6 +86,9 @@ Route::group(['prefix' => '{locale}', 'middleware' => 'setlocale'], function ()
 {
     Route::get('/', Home::class)->name('home');
     Route::get("/articles/{articles:slug}", Article::class)->name('article.show');
+
+    // Route::get('/aiing', Aiing::class);
+    Route::get('/posts/ai', Aiing::class);
 
     Route::get('mobile', DocBot::class)->name('mobile.index');
     Route::post('mobile', DocBot::class)->name('mobile.store');

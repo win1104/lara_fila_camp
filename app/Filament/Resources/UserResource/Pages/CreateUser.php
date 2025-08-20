@@ -2,11 +2,7 @@
 
 namespace App\Filament\Resources\UserResource\Pages;
 
-
-
-
 use Filament\Forms;
-use Filament\Forms\Components\Toggle;
 use App\Filament\Resources\UserResource;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Resources\Pages\CreateRecord;
@@ -24,13 +20,6 @@ class CreateUser extends CreateRecord
             Step::make('個人資料')
                 ->description('Persional data')
                 ->schema([
-                    // TextInput::make('name')
-                    //     ->required()
-                    //     ->live()
-                    //     ->afterStateUpdated(fn ($state, callable $set) => $set('slug', Str::slug($state))),
-                    // TextInput::make('slug')
-                    //     ->disabled()
-                    //     ->required(),
                     Forms\Components\Grid::make()
                         ->schema([
                             Forms\Components\Group::make()
@@ -153,9 +142,6 @@ class CreateUser extends CreateRecord
             Step::make('聯絡資料')
                 ->description('Contact information')
                 ->schema([
-                    // MarkdownEditor::make('description')
-                    //     ->columnSpan('full'),
-
                     Forms\Components\Section::make(__('user.contact_info'))
                         ->schema([
                             Forms\Components\TextInput::make('detail_phone')
@@ -205,34 +191,28 @@ class CreateUser extends CreateRecord
             Step::make('公司資訊')
                 ->description('About company')
                 ->schema([
-                    // Toggle::make('is_visible')
-                    //     ->label('Visible to customers.')
-                    //     ->default(true),
+                    Forms\Components\Section::make(__('user.work_info'))
+                        ->schema([
+                            Forms\Components\TextInput::make('detail_company')
+                                ->label(__('user.company')),
 
+                            Forms\Components\TextInput::make('detail_company_no')
+                                ->label(__('user.company_no')),
 
-                Forms\Components\Section::make(__('user.work_info'))
-                    ->schema([
-                        Forms\Components\TextInput::make('detail_company')
-                            ->label(__('user.company')),
+                            Forms\Components\TextInput::make('detail_position')
+                                ->label(__('user.position')),
 
-                        Forms\Components\TextInput::make('detail_company_no')
-                            ->label(__('user.company_no')),
+                            Forms\Components\TextInput::make('detail_job_title')
+                                ->label(__('user.job_title')),
 
-                        Forms\Components\TextInput::make('detail_position')
-                            ->label(__('user.position')),
-
-                        Forms\Components\TextInput::make('detail_job_title')
-                            ->label(__('user.job_title')),
-
-                        Forms\Components\TextInput::make('detail_education')
-                            ->label(__('user.education')),
-                    ])
-                    ->columns(2),
-                ]),
+                            Forms\Components\TextInput::make('detail_education')
+                                ->label(__('user.education')),
+                        ])
+                        ->columns(2),
+                    ]),
             Step::make('帳號設定')
                 ->description('Account setting')
                 ->schema([
-
                     Forms\Components\Section::make(__('user.account_settings'))
                         ->schema([
                             Forms\Components\Toggle::make('detail_verify')

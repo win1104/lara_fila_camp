@@ -1,20 +1,20 @@
 <div>
     <div class="flex items-center justify-between mb-4">
-        <h3 class="text-lg font-medium">資料夾結構</h3>
+        <h3 class="text-lg font-medium">資料夾</h3>
         <div class="flex items-center space-x-2">
             <x-filament::button
                 wire:click="expandAllFolders"
                 size="sm"
                 color="gray"
                 icon="heroicon-o-plus-circle">
-                全部展開
+                全展開
             </x-filament::button>
             <x-filament::button
                 wire:click="collapseAllFolders"
                 size="sm"
                 color="gray"
                 icon="heroicon-o-minus-circle">
-                全部折叠
+                全折叠
             </x-filament::button>
         </div>
     </div>

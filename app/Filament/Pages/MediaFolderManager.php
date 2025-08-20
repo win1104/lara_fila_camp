@@ -24,7 +24,7 @@ class MediaFolderManager extends Page
     {
         return __('backstage.media_folder_manage');
     }
-    protected static ?string $navigationGroup = 'Website';
+    protected static ?string $navigationGroup = 'Media';
 
     // public string $newFolder = '';
     public string $renameTo = '';

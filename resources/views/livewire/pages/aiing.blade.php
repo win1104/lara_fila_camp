@@ -163,11 +163,10 @@
     </section>
 
 
+{{--
     <section class="text-gray-600 body-font bg-[#EBF0FE]">
-        {{-- <div class="max-w-[1280px] px-5 py-32 mx-auto flex flex-wrap flex-col"> --}}
         <div class="max-w-[1600px] mx-auto px-5 py-32 lg:px-32 flex flex-wrap flex-col">
             <h2 class="text-center title-font sm:text-4xl text-3xl mb-5 md:-mb-2.5 font-black" style="color:#162945;">混合無限創意，激發無窮想像</h2>
-            {{-- <div class="flex items-center justify-between mb-14"> --}}
 
                 <div class="flex items-center space-x-4 justify-end mb-6">
                     <button wire:click="previousSlide"
@@ -185,7 +184,6 @@
                         </svg>
                     </button>
                 </div>
-            {{-- </div> --}}
             <div class="flex flex-wrap">
                 <div class="p-4 md:w-1/2 w-full">
                     <div class="h-full bg-white p-11 rounded-3xl">
@@ -230,6 +228,94 @@
             </div>
         </div>
     </section>
+--}}
+    <section x-data="{ page: 0, totalPages: 2 }" class="text-gray-600 body-font bg-[#EBF0FE]">
+        <div class="max-w-[1600px] mx-auto px-5 py-32 lg:px-32 flex flex-wrap flex-col">
+            <h2 class="text-center title-font sm:text-4xl text-3xl mb-5 md:-mb-2.5 font-black" style="color:#162945;">混合無限創意，激發無窮想像</h2>
+
+            <div class="flex items-center space-x-4 justify-end mb-6">
+                <button @click="page = (page - 1 + totalPages) % totalPages"
+                    class="flex items-center justify-center w-[54px] h-[54px] shadow-md p-2 rounded-full bg-white hover:bg-gray-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <button @click="page = (page + 1) % totalPages"
+                    class="flex items-center justify-center w-[54px] h-[54px] shadow-md p-2 rounded-full bg-white hover:bg-gray-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div x-show="page === 0" x-transition class="flex flex-wrap">
+                <div class="p-4 md:w-1/2 w-full">
+                    <div class="h-full bg-white p-11 rounded-3xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="block w-5 h-5 text-[#0C256D] mb-4" viewBox="0 0 975.036 975.036">
+                            <path d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z"></path>
+                        </svg>
+                        <p class="leading-relaxed mb-6">我們相信許多事情成功的開端，建立在彼此良好的溝通與互動上。</br>
+                        我們會花許多時間與客戶討論、溝通每個製作環節，只為了做出「對的」品牌網站。</p>
+                        <a class="inline-flex items-center">
+                            <img alt="testimonial" src="{{ asset('avatar_up.png') }}" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
+                            <span class="flex-grow flex flex-col pl-4">
+                                <span class="title-font font-medium text-gray-900">Richard</span>
+                                <span class="text-gray-500 text-sm">圓桌會議有限公司 執行長</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-4 md:w-1/2 w-full">
+                    <div class="h-full bg-white p-11 rounded-3xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="block w-5 h-5 text-[#0C256D] mb-4" viewBox="0 0 975.036 975.036">
+                            <path d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z"></path>
+                        </svg>
+                        <p class="leading-relaxed mb-6">我們相信許多事情成功的開端，建立在彼此良好的溝通與互動上。
+                        我們會花許多時間與客戶討論、溝通每個製作環節，只為了做出「對的」品牌網站。</p>
+                        <a class="inline-flex items-center">
+                            <img alt="testimonial" src="{{ asset('avatar_toystory.png') }}" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
+                            <span class="flex-grow flex flex-col pl-4">
+                                <span class="title-font font-medium text-gray-900">Judith</span>
+                                <span class="text-gray-500 text-sm">Edimax 訊舟科技 行銷經理</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div x-show="page === 1" x-transition class="flex flex-wrap">
+                <div class="p-4 md:w-1/2 w-full">
+                    <div class="h-full bg-white p-11 rounded-3xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="block w-5 h-5 text-[#0C256D] mb-4" viewBox="0 0 975.036 975.036">
+                            <path d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z"></path>
+                        </svg>
+                        <p class="leading-relaxed mb-6">這是第三個見證人的內容，用來展示輪播功能。</p>
+                        <a class="inline-flex items-center">
+                            <img alt="testimonial" src="{{ asset('avatar_up.png') }}" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
+                            <span class="flex-grow flex flex-col pl-4">
+                                <span class="title-font font-medium text-gray-900">Alex</span>
+                                <span class="text-gray-500 text-sm">新創公司 技術總監</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-4 md:w-1/2 w-full">
+                    <div class="h-full bg-white p-11 rounded-3xl">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="block w-5 h-5 text-[#0C256D] mb-4" viewBox="0 0 975.036 975.036">
+                            <path d="M925.036 57.197h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.399 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l36 76c11.6 24.399 40.3 35.1 65.1 24.399 66.2-28.6 122.101-64.8 167.7-108.8 55.601-53.7 93.7-114.3 114.3-181.9 20.601-67.6 30.9-159.8 30.9-276.8v-239c0-27.599-22.401-50-50-50zM106.036 913.497c65.4-28.5 121-64.699 166.9-108.6 56.1-53.7 94.4-114.1 115-181.2 20.6-67.1 30.899-159.6 30.899-277.5v-239c0-27.6-22.399-50-50-50h-304c-27.6 0-50 22.4-50 50v304c0 27.601 22.4 50 50 50h145.5c-1.9 79.601-20.4 143.3-55.4 191.2-27.6 37.8-69.4 69.1-125.3 93.8-25.7 11.3-36.8 41.7-24.8 67.101l35.9 75.8c11.601 24.399 40.501 35.2 65.301 24.399z"></path>
+                        </svg>
+                        <p class="leading-relaxed mb-6">這是第四個見證人的內容，展示分頁功能的效果。</p>
+                        <a class="inline-flex items-center">
+                            <img alt="testimonial" src="{{ asset('avatar_toystory.png') }}" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
+                            <span class="flex-grow flex flex-col pl-4">
+                                <span class="title-font font-medium text-gray-900">Sarah</span>
+                                <span class="text-gray-500 text-sm">設計工作室 負責人</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="relative bg-gray-100 py-24 overflow-hidden">
         <!-- 背景圖 -->
@@ -253,7 +339,7 @@
 
 
     {{-- 首頁footer --}}
-    <footer class="text-gray-600 body-font bg-gray-100">
+    {{-- <footer class="text-gray-600 body-font bg-gray-100">
         <div
             class="border-b-2 border-gray-300 max-w-[1600px] px-5 lg:px-32 pt-20 pb-14 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
             <div class=" flex-shrink-0 md:mx-0 mx-auto text-center md:text-right md:mt-0 mt-10">
@@ -330,7 +416,7 @@
                 </span>
             </div>
         </div>
-    </footer>
+    </footer> --}}
 </div>
 
 @push('scripts')

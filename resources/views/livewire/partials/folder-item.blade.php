@@ -1,5 +1,5 @@
 {{-- This is a new partial for the Livewire component --}}
-<div class="folder-tree-item ml-{{ $level * 4 }}" x-data="{ 
+<div class="folder-tree-item ml-{{ $level * 4 }}" x-data="{
     expanded: {{ $level === 0 ? 'true' : 'false' }},
     init() {
         this.$wire.on('expand-all-folders', () => {
@@ -10,14 +10,19 @@
         });
     }
 }">
-    <div 
+    <div
         @class([
-            'flex items-center py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group relative cursor-pointer',
-            'bg-gray-100 dark:bg-gray-700' => $selectedDirectory === $folder['path'],
-        ])
+    'flex items-center py-2 px-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group relative cursor-pointer',
+    'bg-gray-100 dark:bg-gray-700' => $selectedDirectory === $folder['path'],
+])
         wire:click="selectDirectory('{{ $folder['path'] }}')"
     >
-        <div class="flex items-center flex-1"> {{-- Added flex-1 here --}}
+    @if($level > 0)
+        <div class="absolute left-0 top-0 h-full w-px bg-gray-200 dark:bg-gray-600"
+            style="left: {{ ($level - 1) * 12 + 12 }}px;"></div>
+        <div class="absolute top-1/2 w-3 h-px bg-gray-200 dark:bg-gray-600" style="left: {{ ($level - 1) * 12 + 12 }}px;"></div>
+    @endif
+        <div class="flex items-center" style="margin-left: {{ $level * 12 }}px;"> {{-- Added flex-1 here --}}
             @if(!empty($folder['children']))
                 <button @click.stop="expanded = !expanded" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 mr-1">
                     <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-90': expanded }" fill="currentColor" viewBox="0 0 20 20">

@@ -8,6 +8,7 @@ use App\Livewire\Pages\Post;
 use App\Livewire\Pages\Product;
 use App\Livewire\Pages\Article;
 use App\Livewire\Pages\Aiing;
+use App\Livewire\Pages\About;
 use App\Livewire\Pages\Contact;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
@@ -37,7 +38,7 @@ use Gregwar\Captcha\PhraseBuilder;
 // {
 //     return redirect('/'.config('app.fallback_locale'));
 // });
-// Route::get('/aiing', Aiing::class);
+Route::get('/about', About::class);
 
 // 認證相關路由
 Route::middleware('guest')->group(function () {

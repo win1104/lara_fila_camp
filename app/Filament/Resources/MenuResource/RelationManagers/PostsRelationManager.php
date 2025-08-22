@@ -293,7 +293,7 @@ class PostsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->visible($shouldShowCreateAction)
                     ->closeModalByClickingAway(false)
-                    ->modalWidth('7xl'),
+                    ->modalWidth('8xl'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
@@ -334,8 +334,6 @@ class PostsRelationManager extends RelationManager
         if ($this->isUrlType) {
             return array();
         }
-
-
 
         $ownerRecord = $this->getOwnerRecord();
         $currentLocale = app()->getLocale();

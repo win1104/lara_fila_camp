@@ -115,7 +115,7 @@ class AdminPanelProvider extends PanelProvider
                     // ->label('圖片管理')
                     ->pluralLabel(__('backstage.media_manage'))
                     // ->navigationIcon('heroicon-o-photo')
-                    ->navigationGroup('Website')
+                    ->navigationGroup('Media')
                     ->navigationSort(1)
                     // ->navigationCountBadge()
                     // ->registerNavigation(true)

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Product;
-use Illuminate\Support\Facades\Log;
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use SolutionForest\FilamentTree\Concern\ModelTree;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductCategory extends Model
 {
-    use ModelTree;
+    use ModelTree, LoggableTrait;
 
     protected $fillable = [
         'locale',

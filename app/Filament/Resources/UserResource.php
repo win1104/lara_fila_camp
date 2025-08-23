@@ -13,7 +13,7 @@ use App\Filament\Clusters\Member;
 use Filament\Support\Colors\Color;
 use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Widgets\UserStatsOverview;
+use App\Filament\Resources\UserResource\Widget\UserStatsOverview;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;

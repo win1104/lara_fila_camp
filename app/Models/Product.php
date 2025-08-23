@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\ProductTag;
 use App\Models\ProductOption;
 use App\Models\ProductCategory;
 use App\Models\ProductDownload;
-use App\Models\ProductTag;
+use App\Traits\LoggableTrait;
 use Awcodes\Curator\Models\Media;
-use Illuminate\Support\Facades\Log;
-// use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, LoggableTrait;
 
     //
     protected $fillable = [
@@ -122,15 +121,6 @@ class Product extends Model
             }
         });
 
-        static::created(function ($model) {
-            // 呼叫自訂日誌方法
-            self::logChange('created', $model);
-        });
-
-        static::updated(function ($model) {
-            // 呼叫自訂日誌方法
-            self::logChange('updated', $model);
-        });
     }
 
     protected static function booted()
@@ -144,7 +134,7 @@ class Product extends Model
             if (!$disk->exists($targetDirectory)) {
                 $disk->makeDirectory($targetDirectory);
             }
-// dd($product->images);
+
             static::creating(function ($post) {
                 if ($post->images) {
                     $media = Media::find($post->images);
@@ -182,10 +172,18 @@ class Product extends Model
     }
 
 
-    protected static function logChange($action, $model)
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
     {
-        // 寫入日誌，可以根據需要調整日誌格式
-        Log::info("Product : A record has been {$action}: ", $model->toArray());
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title',
+            'status'
+        ];
     }
 
 }

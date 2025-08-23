@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class UserTag extends Model
 {
+    use LoggableTrait;
     protected $fillable = [
         'locale',
         'slug',
@@ -35,5 +37,19 @@ class UserTag extends Model
     {
         return $this->belongsToMany(User::class, 'user_tag_relations', 'user_tag_slug', 'user_slug', 'slug', 'slug')
             ->withTimestamps();
+    }
+
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title',
+            'order'
+        ];
     }
 }

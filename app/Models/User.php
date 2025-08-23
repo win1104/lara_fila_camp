@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 // use App\Models\Chat;
+use App\Traits\LoggableTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,7 +16,7 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, LoggableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -146,5 +147,18 @@ class User extends Authenticatable
                 $model->slug = $slug;
             }
         });
+    }
+
+    /**
+     * 定義要記錄的欄位 - User 避免記錄敏感信息
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'name', 
+            'slug',
+            'email'
+        ];
     }
 }

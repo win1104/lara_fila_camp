@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, LoggableTrait;
 
     protected $fillable = [
         'locale',
@@ -48,5 +49,20 @@ class Project extends Model
     {
         return $this->hasMany(ProjectFlight::class, 'project_slug', 'slug')
             ->where('locale', $this->locale);
+    }
+
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title',
+            'type',
+            'order'
+        ];
     }
 }

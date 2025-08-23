@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Models\Post;
-use Illuminate\Support\Facades\Log;
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Menu extends Model
 {
+    use LoggableTrait;
     protected $fillable = [
         'locale',
         'slug',
@@ -226,5 +227,18 @@ class Menu extends Model
         }
 
         return parent::getAttribute($key);
+    }
+
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title'
+        ];
     }
 }

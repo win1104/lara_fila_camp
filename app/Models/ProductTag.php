@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProductTag extends Model
 {
+    use LoggableTrait;
     protected $fillable = [
         'locale',
         'slug',
@@ -35,5 +37,19 @@ class ProductTag extends Model
     {
         return $this->belongsToMany(Product::class, 'product_tag_relations', 'product_tag_slug', 'product_slug', 'slug', 'slug')
             ->withTimestamps();
+    }
+
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title',
+            'order'
+        ];
     }
 }

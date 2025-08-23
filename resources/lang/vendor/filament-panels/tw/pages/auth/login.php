@@ -2,28 +2,41 @@
 
 return [
 
-    'title' => '登入',
+    'title' => '登录',
 
-    'heading' => '登入帳號',
+    'heading' => '登录',
+
+    'actions' => [
+
+        'register' => [
+            'before' => '或者',
+            'label' => '註冊账号',
+        ],
+
+        'request_password_reset' => [
+            'label' => '忘记了密码？',
+        ],
+
+    ],
 
     'form' => [
 
         'email' => [
-            'label' => 'E-Mail 位址',
+            'label' => '電子郵件',
         ],
 
         'password' => [
-            'label' => '密碼',
+            'label' => '密码',
         ],
 
         'remember' => [
-            'label' => '記住我',
+            'label' => '保持登录状态',
         ],
 
         'actions' => [
 
             'authenticate' => [
-                'label' => '登入',
+                'label' => '登录',
             ],
 
         ],
@@ -32,14 +45,15 @@ return [
 
     'messages' => [
 
-        'failed' => '所提供的帳號密碼與資料庫中的記錄不相符。',
+        'failed' => '登录信息有误。',
 
     ],
 
     'notifications' => [
 
         'throttled' => [
-            'title' => '嘗試登入次數過多。請在 :seconds 秒後重試。',
+            'title' => '尝试登录次数过多',
+            'body' => '請在 :seconds 秒后重试。',
         ],
 
     ],

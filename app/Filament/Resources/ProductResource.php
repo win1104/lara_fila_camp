@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use Illuminate\Support\Str;
 use App\Models\Product as ModelsProduct;
 use App\Models\ProductTag;
 use Filament\Infolists;
@@ -319,9 +320,13 @@ class ProductResource extends Resource
                                         ])
                                         ->createOptionUsing(function (array $data): int {
                                             $tag = ProductTag::create([
-                                                'name' => $data['name'],
+                                                'locale' => app()->getLocale(),
+                                                'title' => $data['title'],
+                                                'slug' => \Str::slug($data['title']) . '-' . time(),
                                                 'color' => $data['color'],
                                                 'creator_id' => auth()->id(),
+                                                'display' => true,
+                                                'order' => 1,
                                             ]);
                                             return $tag->id;
                                         })

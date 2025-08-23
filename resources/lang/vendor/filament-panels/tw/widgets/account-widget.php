@@ -5,11 +5,11 @@ return [
     'actions' => [
 
         'logout' => [
-            'label' => '登出',
+            'label' => '退出登录',
         ],
 
     ],
 
-    'welcome' => '歡迎',
+    'welcome' => '欢迎',
 
 ];

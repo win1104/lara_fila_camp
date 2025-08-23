@@ -2,30 +2,14 @@
 
 return [
 
-    'title' => '编辑 :label',
-
-    'breadcrumb' => '编辑',
-
     'form' => [
 
         'actions' => [
-
-            'cancel' => [
-                'label' => '取消',
-            ],
 
             'save' => [
                 'label' => '儲存',
             ],
 
-        ],
-
-    ],
-
-    'content' => [
-
-        'tab' => [
-            'label' => '编辑',
         ],
 
     ],

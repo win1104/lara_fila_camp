@@ -3,10 +3,10 @@
 return [
 
     'field' => [
-        'label' => '全文檢尋',
-        'placeholder' => '搜尋',
+        'label' => '全局搜索',
+        'placeholder' => '搜索',
     ],
 
-    'no_results_message' => '無搜尋結果。',
+    'no_results_message' => '未找到搜索结果。',
 
 ];

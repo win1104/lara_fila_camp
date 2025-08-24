@@ -103,6 +103,7 @@ class Menu extends Model
     public function children()
     {
         return $this->hasMany(static::class, 'parent_slug', 'slug')
+            ->where('locale', $this->locale)
             ->orderBy('order');
     }
 

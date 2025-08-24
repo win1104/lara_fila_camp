@@ -2,9 +2,9 @@
 
 return [
 
-    'title' => '创建 :label',
+    'title' => '新增 :label',
 
-    'breadcrumb' => '创建',
+    'breadcrumb' => '新增',
 
     'form' => [
 
@@ -19,7 +19,7 @@ return [
             ],
 
             'create_another' => [
-                'label' => '儲存并创建另一个',
+                'label' => '儲存並新增另一個',
             ],
 
         ],
@@ -29,7 +29,7 @@ return [
     'notifications' => [
 
         'created' => [
-            'title' => '已创建',
+            'title' => '已新增',
         ],
 
     ],

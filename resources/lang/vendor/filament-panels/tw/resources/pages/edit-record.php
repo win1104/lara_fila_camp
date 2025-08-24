@@ -2,9 +2,9 @@
 
 return [
 
-    'title' => '编辑 :label',
+    'title' => '編輯 :label',
 
-    'breadcrumb' => '编辑',
+    'breadcrumb' => '編輯',
 
     'form' => [
 
@@ -25,7 +25,7 @@ return [
     'content' => [
 
         'tab' => [
-            'label' => '编辑',
+            'label' => '編輯',
         ],
 
     ],

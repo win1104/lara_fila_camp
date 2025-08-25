@@ -5,7 +5,7 @@ namespace App\Filament\Resources\UserResource\Pages;
 use Filament\Actions;
 use App\Filament\Resources\UserResource;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Widgets\UserStatsOverview;
+use App\Filament\Resources\UserResource\Widget\UserStatsOverview;
 
 class ListUsers extends ListRecords
 {

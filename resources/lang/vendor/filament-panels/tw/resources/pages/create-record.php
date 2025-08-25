@@ -15,11 +15,11 @@ return [
             ],
 
             'create' => [
-                'label' => '新增',
+                'label' => '儲存',
             ],
 
             'create_another' => [
-                'label' => '新增後再建立另一個',
+                'label' => '儲存並新增另一個',
             ],
 
         ],

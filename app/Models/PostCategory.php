@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Post;
-use Illuminate\Support\Facades\Log;
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PostCategory extends Model
 {
+    use LoggableTrait;
     protected $fillable = [
         'locale',
         'slug',
@@ -50,22 +51,18 @@ class PostCategory extends Model
             $builder->orderBy('order', 'asc');
         });
 
-        static::created(function ($model) {
-            // 呼叫自訂日誌方法
-            self::logChange('created', $model);
-        });
-
-        static::updated(function ($model) {
-            // 呼叫自訂日誌方法
-            self::logChange('updated', $model);
-        });
     }
 
-    protected static function logChange($action, $model)
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
     {
-        // 寫入日誌，可以根據需要調整日誌格式
-        Log::info("ProductCategory : A record has been {$action}: ", $model->toArray());
+        return [
+            'id',
+            'locale',
+            'slug',
+            'title'
+        ];
     }
-
-
 }

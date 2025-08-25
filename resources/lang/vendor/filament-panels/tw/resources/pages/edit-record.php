@@ -22,6 +22,14 @@ return [
 
     ],
 
+    'content' => [
+
+        'tab' => [
+            'label' => '編輯',
+        ],
+
+    ],
+
     'notifications' => [
 
         'saved' => [

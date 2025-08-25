@@ -8,7 +8,7 @@ return [
         'meta' => '元數據',
         'preview' => '預覽',
         'upload_new' => '上傳新的',
-        'upload_new_helper' => '如果您對此媒體有任何策划，您可能需要重新创建它们，这不会自动发生',
+        'upload_new_helper' => '如果您對此媒體有任何策劃，您可能需要重新創建它們，這不會自動發生',
         'curation' => 'Curation',
     ],
     'fields' => [

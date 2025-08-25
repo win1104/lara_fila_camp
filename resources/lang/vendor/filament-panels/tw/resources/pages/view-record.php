@@ -2,8 +2,16 @@
 
 return [
 
-    'title' => '檢視 :label',
+    'title' => ':label 详情',
 
-    'breadcrumb' => '檢視',
+    'breadcrumb' => '详情',
+
+    'content' => [
+
+        'tab' => [
+            'label' => '详情',
+        ],
+
+    ],
 
 ];

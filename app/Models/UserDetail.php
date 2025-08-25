@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\LoggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserDetail extends Model
 {
+    use LoggableTrait;
 
     protected $fillable = [
         'user_id',
@@ -58,5 +60,18 @@ class UserDetail extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * 定義要記錄的欄位
+     */
+    public function getLoggableAttributes(): array
+    {
+        return [
+            'id',
+            'user_id',
+            'slug',
+            'type'
+        ];
     }
 }

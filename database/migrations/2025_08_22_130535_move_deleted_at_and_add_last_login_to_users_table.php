@@ -18,7 +18,7 @@ return new class extends Migration
 
         // 在 users 表新增 last_login_at 和 soft deletes
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('last_login_at')->nullable()->after('last_login_at');
+            $table->timestamp('last_login_at')->nullable()->after('creator_id');
             $table->softDeletes()->after('updated_at');
         });
     }

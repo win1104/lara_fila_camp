@@ -2,133 +2,158 @@
 
 {{--
     This is a reusable Blade component for a dynamic, horizontal timeline.
-    It receives milestone data via a 'milestones' prop and handles all interactivity using Alpine.js.
+    This version uses absolute positioning calculated in JavaScript for stability,
+    based on the architecture of a working example.
 --}}
 
 <div
     x-data="{
-        // Initialize component state from the Blade prop.
-        // json_encode is used to safely pass the PHP array to JavaScript.
         milestones: {{ json_encode($milestones) }},
         activeIndex: 0,
-        positionsReady: false, // New flag
+        totalTimelineWidth: 0,
+        fillingLineScale: 0,
 
-        // Function to scroll the timeline smoothly to the active item.
+        // New architecture: calculate all positions in JS, do not measure the DOM.
+        init() {
+            // Add a left_px property to each milestone for its calculated position
+            this.milestones.forEach(m => m.left_px = 0);
+
+            this.calculatePositions();
+
+            this.$watch('activeIndex', () => {
+                this.scrollTimeline();
+                this.updateFillingLine();
+            });
+
+            // Initial UI update after Alpine has initialized
+            this.$nextTick(() => {
+                this.scrollTimeline();
+                this.updateFillingLine();
+            });
+
+            // Optional: Recalculate on resize if the container width is a factor
+            // window.addEventListener('resize', () => this.calculatePositions());
+        },
+
+        calculatePositions() {
+            const pixelsPerDay = 1.0; // Determines the timeline scale. Adjustable.
+            const baseWidth = 150;    // The width of each milestone item in pixels. Adjustable.
+
+            if (this.milestones.length < 2) {
+                this.totalTimelineWidth = baseWidth;
+                return;
+            }
+
+            const firstDate = new Date(this.milestones[0].date);
+
+            // Calculate the left position for each milestone based on days from the start
+            this.milestones.forEach((milestone) => {
+                const currentDate = new Date(milestone.date);
+                const diffTime = Math.abs(currentDate - firstDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                milestone.left_px = diffDays * pixelsPerDay;
+            });
+
+            // Set the total width of the timeline based on the last milestone's position
+            const lastMilestone = this.milestones[this.milestones.length - 1];
+            this.totalTimelineWidth = lastMilestone.left_px + baseWidth;
+        },
+
         scrollTimeline() {
             const container = this.$refs.timelineContainer;
-            // Filter for actual milestone elements, excluding the line segments
-            const milestoneElements = Array.from(this.$refs.timeline.children).filter(el => el.classList.contains('milestone-item'));
-            const activeElement = milestoneElements[this.activeIndex];
-            if (activeElement) {
-                const containerWidth = container.offsetWidth;
-                const elementWidth = activeElement.offsetWidth;
-                const elementLeft = activeElement.offsetLeft;
+            const activeMilestone = this.milestones[this.activeIndex];
+            if (!activeMilestone) return;
 
-                // Calculate the scroll position to center the active item.
-                let scrollPosition = elementLeft - (containerWidth / 2) + (elementWidth / 2);
-                container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+            const containerWidth = container.offsetWidth;
+            const elementLeft = activeMilestone.left_px; // Use our calculated left position
+            const elementWidth = 150; // Use our fixed base width
+
+            let scrollPosition = elementLeft - (containerWidth / 2) + (elementWidth / 2);
+            container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+        },
+
+        updateFillingLine() {
+            const activeMilestone = this.milestones[this.activeIndex];
+            if (!activeMilestone || this.totalTimelineWidth === 0) {
+                this.fillingLineScale = 0;
+                return;
             }
+            const elementWidth = 150; // Use our fixed base width
+            const activeCenter = activeMilestone.left_px + (elementWidth / 2);
+            this.fillingLineScale = activeCenter / this.totalTimelineWidth;
         },
 
-        // Set up a watcher to react when activeIndex changes.
-        init() {
-            this.$watch('activeIndex', () => this.scrollTimeline());
-            // Initial scroll to center the first item.
-            this.scrollTimeline();
-            this.updateMilestonePositions(); // Call on init
-            window.addEventListener('resize', this.updateMilestonePositions.bind(this)); // Call on resize
-        },
-        // Function to format date to YYYY年MM月
         formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = (date.getMonth() +
-        1).toString().padStart(2, '0'); // getMonth() 是 0-indexed
-        return `${year}/${month}`;
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            return `${year}/${month}`;
         },
-        // Function to calculate spacing based on date difference
-        spacing(index) {
-            if (index === 0) {
-                return '2rem'; // Default left padding for the first item
-            }
-            const prevDate = new Date(this.milestones[index - 1].date);
-            const currDate = new Date(this.milestones[index].date);
-            // Calculate difference in months
-            const diffYear = currDate.getFullYear() - prevDate.getFullYear();
-            const diffMonth = diffYear * 12 + currDate.getMonth() - prevDate.getMonth();
-            // Define base and multiplier for spacing (in rem)
-            const baseRem = 2;
-            const monthMultiplier = 0.5;
-            let newSpacing = baseRem + (diffMonth * monthMultiplier);
-            // Clamp the spacing to a min/max range
-            newSpacing = Math.max(2, Math.min(24, newSpacing));
-            return `${newSpacing}rem`;
-        },
-        // Function to store element positions
-        updateMilestonePositions() {
-            this.$nextTick(() => {
-                const milestoneElements = Array.from(this.$refs.timeline.children).filter(el => el.classList.contains('milestone-item'));
-                milestoneElements.forEach((el, index) => {
-                    this.milestones[index].offsetLeft = el.offsetLeft;
-                    this.milestones[index].offsetWidth = el.offsetWidth;
-                });
-                this.positionsReady = true; // Set flag after positions are ready
-            });
-        },
-        }"
+    }"
     x-init="init()"
-    class="w-full max-w-5xl mx-auto py-12 font-sans"
+    class="w-full mx-auto py-8 font-sans"
 >
-    <!-- 1. Timeline Display Area (now includes buttons) -->
-    <div class="relative">
-        <!-- Navigation Buttons (now absolutely positioned) -->
+    <!-- 1. Timeline Display Area: Wrapped in a container with a specific max-width -->
+    <div class="relative max-w-[934px] mx-auto">
+        <!-- Navigation Buttons -->
         <button
             @click="activeIndex = Math.max(0, activeIndex - 1)"
             :disabled="activeIndex === 0"
-            class="absolute left-0 top-[38%] -translate-y-1/2 p-2 rounded-full bg-[#0d256d] border border-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed z-20 hover:bg-white/20"
+            class="absolute left-0 top-[22%] -translate-y-1/2 p-2 rounded-full border border-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed z-20"
         >
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            <svg class="w-6 h-6 text-red-500" :class="{ 'opacity-0': activeIndex === 0 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
         </button>
 
-        <div x-ref="timelineContainer" class="overflow-x-auto pb-8 scrollbar-hide">
-            <div x-ref="timeline" class="inline-flex items-start justify-start pl-8 pr-16" style="min-width: 100%;">
+        <!-- Main container now inherits the max-width and provides the scroll functionality -->
+        <div x-ref="timelineContainer" class="relative overflow-x-auto pb-8 scrollbar-hide mx-12" style="height: 150px;">
+            <!-- The timeline track has its width set dynamically from JS and is allowed to overflow -->
+            <div x-ref="timeline" class="relative" :style="`height: 100%; width: ${totalTimelineWidth}px;`">
+
+                <!-- Timeline Track -->
+                <div class="absolute top-[30px] left-0 w-full h-1 bg-gray-300/50 z-0"></div>
+                <!-- Colored Progress Line -->
+                <div
+                    class="absolute top-[30px] left-0 w-full h-1 bg-red-700 origin-left transition-transform duration-300 ease-out z-0"
+                    :style="`transform: scaleX(${fillingLineScale})`"
+                ></div>
+
                 <template x-for="(milestone, index) in milestones" :key="index">
+                    <!-- Milestone items are absolutely positioned within the track -->
                     <div
                         @click="activeIndex = index"
-                        class="relative flex flex-col items-center cursor-pointer group pr-16 milestone-item"
-                        :style="`flex: 0 0 auto; padding-left: ${spacing(index)}`"
+                        class="absolute top-0 flex flex-col items-center cursor-pointer group w-[150px]"
+                        :style="`left: ${milestone.left_px}px`"
                     >
                         <div
-                            class="text-sm font-semibold transition-colors duration-300"
-                            :class="activeIndex === index ? 'text-indigo-500' : 'text-white group-hover:text-gray-800'"
+                            class="text-base font-semibold transition-colors duration-300 text-white"
+                            {{-- :class="activeIndex === index ? 'text-white' : 'text-white group-hover:text-gray-800'" --}}
                             x-text="formatDate(milestone.date)"
                         ></div>
                         <div
-                            class="w-4 h-4 mt-2 rounded-full transition-all duration-300 z-10"
-                            :class="activeIndex === index ? 'bg-indigo-600' : 'bg-white'"
+                            class="w-4 h-4 rounded-full transition-all duration-300 z-10"
+                            :class="{ 'bg-red-700': activeIndex === index, 'bg-white': activeIndex !== index, 'border-red-700 border-4': activeIndex > index }"
                         ></div>
-                        <div
+                        {{-- <div
                             class="mt-2 text-xs text-center font-medium transition-colors duration-300"
                             :class="activeIndex === index ? 'text-indigo-600' : 'text-white group-hover:text-gray-600'"
                             x-text="milestone.title"
-                        ></div>
+                        ></div> --}}
                     </div>
                 </template>
             </div>
         </div>
-        <div class="absolute top-[38px] left-1/2 -translate-x-1/2 w-11/12 h-1 bg-white"></div>
 
         <button
             @click="activeIndex = Math.min(milestones.length - 1, activeIndex + 1)"
             :disabled="activeIndex === milestones.length - 1"
-            class="absolute right-0 top-[38%] -translate-y-1/2 p-2 rounded-full bg-[#0d256d] border border-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed z-20 hover:bg-white/20"
+            class="absolute right-0 top-[22%] -translate-y-1/2 p-2 rounded-full border border-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed z-20 hover:bg-white/20"
         >
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            <svg class="w-6 h-6 text-red-500" :class="{ 'opacity-0': activeIndex === milestones.length - 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
     </div>
 
     <!-- 2. Details Display Area -->
-    <div class="relative w-full h-32 mt-8 text-center">
+    <div class="relative w-full h-32 text-center max-w-[934px] mx-auto">
         <template x-for="(milestone, index) in milestones" :key="index">
             <div
                 x-show="activeIndex === index"
@@ -140,13 +165,12 @@
                 x-transition:leave-end="opacity-0 transform -translate-y-4"
                 class="absolute inset-0 w-full"
             >
-                <h3 class="text-2xl font-bold text-white" x-text="milestone.title"></h3>
-                <p class="mt-2 text-indigo-600" x-text="milestone.date"></p>
-                <p class="mt-2 text-white" x-text="milestone.description"></p>
+                <h3 class="text-5xl font-bold text-white mb-8" x-text="milestone.title"></h3>
+                <p class="mt-2 text-red-700 text-xl mb-4" x-text="milestone.date"></p>
+                <p class="mt-2 text-white text-xl" x-text="milestone.description"></p>
             </div>
         </template>
     </div>
-
 
 </div>
 

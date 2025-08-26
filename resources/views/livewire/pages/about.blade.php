@@ -258,15 +258,15 @@
         <section class="sec_7 relative bg-cover bg-center" style="background-image: url('{{ asset('sec_7_bg.jpg') }}')">
                 <div class="absolute inset-0 bg-[#0d256e52]">
                 </div>
-                <div class="max-w-[1600px] mx-auto px-8 py-28 lg:px-32" style="background: rgba(0,0,0,0.5) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAD0lEQVQIW2NkQABjRmQOAAM+AGkQsDBSAAAAAElFTkSuQmCC) repeat;">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold text-white">里程碑</h2>
-                    <p class="text-lg text-gray-300 mt-2">創意無限，一直是我們所追求的設計理念</p>
+                <div class="max-w-[1600px] mx-auto px-8 pt-16 pb-32 lg:px-32" style="background: rgba(0,0,0,0.5) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAD0lEQVQIW2NkQABjRmQOAAM+AGkQsDBSAAAAAElFTkSuQmCC) repeat;">
+                <div class="text-center mb-6">
+                    <h2 class="text-4xl font-normal text-white">里程碑</h2>
+                    <p class="text-lg text-red-700 mt-2">創意無限，一直是我們所追求的設計理念</p>
                 </div>
 
                 <div class="relative">
                     <!-- Timeline -->
-                    <div class="relative flex justify-center items-center mb-12">
+                    <div class="relative flex justify-center items-center">
 
                         {{-- <x-mary-button label="Previous" wire:click="prev" />
                         <x-mary-steps wire:model="step" class="border-y border-base-content/10 my-5 py-5">

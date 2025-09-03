@@ -20,6 +20,8 @@ use App\Filament\Tiptap\Card_gallery;
 use App\Filament\Tiptap\Card_gallery_two;
 use App\Filament\Tiptap\Feature_list;
 use App\Filament\Tiptap\Testimonial;
+use App\Filament\Tiptap\Travel_imgR;
+use App\Filament\Tiptap\Travel_imgB;
 use Illuminate\Support\Facades\Blade;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
@@ -38,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
             $component
                 ->blocks([
                     // BatmanBlock::class,
+                    Travel_imgR::class,
+                    Travel_imgB::class,
                     Stats::class,
                     Carousel::class,
                     LtextRimage::class,

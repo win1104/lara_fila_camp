@@ -10,7 +10,7 @@ class Stats extends TiptapBlock
 
     public string $rendered = 'blocks.rendered.stats';
 
-    public string $width = 'xl';
+    public string $width = 'm';
     public ?string $label = '';
 
     public ?string $icon = 'icon-stats';

@@ -80,7 +80,6 @@
             </div>
         </section>
 
-        {{-- 創意的累積 --}}
         <section class="sec_5 relative text-white font-light py-16">
             <div class="absolute overflow-hidden w-full h-full top-0 left-0">
                 <video autoplay autostart data-video-ratio="0.6175" id="bk-video" loop muted
@@ -94,26 +93,26 @@
             <div>
             <div class="relative max-w-4xl mx-auto text-center">
                 <h2 class="text-3xl mb-6">創意的累積</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="counter-section">
                     <div class="p-8">
                         <div class="flex justify-center">
                             <img src="{{ asset('service_icon.png') }}" title="">
                         </div>
-                        <p class="text-6xl my-12">15</p>
+                        <p class="text-6xl my-12 counter" data-target="15">0</p>
                         <p class="text-lg">我們的客戶</p>
                     </div>
                     <div class="p-8">
                         <div class="flex justify-center">
                             <img src="{{ asset('service_icon.png') }}" title="">
                         </div>
-                        <p class="text-6xl my-12">60</p>
+                        <p class="text-6xl my-12 counter" data-target="60">0</p>
                         <p class="text-lg">我們的作品</p>
                     </div>
                     <div class="p-8">
                         <div class="flex justify-center">
                             <img src="{{ asset('service_icon.png') }}" title="">
                         </div>
-                        <p class="text-6xl my-12">3</p>
+                        <p class="text-6xl my-12 counter" data-target="3">0</p>
                         <p class="text-lg">公司的歷史</p>
                     </div>
                 </div>

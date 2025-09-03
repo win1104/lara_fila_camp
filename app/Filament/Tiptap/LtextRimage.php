@@ -4,6 +4,8 @@ namespace App\Filament\Tiptap;
 use FilamentTiptapEditor\TiptapBlock;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 
@@ -22,7 +24,21 @@ class LtextRimage extends TiptapBlock
     public function getFormSchema(): array
     {
         return [
-            TextInput::make('title')->required(),
+            TiptapEditor::make('title')->required()
+                ->tools([
+                    'heading',
+                    // 'bold',
+                    // 'italic',
+                    // 'highlight',
+                    // 'color',
+                    // 'link',
+                    // 'bullet-list',
+                    // 'ordered-list',
+                    // 'align-center',
+                    // 'align-justify',
+                    // 'align-left',
+                    // 'align-right',
+                ]),
             Textarea::make('contact'),
             // FileUpload::make('image'),
             // Repeater::make('images')

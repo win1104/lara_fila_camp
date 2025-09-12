@@ -31,6 +31,11 @@
     {{ $slot }}
     @if ($icon)
         <span class="sr-only">{{ $label }}</span>
-        <x-filament-tiptap-editor::icon icon="{{ $icon }}" />
+
+        @if (str_starts_with($icon, '/') || str_starts_with($icon, 'http'))
+            <img src="{{ $icon }}" alt="{{ $label }}" class="w-5 h-5" />
+        @else
+            <x-filament-tiptap-editor::icon icon="{{ $icon }}" />
+        @endif
     @endif
 </button>

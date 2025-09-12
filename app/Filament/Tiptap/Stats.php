@@ -13,7 +13,8 @@ class Stats extends TiptapBlock
     public string $width = 'm';
     public ?string $label = '';
 
-    public ?string $icon = 'icon-stats';
+    // public ?string $icon = 'icon-stats';
+    public ?string $icon = '/storage/images/e0e2f1cd-ef9b-4586-941c-6011c9e8b59b.png';
     // public ?string $icon = 'heroicon-o-film';
 
 

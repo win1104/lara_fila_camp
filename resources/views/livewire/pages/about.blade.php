@@ -1,12 +1,44 @@
 <div>
     {{-- 首頁Banner --}}
-    <div class="relative">
+    <div class="relative mt-24">
+
+        <div class="relative w-full h-[500px] rounded-xl overflow-hidden">
+        <div class="swiper mySwiper absolute inset-0 w-full h-full">
+            <div class="swiper-wrapper">
+                <!-- 圖片 -->
+                <div class="swiper-slide flex items-center justify-center bg-black">
+                    <img src="{{ asset('bg_aibanner.png') }}" class="absolute inset-0 object-cover w-full h-full" alt="" />
+                </div>
+
+                <!-- 自家影片 (mp4) -->
+                <div class="swiper-slide flex items-center justify-center bg-black">
+                    <video autoplay loop muted class="object-cover w-full h-full">
+                        <source src="{{ asset('golden_gate_bridge.mp4') }}" type="video/mp4">
+                        <source src="{{ asset('golden_gate_bridge.webm') }}" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <div class="swiper-slide flex items-center justify-center bg-black"><iframe
+                        src="https://player.vimeo.com/video/1118028899?badge=0&amp;backstage=1&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;muted=1&amp;background=1"
+                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" style="width:100%;height:100%;"
+                        title="牛頭牌 凝聚家的味道 ｜阿嬤的幸福懷舊古早滋味 - BUFFALO牛頭牌炊具 (1080p, h264)"></iframe></div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
+
+
+            </div>
+
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+
         {{-- <img src="{{ asset('bg_aibanner.png') }}" class="absolute inset-0 object-cover w-full h-full" alt="" /> --}}
-        <video autoplay loop muted class="absolute inset-0 object-cover w-full h-full">
+        {{-- <video autoplay loop muted class="absolute inset-0 object-cover w-full h-full">
             <source src="{{ asset('golden_gate_bridge.mp4') }}" type="video/mp4">
             <source src="{{ asset('golden_gate_bridge.webm') }}" type="video/webm">
             Your browser does not support the video tag.
-        </video>
+        </video> --}}
         <div class="absolute inset-0 bg-[#0d256dd1]"></div>
         <div class="relative">
                 <div class="max-w-[1600px] mx-auto px-8 py-28 lg:px-32">
@@ -66,8 +98,9 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        {{-- 經歷 --}}
+        {{-- 品牌介紹 --}}
         <section class="text-gray-600 body-font">
             <div class="max-w-[1600px] mx-auto px-5 pt-16 lg:px-32">
                 <div class="flex flex-col text-center w-full mb-12">
@@ -80,6 +113,21 @@
             </div>
         </section>
 
+        {{-- <div style="padding:56.25% 0 0 0;position:relative;"><iframe
+                src="https://player.vimeo.com/video/761577999?badge=0&amp;autoplay=0&amp;background=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                title="A guitar in the bucket"></iframe></div>
+        <script src="https://player.vimeo.com/api/player.js"></script> --}}
+
+        <div style="padding:75% 0 0 0;position:relative;"><iframe
+                src="https://player.vimeo.com/video/1118045211?badge=0&amp;autoplay=1&amp;background=1&amp;controls=0&amp;player_id=0&amp;app_id=58479"
+                frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                title="【牛頭牌厲害電鍋】我的輕鬆生活_30秒 - BUFFALO牛頭牌炊具 (1080p, h264) (1)"></iframe></div>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+
+        {{-- 創意的累積 --}}
         <section class="sec_5 relative text-white font-light py-16">
             <div class="absolute overflow-hidden w-full h-full top-0 left-0">
                 <video autoplay autostart data-video-ratio="0.6175" id="bk-video" loop muted

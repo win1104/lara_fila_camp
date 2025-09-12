@@ -244,6 +244,7 @@ $tippyPlacement = $getTippyPlacement();
                                             draggable="true"
                                             x-on:dragstart="$event?.dataTransfer?.setData('block', @js($block->getIdentifier()))"
                                             class="cursor-move grid-col-1 flex items-center gap-2 rounded border text-xs px-3 py-2 bg-white dark:bg-gray-800 dark:border-gray-700"
+                                            style="width: 10rem;"
                                         >
                                             @if ($block->getIcon())
                                                 <x-filament::icon

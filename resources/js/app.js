@@ -1,6 +1,85 @@
 import './bootstrap';
 import './alpine-plugins';
 
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// Specific initialization for the banner Swiper on the about page
+const mySwiper = new Swiper('.mySwiper', {
+    modules: [Navigation, Pagination],
+    loop: true,
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+    on: {
+        // Event when the slide transition starts
+        slideChangeTransitionStart: function () {
+            // Pause all videos and Vimeo iframes in all slides
+            this.slides.forEach(slide => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    video.pause();
+                }
+
+                const iframe = slide.querySelector('iframe[src*="vimeo.com"]');
+                if (iframe) {
+                    const player = new Vimeo.Player(iframe);
+                    player.pause();
+                }
+
+                /*
+                // To restart CSS animations, remove animation classes from all elements
+                // This assumes your animated elements have a class like '.animated-element'
+                // and animation classes from a library like Animate.css
+                const animatedElements = slide.querySelectorAll('.animated-element');
+                animatedElements.forEach(el => {
+                    // You might need to store the animation name in a data attribute
+                    // e.g., data-animation="fadeInUp"
+                    // and remove all 'animate__' classes.
+                });
+                */
+            });
+        },
+        // Event when the slide transition ends
+        slideChangeTransitionEnd: function () {
+            // Play the video in the currently active slide
+            const activeSlide = this.slides[this.activeIndex];
+            const activeVideo = activeSlide.querySelector('video');
+            if (activeVideo) {
+                activeVideo.play();
+            }
+
+            // Play the Vimeo video in the currently active slide
+            const activeIframe = activeSlide.querySelector('iframe[src*="vimeo.com"]');
+            if (activeIframe) {
+                const player = new Vimeo.Player(activeIframe);
+                player.play();
+            }
+
+            /*
+            // To restart CSS animations, add animation classes to the active slide's elements
+            const animatedElements = activeSlide.querySelectorAll('.animated-element');
+            animatedElements.forEach(el => {
+                // Add back the animation classes
+                // e.g., el.classList.add('animate__animated', 'animate__' + el.dataset.animation);
+            });
+            */
+        },
+    }
+});
+
+// You might need to add the Vimeo Player API script to your page if it's not already there
+// <script src="https://player.vimeo.com/api/player.js"></script>
+
+
 
 // resources/js/app.js
 function toggleTheme()

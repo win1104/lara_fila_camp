@@ -197,6 +197,25 @@
                         </x-slot:content>
                     </x-mary-collapse>
                     @endforeach
+
+
+                    {{-- <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/o-i3mqT3WwA?si=X86cirS_K-R0ky1w&amp;autoplay=1&mute=1&controls=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> --}}
+
+    {{-- <div class="video-banner">
+    <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/o-i3mqT3WwA?autoplay=1&mute=1&loop=1&playlist=o-i3mqT3WwA&controls=0&modestbranding=1&rel=0"
+    title="YouTube video player"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+</iframe>
+</div> --}}
+
+{{-- <x-yt_banner video-id="o-i3mqT3WwA"  /> --}}
+<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/761577999?badge=0&amp;autoplay=0&amp;background=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="A guitar in the bucket"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+
+
                 </div>
                 @break
 

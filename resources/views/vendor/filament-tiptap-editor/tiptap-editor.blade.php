@@ -1,27 +1,27 @@
 @php
-    $tools = $getTools();
-    $bubbleMenuTools = $getBubbleMenuTools();
-    $floatingMenuTools = $getFloatingMenuTools();
-    $statePath = $getStatePath();
-    $isDisabled = $isDisabled();
-    $blocks = $getBlocks();
-    $mergeTags = $getMergeTags();
-    $shouldSupportBlocks = $shouldSupportBlocks();
-    $shouldShowMergeTagsInBlocksPanel = $shouldShowMergeTagsInBlocksPanel();
-    $customDocument = $getCustomDocument();
-    $nodePlaceholders = $getNodePlaceholders();
-    $showOnlyCurrentPlaceholder = $getShowOnlyCurrentPlaceholder();
-    // Mentions
-    $mentionItems = $getMentionItems();
-    $emptyMentionItemsMessage = $getEmptyMentionItemsMessage();
-    $mentionItemsPlaceholder = $getMentionItemsPlaceholder();
-    $mentionItemsLoading = $getMentionItemsLoading();
-    $getMentionItemsUsingEnabled = $getMentionItemsUsingEnabled();
-    $maxMentionItems = $getMaxMentionItems();
-    $mentionTrigger = $getMentionTrigger();
-    $mentionDebounce = $getMentionDebounce();
-    $mentionSearchStrategy = $getMentionSearchStrategy();
-    $tippyPlacement = $getTippyPlacement();
+$tools = $getTools();
+$bubbleMenuTools = $getBubbleMenuTools();
+$floatingMenuTools = $getFloatingMenuTools();
+$statePath = $getStatePath();
+$isDisabled = $isDisabled();
+$blocks = $getBlocks();
+$mergeTags = $getMergeTags();
+$shouldSupportBlocks = $shouldSupportBlocks();
+$shouldShowMergeTagsInBlocksPanel = $shouldShowMergeTagsInBlocksPanel();
+$customDocument = $getCustomDocument();
+$nodePlaceholders = $getNodePlaceholders();
+$showOnlyCurrentPlaceholder = $getShowOnlyCurrentPlaceholder();
+// Mentions
+$mentionItems = $getMentionItems();
+$emptyMentionItemsMessage = $getEmptyMentionItemsMessage();
+$mentionItemsPlaceholder = $getMentionItemsPlaceholder();
+$mentionItemsLoading = $getMentionItemsLoading();
+$getMentionItemsUsingEnabled = $getMentionItemsUsingEnabled();
+$maxMentionItems = $getMaxMentionItems();
+$mentionTrigger = $getMentionTrigger();
+$mentionDebounce = $getMentionDebounce();
+$mentionSearchStrategy = $getMentionSearchStrategy();
+$tippyPlacement = $getTippyPlacement();
 @endphp
 
 <x-dynamic-component
@@ -32,12 +32,12 @@
         <div class="flex-1">
             <div
                 @class([
-                    'tiptap-editor rounded-md relative text-gray-950 bg-white shadow-sm ring-1 dark:bg-white/5 dark:text-white',
-                    'ring-gray-950/10 dark:ring-white/20' => ! $errors->has($statePath),
-                    'ring-danger-600 dark:ring-danger-600' => $errors->has($statePath),
-                ])
+    'tiptap-editor rounded-md relative text-gray-950 bg-white shadow-sm ring-1 dark:bg-white/5 dark:text-white',
+    'ring-gray-950/10 dark:ring-white/20' => !$errors->has($statePath),
+    'ring-danger-600 dark:ring-danger-600' => $errors->has($statePath),
+])
                 x-data="{}"
-                @if (! $shouldDisableStylesheet())
+                @if (!$shouldDisableStylesheet())
                     x-load-css="[@js(\Filament\Support\Facades\FilamentAsset::getStyleHref('tiptap', 'awcodes/tiptap-editor'))]"
                 @endif
             >
@@ -96,7 +96,7 @@
                     x-on:locale-change.window="updateLocale($event)"
                     x-trap.noscroll="fullScreenMode"
                 >
-                    @if (! $isDisabled && ! $isToolbarMenusDisabled() && $tools)
+                    @if (!$isDisabled && !$isToolbarMenusDisabled() && $tools)
                         <template x-if="editor()">
                             <div>
                                 <button type="button" x-on:click="editor().chain().focus()" class="z-20 rounded sr-only focus:not-sr-only focus:absolute focus:py-1 focus:px-3 focus:bg-white focus:text-gray-900">{{ trans('filament-tiptap-editor::editor.skip_toolbar') }}</button>
@@ -135,7 +135,7 @@
                         </template>
                     @endif
 
-                    @if (! $isDisabled && ! $isBubbleMenusDisabled())
+                    @if (!$isDisabled && !$isBubbleMenusDisabled())
                     <template x-if="editor()">
                         <div>
                             <div x-ref="bubbleMenu" class="tiptap-editor-bubble-menu-wrapper">
@@ -148,7 +148,7 @@
                     </template>
                     @endif
 
-                    @if (! $isFloatingMenusDisabled() && filled($floatingMenuTools))
+                    @if (!$isFloatingMenusDisabled() && filled($floatingMenuTools))
                     <template x-if="editor()">
                         <div>
                             <div x-ref="floatingMenu" class="tiptap-editor-floating-menu-wrapper">
@@ -166,30 +166,30 @@
 
                     <div class="flex h-full">
                         <div @class([
-                            'tiptap-prosemirror-wrapper mx-auto w-full max-h-[40rem] min-h-[56px] h-auto overflow-y-scroll overflow-x-hidden rounded-b-md',
-                            match ($getMaxContentWidth()) {
-                                'sm' => 'prosemirror-w-sm',
-                                'md' => 'prosemirror-w-md',
-                                'lg' => 'prosemirror-w-lg',
-                                'xl' => 'prosemirror-w-xl',
-                                '2xl' => 'prosemirror-w-2xl',
-                                '3xl' => 'prosemirror-w-3xl',
-                                '4xl' => 'prosemirror-w-4xl',
-                                '6xl' => 'prosemirror-w-6xl',
-                                '7xl' => 'prosemirror-w-7xl',
-                                'full' => 'prosemirror-w-none',
-                                default => 'prosemirror-w-5xl',
-                            }
-                        ])>
+    'tiptap-prosemirror-wrapper mx-auto w-full max-h-[40rem] min-h-[56px] h-auto overflow-y-scroll overflow-x-hidden rounded-b-md',
+    match ($getMaxContentWidth()) {
+        'sm' => 'prosemirror-w-sm',
+        'md' => 'prosemirror-w-md',
+        'lg' => 'prosemirror-w-lg',
+        'xl' => 'prosemirror-w-xl',
+        '2xl' => 'prosemirror-w-2xl',
+        '3xl' => 'prosemirror-w-3xl',
+        '4xl' => 'prosemirror-w-4xl',
+        '6xl' => 'prosemirror-w-6xl',
+        '7xl' => 'prosemirror-w-7xl',
+        'full' => 'prosemirror-w-none',
+        default => 'prosemirror-w-5xl',
+    }
+])>
                             <div
                                 x-ref="element"
                                 {{ $getExtraInputAttributeBag()->class([
-                                    'tiptap-content min-h-full'
-                                ]) }}
+    'tiptap-content min-h-full'
+]) }}
                             ></div>
                         </div>
 
-                        @if ((! $isDisabled) && ($shouldSupportBlocks || ($shouldShowMergeTagsInBlocksPanel && filled($mergeTags))))
+                        @if ((!$isDisabled) && ($shouldSupportBlocks || ($shouldShowMergeTagsInBlocksPanel && filled($mergeTags))))
                             <div
                                 x-data="{
                                     isCollapsed: @js($shouldCollapseBlocksPanel()),
@@ -249,6 +249,8 @@
                                                 <x-filament::icon
                                                     :icon="$block->getIcon()"
                                                     class="h-30 w-30"
+                                                    {{-- class="max-w-20 w-full" --}}
+                                                    {{-- style="max-width: 5rem;" --}}
                                                 />
                                             @endif
 

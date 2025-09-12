@@ -94,6 +94,9 @@
 
         <!-- Mary UI Scripts -->
         {{-- <script src="https://cdn.jsdelivr.net/npm/mary-ui@2.3.0/dist/mary.min.js"></script> --}}
+        <script src="https://www.youtube.com/iframe_api"></script>
+        @stack('scripts')
+
     </body>
 
     <script>

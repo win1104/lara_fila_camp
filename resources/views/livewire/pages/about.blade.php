@@ -2,12 +2,13 @@
     {{-- 首頁Banner --}}
     <div class="relative mt-24">
 
-        <div class="relative w-full h-[500px] rounded-xl overflow-hidden">
+        {{-- <div class="relative w-full h-[500px] rounded-xl overflow-hidden"> --}}
+        <div class="relative w-full h-[800px] rounded-xl overflow-hidden">
         <div class="swiper mySwiper absolute inset-0 w-full h-full">
             <div class="swiper-wrapper">
                 <!-- 圖片 -->
                 <div class="swiper-slide flex items-center justify-center bg-black">
-                    <img src="{{ asset('bg_aibanner.png') }}" class="absolute inset-0 object-cover w-full h-full" alt="" />
+                    <img src="{{ asset('20231226_034242-image(2500x1700-crop).jpg') }}" class="absolute inset-0 object-cover w-full h-full" alt="" />
                 </div>
 
                 <!-- 自家影片 (mp4) -->

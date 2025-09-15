@@ -2,15 +2,35 @@ import './bootstrap';
 import './alpine-plugins';
 
 import Swiper from 'swiper';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+
+document.querySelectorAll('.swiper-slide video').forEach(video => {
+    video.addEventListener('loadedmetadata', () => {
+        const duration = Math.ceil(video.duration * 1000);
+        video.closest('.swiper-slide').setAttribute('data-swiper-autoplay', duration);
+    });
+});
+
+document.querySelectorAll('.swiper-slide iframe[src*="vimeo.com"]').forEach(iframe => {
+    const player = new Vimeo.Player(iframe);
+    player.getDuration().then(duration => {
+        const ms = Math.ceil(duration * 1000);
+        iframe.closest('.swiper-slide').setAttribute('data-swiper-autoplay', ms);
+    });
+});
+
 // Specific initialization for the banner Swiper on the about page
 const mySwiper = new Swiper('.mySwiper', {
-    modules: [Navigation, Pagination],
+    modules: [Navigation, Pagination, Autoplay],
     loop: true,
+    autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+    },
     navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',

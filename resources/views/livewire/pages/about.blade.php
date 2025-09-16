@@ -3,13 +3,25 @@
     <div class="relative mt-24">
 
         {{-- <div class="relative w-full h-[500px] rounded-xl overflow-hidden"> --}}
-        <div class="relative w-full h-[800px] rounded-xl overflow-hidden">
+        <div class="relative w-full h-[900px] rounded-xl overflow-hidden">
         <div class="swiper mySwiper absolute inset-0 w-full h-full">
             <div class="swiper-wrapper">
                 <!-- 圖片 -->
                 <div class="swiper-slide flex items-center justify-center bg-black">
                     <img src="{{ asset('20231226_034242-image(2500x1700-crop).jpg') }}" class="absolute inset-0 object-cover w-full h-full" alt="" />
                 </div>
+
+                <div class="swiper-slide flex items-center justify-center bg-black">
+                    <img src="{{ asset('20240402_104934-image(2500x1700-crop).jpg') }}"
+                        class="absolute inset-0 object-cover w-full h-full" alt="" />
+                </div>
+
+                <div class="swiper-slide flex items-center justify-center bg-black"><iframe
+                        src="https://player.vimeo.com/video/1118028899?badge=0&amp;backstage=1&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;muted=1&amp;background=1"
+                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" style="width:100%;height:100%;"
+                        title="牛頭牌 凝聚家的味道 ｜阿嬤的幸福懷舊古早滋味 - BUFFALO牛頭牌炊具 (1080p, h264)"></iframe></div>
+                <script src="https://player.vimeo.com/api/player.js"></script>
 
                 <!-- 自家影片 (mp4) -->
                 <div class="swiper-slide flex items-center justify-center bg-black">
@@ -19,13 +31,6 @@
                         Your browser does not support the video tag.
                     </video>
                 </div>
-
-                <div class="swiper-slide flex items-center justify-center bg-black"><iframe
-                        src="https://player.vimeo.com/video/1118028899?badge=0&amp;backstage=1&amp;player_id=0&amp;app_id=58479&amp;autoplay=1&amp;muted=1&amp;background=1"
-                        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" style="width:100%;height:100%;"
-                        title="牛頭牌 凝聚家的味道 ｜阿嬤的幸福懷舊古早滋味 - BUFFALO牛頭牌炊具 (1080p, h264)"></iframe></div>
-                <script src="https://player.vimeo.com/api/player.js"></script>
 
 
             </div>

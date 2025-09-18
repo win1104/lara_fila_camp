@@ -2,9 +2,11 @@
     {{-- 判斷是單一文章頁面還是列表頁面 --}}
     @if ($post)
         {{-- 單一文章詳細頁 --}}
-        <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32">
-            <article class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-3xl font-bold mb-4">{{ $post->title }}</h2>
+        {{-- <div class="max-w-[1600px] mx-auto px-8 py-8 lg:px-32"> --}}
+        <div class="py-8">
+            <article class="bg-white">
+            {{-- <article class="bg-white rounded-lg shadow-md p-6"> --}}
+                {{-- <h2 class="text-3xl font-bold mb-4">{{ $post->title }}</h2> --}}
                 @if($post->intro)
                     {{-- <div class="text-gray-600 mb-6">{!! $post->intro !!}</div> --}}
                     <div class="text-gray-600 mb-6">{!! tiptap_converter()->asHTML($post->intro ?? '', toc: true, maxDepth: 4) !!}</div>

@@ -15,7 +15,9 @@ class Stacked3 extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/stacked3.png';
+
 
     public function getFormSchema(): array
     {
@@ -30,15 +32,15 @@ class Stacked3 extends TiptapBlock
                 ->label('背景圖片')
                 ->directory('backgrounds'),
 
-            FileUpload::make('image_l')->required(),
+            FileUpload::make('image_l'),
             TiptapEditor::make('title_l'),
             TiptapEditor::make('contact_l'),
 
-            FileUpload::make('image_c')->required(),
+            FileUpload::make('image_c'),
             TiptapEditor::make('title_c'),
             TiptapEditor::make('contact_c'),
 
-            FileUpload::make('image_r')->required(),
+            FileUpload::make('image_r'),
             TiptapEditor::make('title_r'),
             TiptapEditor::make('contact_r'),
 

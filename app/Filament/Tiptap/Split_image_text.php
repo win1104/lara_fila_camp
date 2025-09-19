@@ -14,7 +14,8 @@ class Split_image_text extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/split_image_text.png';
 
     public function getFormSchema(): array
     {

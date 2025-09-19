@@ -15,7 +15,8 @@ class Stacked2 extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/stacked2.png';
 
     public function getFormSchema(): array
     {

@@ -15,7 +15,8 @@ class Flip_split_a extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/flip_split_a.png';
 
     public function getFormSchema(): array
     {

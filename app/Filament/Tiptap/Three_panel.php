@@ -15,7 +15,8 @@ class Three_panel extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/three_panel.png';
 
     public function getFormSchema(): array
     {

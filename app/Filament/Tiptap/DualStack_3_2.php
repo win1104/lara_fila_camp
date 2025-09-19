@@ -15,7 +15,8 @@ class DualStack_3_2 extends TiptapBlock
     public string $width = 'xl';
 
     public ?string $label = '';
-    public ?string $icon = 'icon-timg_btext';
+    // public ?string $icon = 'icon-timg_btext';
+    public ?string $icon = '/storage/blocks/dualStack_3_2.png';
 
     public function getFormSchema(): array
     {

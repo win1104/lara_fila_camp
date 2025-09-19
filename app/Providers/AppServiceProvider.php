@@ -27,6 +27,10 @@ use App\Filament\Tiptap\Flip_split_a;
 use App\Filament\Tiptap\Flip_split_b;
 use App\Filament\Tiptap\Three_panel;
 use App\Filament\Tiptap\DualStack_3_2;
+use App\Filament\Tiptap\DualStack_2_3;
+use App\Filament\Tiptap\Stacked2;
+use App\Filament\Tiptap\Stacked3;
+use App\Filament\Tiptap\Three_flip;
 use Illuminate\Support\Facades\Blade;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
@@ -70,6 +74,10 @@ class AppServiceProvider extends ServiceProvider
                     Flip_split_b::class,
                     Three_panel::class,
                     DualStack_3_2::class,
+                    DualStack_2_3::class,
+                    Stacked2::class,
+                    Stacked3::class,
+                    Three_flip::class,
                 ]);
         });
     }

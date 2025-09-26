@@ -87,11 +87,20 @@ $tippyPlacement = $getTippyPlacement();
                     x-on:dragged-block.stop="$wire.mountFormComponentAction('{{ $statePath }}', 'insertBlock', {
                         type: $event.detail.type,
                         coordinates: $event.detail.coordinates,
+        },{
+                        'modalCloseByClickingAway': false
                     })"
                     x-on:dragged-merge-tag.stop="insertMergeTag($event)"
                     x-on:insert-block.window="insertBlock($event)"
                     x-on:update-block.window="updateBlock($event)"
                     x-on:open-block-settings.window="openBlockSettings($event)"
+                    {{-- x-on:open-block-settings.window="$wire.mountFormComponentAction('{{ $statePath }}','insertBlock',
+                    {
+                        type: $event.detail.type,
+                        coordinates: $event.detail.coordinates,
+                        data: $event.detail.data
+                        }, { 'modalCloseByClickingAway': false
+                    })" --}}
                     x-on:delete-block.window="deleteBlock($event)"
                     x-on:locale-change.window="updateLocale($event)"
                     x-trap.noscroll="fullScreenMode"
@@ -250,6 +259,7 @@ $tippyPlacement = $getTippyPlacement();
                                                 <x-filament::icon
                                                     :icon="$block->getIcon()"
                                                     class="h-30 w-30"
+                                                    draggable="false"
                                                     {{-- class="max-w-20 w-full" --}}
                                                     {{-- style="max-width: 5rem;" --}}
                                                 />

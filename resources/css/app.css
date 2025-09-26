@@ -194,3 +194,8 @@
 .filament-tiptap-grid[type="fixed"][cols="5"] {
     grid-template-columns: repeat(5, 1fr);
 }
+
+/* 修正 Tiptap/WYSIWYG 編輯器內容中，置中段落裡的圖片樣式 */
+p[style*="text-align: center"] img {
+    display: inline-block;
+}

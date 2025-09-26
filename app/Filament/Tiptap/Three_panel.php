@@ -12,7 +12,7 @@ class Three_panel extends TiptapBlock
     public string $preview = 'blocks.previews.three_panel';
 
     public string $rendered = 'blocks.rendered.three_panel';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';

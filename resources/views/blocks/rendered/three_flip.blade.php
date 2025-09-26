@@ -6,7 +6,7 @@
         <div class="flex flex-wrap sm:flex-nowrap justify-center gap-8">
 
             <div class="">
-                <h2 class="title-font text-2xl font-medium text-gray-900 mt-6 mb-3">{!! $title_l !!}</h2>
+                <p class="title-font font-medium mt-6 mb-3">{!! $title_l !!}</p>
                 <p class="leading-relaxed text-base">{!! $contact_l !!}</p>
                 <div class="">
                     <img alt="content" class="object-cover object-center h-full w-full" src="{{ Storage::url($image_l) }}">
@@ -17,12 +17,12 @@
                 <div class="">
                     <img alt="content" class="object-cover object-center h-full w-full" src="{{ Storage::url($image_c) }}">
                 </div>
-                <h2 class="title-font text-2xl font-medium text-gray-900 mt-6 mb-3">{!! $title_c !!}</h2>
+                <p class="title-font font-medium mt-6 mb-3">{!! $title_c !!}</p>
                 <p class="leading-relaxed text-base">{!! $contact_c !!}</p>
             </div>
 
             <div class="">
-                <h2 class="title-font text-2xl font-medium text-gray-900 mt-6 mb-3">{!! $title_r !!}</h2>
+                <p class="title-font font-medium mt-6 mb-3">{!! $title_r !!}</p>
                 <p class="leading-relaxed text-base">{!! $contact_r !!}</p>
                 <div class="">
                     <img alt="content" class="object-cover object-center h-full w-full" src="{{ Storage::url($image_r) }}">

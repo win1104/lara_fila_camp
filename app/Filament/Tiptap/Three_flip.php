@@ -12,7 +12,7 @@ class Three_flip extends TiptapBlock
     public string $preview = 'blocks.previews.three_flip';
 
     public string $rendered = 'blocks.rendered.three_flip';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';

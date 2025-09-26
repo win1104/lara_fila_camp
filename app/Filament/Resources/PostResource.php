@@ -151,14 +151,18 @@ class PostResource extends Resource
                             ]),
                         Forms\Components\Section::make('圖片')
                             ->schema([
-                                CuratorPicker::make('images')
-                                    ->label(__('backstage.images'))
-                                    ->multiple()
-                                    ->constrained(true)
-                                    ->columnSpanFull()
-                                    ->relationship('images', 'id')
-                                    ->orderColumn('order')
-                                    ->pathGenerator(CustomPathGenerator::class),
+                        CuratorPicker::make('images')
+                            ->label('圖片')
+                            ->buttonLabel('選擇圖片')
+                            ->constrained(true)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                            ->directory('posts')
+                            ->columnSpan('full'),
+                        Forms
+                        ::Components
+                        ::TextInput::make('curation_key')
+                            ->label('圖片編輯版本 Key')
+                            ->helperText('輸入您在圖片編輯器中儲存的編輯版本名稱 (例如: thumbnail, custom-crop-1)'),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),

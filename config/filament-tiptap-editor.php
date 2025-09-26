@@ -2,7 +2,8 @@
 
 return [
     'direction' => 'ltr',
-    'max_content_width' => '5xl',
+    // 'max_content_width' => '5xl',
+    'max_content_width' => 'full',
     'disable_stylesheet' => false,
     'disable_link_as_button' => false,
 
@@ -33,8 +34,8 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'media_action' => FilamentTiptapEditor\Actions\MediaAction::class,
-    //    'media_action' => Awcodes\Curator\Actions\MediaAction::class,
+    // 'media_action' => FilamentTiptapEditor\Actions\MediaAction::class,
+       'media_action' => Awcodes\Curator\Actions\MediaAction::class,
     'edit_media_action' => FilamentTiptapEditor\Actions\EditMediaAction::class,
     'link_action' => FilamentTiptapEditor\Actions\LinkAction::class,
     'grid_builder_action' => FilamentTiptapEditor\Actions\GridBuilderAction::class,

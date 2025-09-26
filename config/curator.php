@@ -68,5 +68,8 @@ return [
     'table' => [
         'layout' => 'grid',
     ],
+    'image_editor' => [
+        'enabled' => true,
+    ],
 
 ];

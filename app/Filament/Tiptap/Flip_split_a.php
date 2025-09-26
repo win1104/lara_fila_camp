@@ -12,7 +12,7 @@ class Flip_split_a extends TiptapBlock
     public string $preview = 'blocks.previews.flip_split_a';
 
     public string $rendered = 'blocks.rendered.flip_split_a';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';
@@ -31,9 +31,9 @@ class Flip_split_a extends TiptapBlock
                 ->label('背景圖片')
                 ->directory('backgrounds'),
 
-            FileUpload::make('image_l')->required(),
+            FileUpload::make('image_l'),
 
-            TiptapEditor::make('title_l')->required()
+            TiptapEditor::make('title_l')
                 ->tools([
                     'heading',
                     'bold',
@@ -47,13 +47,14 @@ class Flip_split_a extends TiptapBlock
                     'align-justify',
                     'align-left',
                     'align-right',
+                    'images',
                 ]),
 
-            TiptapEditor::make('contact_l')->required(),
+            TiptapEditor::make('contact_l'),
 
-            FileUpload::make('image_r')->required(),
-            TiptapEditor::make('title_r')->required(),
-            TiptapEditor::make('contact_r')->required(),
+            FileUpload::make('image_r'),
+            TiptapEditor::make('title_r'),
+            TiptapEditor::make('contact_r'),
         ];
     }
 }

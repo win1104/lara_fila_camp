@@ -12,7 +12,7 @@ class Stacked3 extends TiptapBlock
     public string $preview = 'blocks.previews.stacked3';
 
     public string $rendered = 'blocks.rendered.stacked3';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';

@@ -4,6 +4,7 @@ namespace App\Filament\Tiptap;
 use FilamentTiptapEditor\TiptapBlock;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\FileUpload;
 
 class Split_image_text extends TiptapBlock
@@ -11,7 +12,7 @@ class Split_image_text extends TiptapBlock
     public string $preview = 'blocks.previews.split_image_text';
 
     public string $rendered = 'blocks.rendered.split_image_text';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';
@@ -29,10 +30,10 @@ class Split_image_text extends TiptapBlock
             FileUpload::make('bg_image')
                 ->label('背景圖片')
                 ->directory('backgrounds'),
-            FileUpload::make('image_l')->required(),
-            FileUpload::make('image_r')->required(),
-            Textarea::make('title')->required(),
-            Textarea::make('contact')->required(),
+            FileUpload::make('image_l'),
+            FileUpload::make('image_r'),
+            TiptapEditor::make('title'),
+            TiptapEditor::make('contact'),
         ];
     }
 }

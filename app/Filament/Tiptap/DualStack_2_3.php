@@ -12,7 +12,7 @@ class DualStack_2_3 extends TiptapBlock
     public string $preview = 'blocks.previews.dualStack_2_3';
 
     public string $rendered = 'blocks.rendered.dualStack_2_3';
-    public string $width = 'xl';
+    public string $width = 'full';
 
     public ?string $label = '';
     // public ?string $icon = 'icon-timg_btext';

@@ -6,17 +6,17 @@
         <div class="flex flex-wrap sm:flex-nowrap gap-8">
 
             <div class="">
-                <img alt="content" class="object-cover object-center h-full w-full"
+                <img alt="content" class="object-cover object-center h-full w-full inline-block"
                     src="{{ Storage::url($image_l) }}">
             </div>
 
             <div class="">
                 <div class="">
-                    <img alt="content" class="object-cover object-center h-full w-full"
+                    <img alt="content" class="object-cover object-center h-full w-full inline-block"
                         src="{{ Storage::url($image_r) }}">
                 </div>
-                <h2 class="title-font text-2xl font-medium text-gray-900 mt-6 mb-3">{!! $title !!}</h2>
-                <p class="leading-relaxed text-base">{!! $contact !!}</p>
+                <p class="">{!! $title !!}</p>
+                <p class="">{!! $contact !!}</p>
             </div>
         </div>
     </div>

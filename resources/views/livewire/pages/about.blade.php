@@ -26,8 +26,8 @@
                 <!-- 自家影片 (mp4) -->
                 <div class="swiper-slide flex items-center justify-center bg-black">
                     <video autoplay loop muted class="object-cover w-full h-full">
-                        <source src="{{ asset('golden_gate_bridge.mp4') }}" type="video/mp4">
-                        <source src="{{ asset('golden_gate_bridge.webm') }}" type="video/webm">
+                        <source src="{{ asset('/storage/golden_gate_bridge.mp4') }}" type="video/mp4">
+                        <source src="{{ asset('/storage/golden_gate_bridge.webm') }}" type="video/webm">
                         Your browser does not support the video tag.
                     </video>
                 </div>

@@ -6,6 +6,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use FilamentTiptapEditor\TiptapEditor;
 use Filament\Forms\Components\FileUpload;
+use Awcodes\Curator\Components\Forms\CuratorPicker;
 
 class Stacked3 extends TiptapBlock
 {
@@ -28,19 +29,19 @@ class Stacked3 extends TiptapBlock
             ->regex('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/') // 簡單驗證
             ->helperText('輸入 HEX 色碼，例如 #ffffff'),
 
-            FileUpload::make('bg_image')
+            CuratorPicker::make('bg_image')
                 ->label('背景圖片')
                 ->directory('backgrounds'),
 
-            FileUpload::make('image_l'),
+            CuratorPicker::make('image_l'),
             TiptapEditor::make('title_l'),
             TiptapEditor::make('contact_l'),
 
-            FileUpload::make('image_c'),
+            CuratorPicker::make('image_c'),
             TiptapEditor::make('title_c'),
             TiptapEditor::make('contact_c'),
 
-            FileUpload::make('image_r'),
+            CuratorPicker::make('image_r'),
             TiptapEditor::make('title_r'),
             TiptapEditor::make('contact_r'),
 

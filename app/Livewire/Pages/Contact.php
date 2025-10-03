@@ -4,13 +4,6 @@ namespace App\Livewire\Pages;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Carbon;
-use App\Mail\FormMailSend;
-use Illuminate\Support\Facades\Mail;
 use App\Services\ContactService;
 
 class Contact extends Component
@@ -32,6 +25,7 @@ class Contact extends Component
 
     public function submit()
     {
+        // 驗證表單
         $this->validate([
             'member_name' => 'required|string|max:255',
             'member_email' => 'required|email',
@@ -47,53 +41,29 @@ class Contact extends Component
             'captcha' => '驗證碼不對喔',
         ]);
 
-        $now = Carbon::now();
-
-        $form_data = [
+        // 準備表單資料
+        $formData = [
             'member_name' => $this->member_name,
-            'member_phone' => $this->member_phone, // 自訂欄位
+            'member_phone' => $this->member_phone,
             'member_email' => $this->member_email,
-            'member_company' => $this->member_company, // 自訂欄位
+            'member_company' => $this->member_company,
             'question_category' => $this->question_category,
             'member_note' => $this->member_note,
-            // 'code' => $this->captcha,
-            'send_date' => $now->toDateString(),
-            'mail_form_title' => '< 混合無限智慧科技（姓名：' . $this->member_name . '） >',
         ];
 
-        ContactService::handleContactForm($form_data);
+        // 呼叫 ContactService 處理
+        $result = ContactService::handleContactForm($formData);
 
-        session()->flash('success', '表單送出成功！');
-
-        $this->reset();
-        // $this->reset(
-        //     'member_name',
-        //     'member_phone',
-        //     'member_email',
-        //     'member_company',
-        //     'question_category',
-        //     'member_note',
-        //     'captcha'
-        // );
-        $this->formKey = rand();
+        // 根據結果顯示訊息
+        if ($result['success']) {
+            session()->flash('success', $result['message']);
+            $this->reset();
+            $this->formKey = rand();
+        } else {
+            session()->flash('error', $result['message']);
+            // 發生錯誤時不清空表單，讓使用者可以修改後重新送出
+        }
     }
-
-    // public function resetForm()
-    // {
-    //     $this->reset();
-    //     $this->reset(
-    //         'member_name',
-    //         'member_phone',
-    //         'member_email',
-    //         'member_company',
-    //         'question_category',
-    //         'member_note',
-    //         'captcha'
-    //     );
-
-    //     session()->flash('success', '已清空表單');
-
-    // }
 
     #[Layout('layouts.app')]
     public function render()

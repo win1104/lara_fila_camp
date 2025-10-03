@@ -4,43 +4,28 @@ namespace App\Services;
 
 use App\Mail\FormMailSend;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class ContactService
 {
     /**
-     * 處理聯絡表單流程：儲存 + 寄信
+     * 處理聯絡表單流程：封裝資料 + 發送郵件 + 記錄
      *
      * @param array $data 來自前端表單的資料
-     * @return void
+     * @return array 回傳處理結果 ['success' => bool, 'message' => string]
      */
-    public static function handleContactForm(array $data): void
+    public static function handleContactForm(array $data): array
     {
         $now = Carbon::now();
-        $sendStatus = 'success';
 
         // 封裝寄信內容
-        $form_data = [
+        $mailData = [
             ...$data,
             'send_date' => $now->toDateString(),
             'mail_form_title' => '< 混合無限智慧科技（姓名：' . $data['member_name'] . '） >',
         ];
 
-        try {
-            Mail::to($data['member_email'])
-                ->bcc('52sherry1123@gmail.com')
-                ->send(new FormMailSend($form_data));
-        } catch (\Exception $e) {
-            $sendStatus = 'failed';
-
-            // 你也可以 log 起來
-            \Log::error('寄送聯絡信件失敗：' . $e->getMessage());
-        }
-
-        // 儲存資料到 mail_logs 資料表
-        DB::table('mail_logs')->insert([
-            'type' => 'contact',
+        // 準備要記錄到資料庫的資料
+        $logData = [
             'title' => $data['member_name'],
             'slug' => $now->toDateString(),
             'email' => $data['member_email'],
@@ -48,17 +33,19 @@ class ContactService
             'company' => $data['member_company'] ?? '',
             'info' => $data['question_category'] ?? '',
             'content' => $data['member_note'] ?? '',
-            'intro' => serialize((object) $form_data),  // 方便後續備查
+            'intro' => serialize((object) $mailData),
             'send_ip' => $data['send_ip'] ?? request()->ip(),
-            'send_status' => $sendStatus,
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
+        ];
 
+        // 建立郵件物件
+        $mailable = new FormMailSend($mailData);
 
-        // 寄信
-        // Mail::to($data['member_email'])
-        //     ->bcc('52sherry1123@gmail.com') // ← 你可替換成實際管理員信箱
-        //     ->send(new FormMailSend($form_data));
+        // 使用 MailService 發送並記錄
+        return MailService::sendAndLog(
+            recipients: $data['member_email'],
+            mailable: $mailable,
+            type: 'contact',
+            logData: $logData
+        );
     }
 }

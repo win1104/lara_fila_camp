@@ -79,6 +79,8 @@
                                         <input id="captcha" type="text" wire:model="captcha" placeholder="請輸入驗證碼">
                                         @if (session('success'))
                                             <div class="text-green-500 text-sm">{{ session('success') }}</div>
+                                        @elseif (session('error'))
+                                            <div class="text-red-500 text-sm">{{ session('error') }}</div>
                                         @else
                                             @error('captcha') <div class="text-red-500 text-sm">{{ $message }}</div> @enderror
                                         @endif

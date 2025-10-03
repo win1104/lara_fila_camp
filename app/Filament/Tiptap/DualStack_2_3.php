@@ -22,11 +22,11 @@ class DualStack_2_3 extends TiptapBlock
     public function getFormSchema(): array
     {
         return [
-           TextInput::make('bg_color')
-            ->label('背景顏色')
-            ->placeholder('#ffffff') // 或者 rgba(0,0,0,0.5)
-            ->regex('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/') // 簡單驗證
-            ->helperText('輸入 HEX 色碼，例如 #ffffff'),
+            TextInput::make('bg_color')
+                ->label('背景顏色')
+                ->placeholder('#ffffff') // 或者 rgba(0,0,0,0.5)
+                ->regex('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/') // 簡單驗證
+                ->helperText('輸入 HEX 色碼，例如 #ffffff'),
 
             CuratorPicker::make('bg_image')
                 ->label('背景圖片')

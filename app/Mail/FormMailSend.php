@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -13,6 +12,7 @@ class FormMailSend extends Mailable
 {
     use Queueable, SerializesModels;
 
+    // 這個資料會自動傳到 view
     public $data;
 
     /**
@@ -20,21 +20,22 @@ class FormMailSend extends Mailable
      */
     public function __construct($data)
     {
+        // 在 contact_form.blade.php 可用 $data
         $this->data = $data;
     }
 
     /**
-     * Get the message envelope.
+     * 📬 主旨：Get the message envelope.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Form Mail Send',
+            subject: '聯絡表單 - ' . $this->data['member_name'] . ' (' . $this->data['question_category'] . ')',
         );
     }
 
     /**
-     * Get the message content definition.
+     * 📄 內容（視圖模板）：Get the message content definition.
      */
     public function content(): Content
     {
@@ -44,7 +45,7 @@ class FormMailSend extends Mailable
     }
 
     /**
-     * Get the attachments for the message.
+     * 📎 附件：Get the attachments for the message.
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
